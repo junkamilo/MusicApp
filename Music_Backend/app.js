@@ -4,6 +4,9 @@ import cors from "cors";
 import bodyParser from "body-parser";
 import cookieParser from "cookie-parser";
 import ArtistasRouters from './src/routes/ArtistasRouters.js';
+import AlbumRouters from './src/routes/AlbumRouters.js';
+import CancionRouters from './src/routes/CancionRouters.js';
+import GenerosRouters from './src/routes/GenerosRouters.js';
 
 // Importamos dotenv para manejar las variables de entorno
 dotenv.config();
@@ -24,6 +27,10 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 app.use('/artistas', ArtistasRouters);
+app.use('/albumes', AlbumRouters);
+app.use('/canciones', CancionRouters);
+app.use('/generosMusicales', GenerosRouters);
+
 
 //puerto en el que se ejecutara la aplicacion
 const PORT = process.env.PORT || 3000;
