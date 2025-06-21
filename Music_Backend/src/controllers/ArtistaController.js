@@ -11,7 +11,7 @@ class ArtistaController {
                 return res.status(response.code).json({ message: response.message });
             }
             //retornamos los artistas obtenidos
-            return res.status(response.code).json(response.data);
+            return res.status(response.code).json(response);
         } catch (error) {
             //en caso de error, retornamos un mensaje de error
             return res.status(500).json({ message: "Error al obtener los artistas: " + error.message });

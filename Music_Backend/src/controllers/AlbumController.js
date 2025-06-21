@@ -10,7 +10,7 @@ class AlbumController {
             if (response.error) {
                 return res.status(response.code).json({ message: response.message });
             }
-            return res.status(response.code).json(response.data);
+            return res.status(response.code).json(response);
         } catch (error) {
             return res.status(500).json({ message: "Error al obtener los álbumes: " + error.message });
         }
@@ -26,7 +26,7 @@ class AlbumController {
             if (response.error) {
                 return res.status(response.code).json({ message: response.message });
             }
-            return res.status(response.code).json(response.data);
+            return res.status(response.code).json(response);
         } catch (error) {
             return res.status(500).json({ message: "Error al obtener el álbum: " + error.message });
         }
@@ -42,7 +42,7 @@ class AlbumController {
             if (response.error) {
                 return res.status(response.code).json({ message: response.message });
             }
-            return res.status(response.code).json(response.data);
+            return res.status(response.code).json(response);
         } catch (error) {
             return res.status(500).json({ message: "Error al obtener los álbumes del artista: " + error.message });
         }
