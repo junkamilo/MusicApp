@@ -1,21 +1,49 @@
+import { AlbumesController } from "../views/Albumes/AlbumesController.js";
+import { artistasController } from "../views/Artistas/ArtistasController.js";
+import { CancionesController } from "../views/Canciones/CancionesController.js";
+import { generosController } from "../views/Generos/generosController.js";
+import { inicioController } from "../views/Inicio/InicioController.js";
+
 const routes = {
+  "/":{
+    "template": "Inicio/inicio.html",
+    controlador: inicioController,
+  },
+  Albumes:{
+    "template": "Albumes/albumes.html",
+    controlador: AlbumesController
+  },
+  Artistas:{
+    "template": "Artistas/artistas.html",
+    controlador : artistasController
+  },
+  Canciones:{
+    "template": "Canciones/canciones.html",
+    controlador : CancionesController
+  },
+  Generos:{
+    "template": "Generos/generos.html",
+    controlador : generosController
+  }
 };
+
+
 export const router = async (app) => {  
   const hash = location.hash.slice(1);
   const [ rutas, params ] = matchRoute(hash)
 
   if(!rutas){
-    await loadView(app, 'inicio/inicio.html');
+    await loadView(app, 'Inicio/inicio.html');
     inicioController();
     return
   }
   
   //si las rutas son privadas y el usuario no esta autenticado
-  if (rutas.private && !estaAutenticado()) {
+  /*if (rutas.private && !estaAutenticado()) {
     //lo redirijimos a que se inicie seccion(login)
     window.location.hash = "#login";
     return
-  }
+  }*/
   // return
   
   // Llamando la vista
