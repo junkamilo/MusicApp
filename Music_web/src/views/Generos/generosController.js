@@ -7,21 +7,28 @@ export const generosController = () => {
           'Content-Type': 'application/json; charset=UTF-8'
         }
       });
-
-      const respuesta = await request.json();
-      const generos = Array.isArray(respuesta) ? respuesta : respuesta.data;
+      
+      console.log(request);
+      
+      const {data, code, message} = await request.json();
+      
+      if (data.error) {
+        console.error("Error al obtener los géneros musicales:", data.message);
+        return;        
+      }
 
       const contentGenerosMusical = document.getElementById('content_generoMusicales');
       if (!contentGenerosMusical) return;
 
       // Recorremos los géneros
-      generos.forEach(({ nombre_genero, descripcion }) => {
+      data.forEach(({ nombre_genero, descripcion }) => {
         // Creamos un elemento div para cada género musical
         const card = document.createElement("div");
         // Asignamos las clases y el contenido
         card.classList.add("card_generoMusical");
         // Asignamos el contenido del género musical
         card.textContent = nombre_genero;
+
         //agregamos la card al contenedor
         contentGenerosMusical.appendChild(card);
       });
