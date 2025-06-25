@@ -1,3 +1,4 @@
+import { loadView } from "../helpers/loadView.js";
 import { AlbumesController } from "../views/Albumes/AlbumesController.js";
 import { artistasController } from "../views/Artistas/ArtistasController.js";
 import { CancionesController } from "../views/Canciones/CancionesController.js";
