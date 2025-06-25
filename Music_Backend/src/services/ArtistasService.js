@@ -157,6 +157,70 @@ class ArtistasService {
             };
         }
     }
+
+    //metodo para obtener artistas destacados por género
+    static async getArtistasDestacadosPorGenero() {
+        try {
+            //creamos la instancia del modelo Artista
+            const OBJArtista = new Artista();
+            //llamamos al método getArtistasDestacadosPorGenero del modelo
+            const artistasDestacados = await OBJArtista.getArtistasDestacadosPorGenero();
+            //validamos si no hay artistas destacados
+            if (artistasDestacados.length === 0) {
+                return {
+                    error: true,
+                    code: 404,
+                    message: "No se encontraron artistas destacados por género"
+                };
+            }
+            //retornamos los artistas destacados obtenidos
+            return {
+                error: false,
+                code: 200,
+                message: "Artistas destacados por género obtenidos correctamente",
+                data: artistasDestacados
+            };
+        } catch (error) {
+            //retornamos un error en caso de que ocurra una excepción
+            return {
+                error: true,
+                code: 500,
+                message: "Error al obtener los artistas destacados por género: " + error.message
+            };
+        }
+    }
+
+    //método para obtener artistas por género
+    static async getArtistasPorGeneroId(generoId) {
+        try {
+            //creamos la instancia del modelo Artista
+            const OBJArtista = new Artista();
+            //llamamos al método getArtistasPorGeneroId del modelo
+            const artistasPorGenero = await OBJArtista.getArtistasPorGeneroId(generoId);
+            //validamos si no hay artistas por género
+            if (artistasPorGenero.length === 0) {
+                return {
+                    error: true,
+                    code: 404,
+                    message: "No se encontraron artistas para el género con id: " + generoId
+                };
+            }
+            //retornamos los artistas por género obtenidos
+            return {
+                error: false,
+                code: 200,
+                message: "Artistas por género obtenidos correctamente",
+                data: artistasPorGenero
+            };
+        } catch (error) {
+            //retornamos un error en caso de que ocurra una excepción
+            return {
+                error: true,
+                code: 500,
+                message: "Error al obtener los artistas por género: " + error.message
+            };
+        }
+    }
 }
 
 export default ArtistasService;

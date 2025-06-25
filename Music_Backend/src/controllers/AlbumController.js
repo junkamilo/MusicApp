@@ -47,6 +47,22 @@ class AlbumController {
             return res.status(500).json({ message: "Error al obtener los álbumes del artista: " + error.message });
         }
     }
+
+    // Método para obtener álbumes más populares de cada género
+    static getAlbumesPorGeneroId = async (req, res) => {
+        const { generoId } = req.params;
+        try {
+            // Llamamos al servicio para obtener los álbumes por género
+            // y manejamos la respuesta
+            const response = await AlbumService.getAlbumesMasPopularesPorGenero(generoId);
+            if (response.error) {
+                return res.status(response.code).json({ message: response.message });
+            }
+            return res.status(response.code).json(response);
+        } catch (error) {
+            return res.status(500).json({ message: "Error al obtener los álbumes por género: " + error.message });
+        }
+    }
 }
 
 export default AlbumController;

@@ -77,6 +77,33 @@ class AlbumService {
             };
         }
     }
+
+    //metodo para obtener albumes mas populares por cada genero musical
+    static async getAlbumesMasPopularesPorGenero(generoId) {
+        try {
+            const albumModel = new Album();
+            const albumes = await albumModel.getAlbumesPorGeneroId(generoId);
+            if (albumes.length === 0) {
+                return {
+                    error: true,
+                    code: 404,
+                    message: `No se encontraron álbumes para el género con id ${generoId}`
+                };
+            }
+            return {
+                error: false,
+                code: 200,
+                message: "Álbumes populares por género obtenidos correctamente",
+                data: albumes
+            };
+        } catch (error) {
+            return {
+                error: true,
+                code: 500,
+                message: "Error al obtener los álbumes populares por género: " + error.message
+            };
+        }
+    }
 }
 
 export default AlbumService;

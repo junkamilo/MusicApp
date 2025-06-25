@@ -36,6 +36,26 @@ class Album {
             throw new Error("Error al obtener los albumes del artista: " + error.message);
         }
     }
+
+    //metodo para obtener albumes mas populares de cada genero
+    async getAlbumesPorGeneroId(generoId) {
+    const [rows] = await connection.query(`
+      SELECT 
+        gm.genero_id,
+        gm.nombre_genero,
+        al.album_id,
+        al.titulo_album,
+        al.popularidad,
+        ar.nombre_artista
+      FROM generos_musicales gm
+      JOIN artista_genero ag ON gm.genero_id = ag.genero_id
+      JOIN artistas ar ON ar.artista_id = ag.artista_id
+      JOIN album al ON al.artista_id = ar.artista_id
+      WHERE gm.genero_id = 1
+      ORDER BY al.popularidad DESC;
+    `, [generoId]);
+    return rows;
+  }
 }
 
 export default Album;
