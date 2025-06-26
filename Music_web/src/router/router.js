@@ -1,6 +1,7 @@
 import { loadView } from "../helpers/loadView.js";
 import { AlbumesController } from "../views/Albumes/AlbumesController.js";
 import { artistasController } from "../views/Artistas/ArtistasController.js";
+import { perfilArtistasController } from "../views/Artistas/perfilArtistasController.js";
 import { CancionesController } from "../views/Canciones/CancionesController.js";
 import { generosController } from "../views/Generos/generosController.js";
 import { inicioController } from "../views/Inicio/InicioController.js";
@@ -17,6 +18,10 @@ const routes = {
   Artistas:{
     "template": "Artistas/artistas.html",
     controlador : artistasController
+  },
+  perfilArtistas:{
+    "template": "Artistas/perfilArtistas.html",
+    controlador : perfilArtistasController
   },
   Canciones:{
     "template": "Canciones/canciones.html",
