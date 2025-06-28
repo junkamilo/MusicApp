@@ -25,11 +25,11 @@ export const inicioController = async () =>{
       const verMas = contentGenerosMusical.querySelector('.ver-mas');
       
       // Recorremos los géneros
-      data.slice(0,6).forEach(({ nombre_genero, descripcion }) => {
+      data.slice(0,6).forEach(({ genero_id,nombre_genero, }) => {
         // Creamos un elemento div para cada género musical
         const card = document.createElement("a");
         // Asignamos un enlace a la card
-        card.setAttribute("href", `#/generosMusicales/${nombre_genero}`);
+        card.setAttribute("href", `#/generosMusicales/${genero_id}`);
         // Asignamos las clases y el contenido
         card.classList.add("card_generoMusical");
         // Asignamos el contenido del género musical
@@ -69,11 +69,11 @@ export const inicioController = async () =>{
       const verMas = contentGenerosMusical.querySelector('.ver-mas');
       
       // Recorremos los artistas
-      data.slice(0,6).forEach(({ nombre_artista, nombre_genero  }) => {
+      data.slice(0,6).forEach(({ artista_id,nombre_artista,  }) => {
         // Creamos un elemento div para cada género musical
         const card = document.createElement("a");
         // Asignamos un enlace a la card
-        card.setAttribute("href", `#/artistas/${nombre_artista}`);
+        card.setAttribute("href", `#/artistas/${artista_id}`);
         // Asignamos las clases y el contenido
         card.classList.add("card_artista");
         // Asignamos el nombre del artista

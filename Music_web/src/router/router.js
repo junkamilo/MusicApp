@@ -1,9 +1,11 @@
 import { loadView } from "../helpers/loadView.js";
 import { AlbumesController } from "../views/Albumes/AlbumesController.js";
+import { AlbumesMusicalesController } from "../views/Albumes/albumesMusicalesController.js";
 import { artistasController } from "../views/Artistas/ArtistasController.js";
 import { perfilArtistasController } from "../views/Artistas/perfilArtistasController.js";
 import { CancionesController } from "../views/Canciones/CancionesController.js";
 import { generosController } from "../views/Generos/generosController.js";
+import { generosMusicalesController } from "../views/Generos/generosMusicalesController.js";
 import { inicioController } from "../views/Inicio/InicioController.js";
 
 const routes = {
@@ -15,11 +17,15 @@ const routes = {
     "template": "Albumes/albumes.html",
     controlador: AlbumesController
   },
+  "/albumes/:id":{
+    "template": "Albumes/perfilAlbumes.html",
+    controlador: AlbumesMusicalesController
+  },
   Artistas:{
     "template": "Artistas/artistas.html",
     controlador : artistasController
   },
-  perfilArtistas:{
+  "/artistas/:id":{
     "template": "Artistas/perfilArtistas.html",
     controlador : perfilArtistasController
   },
@@ -30,7 +36,11 @@ const routes = {
   Generos:{
     "template": "Generos/generos.html",
     controlador : generosController
-  }
+  },
+  "/generosMusicales/:id":{
+    "template": "Generos/generosMusicales.html",
+    controlador : generosMusicalesController
+  },
 };
 
 

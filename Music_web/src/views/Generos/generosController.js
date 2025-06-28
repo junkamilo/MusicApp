@@ -25,11 +25,11 @@ export const generosController = async () => {
       const verMas = contentGenerosMusical.querySelector('.ver-mas');
       
       // Recorremos los géneros
-      data.slice(0,6).forEach(({ nombre_genero, descripcion }) => {
+      data.slice(0,6).forEach(({ genero_id,nombre_genero,}) => {
         // Creamos un elemento div para cada género musical
         const card = document.createElement("a");
         // Asignamos un enlace a la card
-        card.setAttribute("href", `#/generosMusicales/${nombre_genero}`);
+        card.setAttribute("href", `#/generosMusicales/${genero_id}`);
         // Asignamos las clases y el contenido
         card.classList.add("card_generoMusical");
         // Asignamos el contenido del género musical

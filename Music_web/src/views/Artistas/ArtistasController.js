@@ -24,11 +24,11 @@ export const artistasController = () => {
       const verMas = contentArtistasRock.querySelector('.ver-mas');
 
       // Recorremos los artistas
-      data.slice(0,6).forEach(({ nombre_artista}) => {
+      data.slice(0,6).forEach(({ artista_id, nombre_artista}) => {
         // Creamos un elemento div para cada artista
         const card = document.createElement("a");
         // Asignamos un enlace a la card
-        card.setAttribute("href", `#/artistas/${nombre_artista}`);
+        card.setAttribute("href", `#/artistas/${artista_id}`);
         // Asignamos las clases y el contenido
         card.classList.add("card_artista");
         // Asignamos el contenido del artista
@@ -67,11 +67,11 @@ export const artistasController = () => {
       const verMas = contentArtistasPop.querySelector('.ver-mas');
 
       // Recorremos los artistas
-      data.slice(0,6).forEach(({ nombre_artista}) => {
+      data.slice(0,6).forEach(({ artista_id,nombre_artista}) => {
         // Creamos un elemento div para cada artista
         const card = document.createElement("a");
         // Asignamos un enlace a la card
-        card.setAttribute("href", `#/artistas/${nombre_artista}`);
+        card.setAttribute("href", `#/artistas/${artista_id}`);
         // Asignamos las clases y el contenido
         card.classList.add("card_artista");
         // Asignamos el contenido del artista
@@ -110,11 +110,11 @@ export const artistasController = () => {
       const verMas = contentArtistasUrbana.querySelector('.ver-mas');
 
       // Recorremos los artistas
-      data.slice(0,6).forEach(({ nombre_artista}) => {
+      data.slice(0,6).forEach(({ artista_id,nombre_artista}) => {
         // Creamos un elemento div para cada artista
         const card = document.createElement("a");
         // Asignamos un enlace a la card
-        card.setAttribute("href", `#/artistas/${nombre_artista}`);
+        card.setAttribute("href", `#/artistas/${artista_id}`);
         // Asignamos las clases y el contenido
         card.classList.add("card_artista");
         // Asignamos el contenido del artista
@@ -153,11 +153,11 @@ export const artistasController = () => {
       const verMas = contentArtistasVallenato.querySelector('.ver-mas');
 
       // Recorremos los artistas
-      data.slice(0,6).forEach(({ nombre_artista}) => {
+      data.slice(0,6).forEach(({ artista_id,nombre_artista}) => {
         // Creamos un elemento div para cada artista
         const card = document.createElement("a");
         // Asignamos un enlace a la card
-        card.setAttribute("href", `#/artistas/${nombre_artista}`);
+        card.setAttribute("href", `#/artistas/${artista_id}`);
         // Asignamos las clases y el contenido
         card.classList.add("card_artista");
         // Asignamos el contenido del artista
@@ -196,11 +196,11 @@ export const artistasController = () => {
       const verMas = contentArtistasPopular.querySelector('.ver-mas');
 
       // Recorremos los artistas
-      data.slice(0,6).forEach(({ nombre_artista}) => {
+      data.slice(0,6).forEach(({ artista_id,nombre_artista}) => {
         // Creamos un elemento div para cada artista
         const card = document.createElement("a");
         // Asignamos un enlace a la card
-        card.setAttribute("href", `#/artistas/${nombre_artista}`);
+        card.setAttribute("href", `#/artistas/${artista_id}`);
         // Asignamos las clases y el contenido
         card.classList.add("card_artista");
         // Asignamos el contenido del artista
@@ -242,7 +242,7 @@ export const artistasController = () => {
         // Creamos un elemento div para cada artista
         const card = document.createElement("a");
         // Asignamos un enlace a la card
-        card.setAttribute("href", `#/perfilArtistas?id=${artista_id}`);
+        card.setAttribute("href", `#/artistas/${artista_id}`);
         // Asignamos las clases y el contenido
         card.classList.add("card_artista");
         // Asignamos el contenido del artista
