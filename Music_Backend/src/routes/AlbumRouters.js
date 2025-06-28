@@ -10,5 +10,7 @@ router.get("/:id", AlbumController.getAlbumById);
 router.get("/artista/:id", AlbumController.getAlbumesByArtistaId);
 // Obtener álbumes más populares de cada género
 router.get("/genero/:generoId", AlbumController.getAlbumesPorGeneroId);
+// Obtener canciones de un álbum por su ID
+router.get("/:albumId/canciones", AlbumController.getCancionesByAlbumId);
 
 export default router;

@@ -63,6 +63,22 @@ class AlbumController {
             return res.status(500).json({ message: "Error al obtener los álbumes por género: " + error.message });
         }
     }
+
+    // Método para obtener canciones de un álbum por su ID
+    static getCancionesByAlbumId = async (req, res) => {
+        const { albumId } = req.params;
+        try {
+            // Llamamos al servicio para obtener las canciones de un álbum por su ID
+            // y manejamos la respuesta
+            const response = await AlbumService.getCancionesByAlbumId(albumId);
+            if (response.error) {
+                return res.status(response.code).json({ message: response.message });
+            }
+            return res.status(response.code).json(response);
+        } catch (error) {
+            return res.status(500).json({ message: "Error al obtener las canciones del álbum: " + error.message });
+        }
+    }
 }
 
 export default AlbumController;

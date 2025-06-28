@@ -56,6 +56,18 @@ class Album {
     `, [generoId]);
     return rows;
   }
+  //metodo para obtener cacniones de un album por su id
+  async getCancionesByAlbumId(albumId) {
+    try {
+      const [rows] = await connection.query("SELECT * FROM cancion WHERE album_id = ?", [albumId]);
+      if (rows.length === 0) {
+        throw new Error("No se encontraron canciones para el álbum con id: " + albumId);
+      }
+      return rows;
+    } catch (error) {
+      throw new Error("Error al obtener las canciones del álbum: " + error.message);
+    }
+  }
 }
 
 export default Album;

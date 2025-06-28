@@ -104,6 +104,33 @@ class AlbumService {
             };
         }
     }
+
+    // Método estático para obtener canciones de un álbum por su ID
+    static async getCancionesByAlbumId(albumId) {
+        try {
+            const albumModel = new Album();
+            const canciones = await albumModel.getCancionesByAlbumId(albumId);
+            if (canciones.length === 0) {
+                return {
+                    error: true,
+                    code: 404,
+                    message: "No se encontraron canciones para el álbum con id: " + albumId
+                };
+            }
+            return {
+                error: false,
+                code: 200,
+                message: "Canciones obtenidas correctamente",
+                data: canciones
+            };
+        } catch (error) {
+            return {
+                error: true,
+                code: 500,
+                message: "Error al obtener las canciones del álbum: " + error.message
+            };
+        }
+    }
 }
 
 export default AlbumService;
