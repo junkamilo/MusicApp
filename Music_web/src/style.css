@@ -184,3 +184,23 @@ footer {
   text-align: justify;
   max-width: 600px;
 }
+/* Lista de Álbumes del Artista */
+.album-info {
+  padding: 1rem;
+  background-color: #f2f2f2;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+}
+
+.canciones-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 1rem;
+}
+
+.card-cancion {
+  border: 1px solid #ccc;
+  padding: 1rem;
+  border-radius: 6px;
+  background: #fff;
+}

@@ -17,7 +17,7 @@ const routes = {
     "template": "Albumes/albumes.html",
     controlador: AlbumesController
   },
-  "/albumes/:id":{
+  "/albumesMusicales/:id":{
     "template": "Albumes/perfilAlbumes.html",
     controlador: AlbumesMusicalesController
   },
