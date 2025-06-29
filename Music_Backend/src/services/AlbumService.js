@@ -131,6 +131,32 @@ class AlbumService {
             };
         }
     }
+    // Método estático para obtener álbumes destacados
+    static async getAlbumesMasPopulares() {
+        try {
+            const albumModel = new Album();
+            const albumes = await albumModel.getAlbumesMasPopulares();
+            if (albumes.length === 0) {
+                return {
+                    error: true,
+                    code: 404,
+                    message: "No se encontraron álbumes destacados"
+                };
+            }
+            return {
+                error: false,
+                code: 200,
+                message: "Álbumes destacados obtenidos correctamente",
+                data: albumes
+            };
+        } catch (error) {
+            return {
+                error: true,
+                code: 500,
+                message: "Error al obtener los álbumes destacados: " + error.message
+            };
+        }
+    }
 }
 
 export default AlbumService;

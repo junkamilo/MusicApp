@@ -79,6 +79,20 @@ class AlbumController {
             return res.status(500).json({ message: "Error al obtener las canciones del álbum: " + error.message });
         }
     }
+    //metodo para odtener los albumes mas populares
+    static getAlbumesMasPopulares = async (req, res) => {
+        try {
+            // Llamamos al servicio para obtener los álbumes más populares
+            // y manejamos la respuesta
+            const response = await AlbumService.getAlbumesMasPopulares();
+            if (response.error) {
+                return res.status(response.code).json({ message: response.message });
+            }
+            return res.status(response.code).json(response);
+        } catch (error) {
+            return res.status(500).json({ message: "Error al obtener los álbumes más populares: " + error.message });
+        }
+    }
 }
 
 export default AlbumController;

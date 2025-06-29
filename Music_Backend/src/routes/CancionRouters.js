@@ -3,6 +3,8 @@ import CancionController from '../controllers/CancionController.js';
 
 const router = express.Router();
 
+//rutas para obtener cancione mas populares
+router.get("/populares", CancionController.getCancionesMasPopulares);
 // Obtener todas las canciones
 router.get("/", CancionController.getAllCanciones);
 // Obtener una canción por su ID

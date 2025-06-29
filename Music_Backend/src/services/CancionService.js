@@ -109,6 +109,34 @@ class CancionService {
             };
         }
     }
+    // Método estático para obtener canciones más populares
+    static async getCancionesMasPopulares() {
+        try {
+            // Creamos una instancia del modelo Cancion y obtenemos las canciones más populares
+            // Llamamos al método getCancionesMasPopulares del modelo
+            const cancionModel = new Cancion();
+            const canciones = await cancionModel.getCancionesMasPopulares();
+            if (canciones.length === 0) {
+                return {
+                    error: true,
+                    code: 404,
+                    message: "No se encontraron canciones populares"
+                };
+            }
+            return {
+                error: false,
+                code: 200,
+                message: "Canciones populares obtenidas correctamente",
+                data: canciones
+            };
+        } catch (error) {
+            return {
+                error: true,
+                code: 500,
+                message: "Error al obtener las canciones populares: " + error.message
+            };
+        }
+    }
 }
 
 export default CancionService;

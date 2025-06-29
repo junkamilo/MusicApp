@@ -63,6 +63,21 @@ class CancionController {
             return res.status(500).json({ message: "Error al obtener las canciones del artista: " + error.message });
         }
     }
+
+    // Metodo para obtener canciones mas populares
+    static getCancionesMasPopulares = async (req, res) => {
+        try {
+            // Llamamos al servicio para obtener las canciones más populares
+            // y manejamos la respuesta
+            const response = await CancionService.getCancionesMasPopulares();
+            if (response.error) {
+                return res.status(response.code).json({ message: response.message });
+            }
+            return res.status(response.code).json(response);
+        } catch (error) {
+            return res.status(500).json({ message: "Error al obtener las canciones más populares: " + error.message });
+        }
+    }
 }
 
 export default CancionController;
