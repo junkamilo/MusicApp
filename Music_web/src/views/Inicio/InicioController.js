@@ -89,7 +89,7 @@ export const inicioController = async () =>{
 
     //listamos los albumes
     try {
-      const request = await fetch("http://localhost:3000/albumes", {
+      const request = await fetch("http://localhost:3000/albumes/populares", {
         method: "GET",
         headers: {
           'Content-Type': 'application/json; charset=UTF-8'
@@ -113,11 +113,11 @@ export const inicioController = async () =>{
       const verMas = contentGenerosMusical.querySelector('.ver-mas');
       
       // Recorremos los albumes
-      data.slice(0,6).forEach(({ titulo_album, descripcion }) => {
+      data.slice(0,6).forEach(({ album_id, titulo_album }) => {
         // Creamos un elemento a para los albumes
         const card = document.createElement("a");
         // Asignamos un enlace a la card
-        card.setAttribute("href", `#/albumes/${titulo_album}`);
+        card.setAttribute("href", `#/albumes/${album_id}`);
         // Asignamos las clases y el contenido
         card.classList.add("card_album");
         // Asignamos el contenido del album
@@ -133,7 +133,7 @@ export const inicioController = async () =>{
 
     //listamos las canciones
     try {
-      const request = await fetch("http://localhost:3000/canciones", {
+      const request = await fetch("http://localhost:3000/canciones/populares", {
         method: "GET",
         headers: {
           'Content-Type': 'application/json; charset=UTF-8'
@@ -172,6 +172,6 @@ export const inicioController = async () =>{
       });
 
     } catch (error) {
-      console.error("Error al obtener los géneros musicales:", error);
+      console.error("Error al obtener las canciones:", error);
     }
 }

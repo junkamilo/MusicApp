@@ -7,26 +7,32 @@ export const AlbumesMusicalesController = async (params) => {
       const { data: album } = await resAlbum.json();
 
       document.getElementById("nombreAlbum").textContent = album.nombre_album;
-      document.getElementById("descripcionAlbum").textContent =album.descripcion;
+      document.getElementById("descripcionAlbum").textContent =
+        album.descripcion;
 
       // Obtener canciones del álbum
-    const resCanciones = await fetch(`http://localhost:3000/albumes/${idAlbum}/canciones`);
-    const { data: canciones } = await resCanciones.json();
+      const resCanciones = await fetch(
+        `http://localhost:3000/albumes/${idAlbum}/canciones`
+      );
+      const { data: canciones } = await resCanciones.json();
 
-    const contenedor = document.getElementById("cancionesAlbum");
+      const contenedor = document.getElementById("cancionesAlbum");
 
-    canciones.forEach(cancion => {
-      const card = document.createElement("div");
-      card.classList.add("card-cancion");
+      canciones.slice(0, 6).forEach(({ titulo_cancion, duracion }) => {
+        const card = document.createElement("div");
+        card.classList.add("card-cancion");
 
-       const titulo = document.createElement("h3");
-       titulo.textContent = cancion.titulo;
+        const titulo = document.createElement("h3");
+        titulo.textContent = titulo_cancion;
 
-    const duracion = document.createElement("p");
-    duracion.textContent = `Duración: ${cancion.duracion}`;
+        const duracionElem = document.createElement("p");
+        duracionElem.textContent = `Duración: ${duracion}`;
 
-          contenedor.appendChild(card);
-    });
+        card.appendChild(titulo);
+        card.appendChild(duracionElem);
+
+        contenedor.appendChild(card);
+      });
     } catch (error) {
       console.error("Error al obtener los álbumes musicales:", error);
     }

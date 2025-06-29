@@ -8,7 +8,7 @@ export const AlbumesController = () => {
           'Content-Type': 'application/json; charset=UTF-8'
         }
       });
-      
+
         // Verificamos si la solicitud fue exitosa
       const { data, code, message } = await request.json();
 
@@ -26,11 +26,13 @@ export const AlbumesController = () => {
       /* Recorremos los álbumes y
         Limitamos a los primeros 6 álbumes para mostrar
         en la vista principal*/
-      data.slice(0,6).forEach(({ titulo_album, descripcion }) => {
+      data.slice(0,6).forEach(({ album_id,titulo_album, descripcion }) => {
         // Creamos un elemento div para cada álbum
         const card = document.createElement("a");
         // Asignamos las clases y el contenido
         card.classList.add("card_album");
+        // Enlace a la ruta que activa tu controlador
+        card.setAttribute("href", `#/albumes/${album_id}`);
         // Asignamos el contenido del álbum
         card.textContent = titulo_album;
 
@@ -69,11 +71,13 @@ export const AlbumesController = () => {
       /* Recorremos los álbumes y
         Limitamos a los primeros 6 álbumes para mostrar
         en la vista principal*/
-      data.slice(0,6).forEach(({ titulo_album, descripcion }) => {
+      data.slice(0,6).forEach(({ album_id,titulo_album, descripcion }) => {
         // Creamos un elemento div para cada álbum
         const card = document.createElement("a");
         // Asignamos las clases y el contenido
         card.classList.add("card_album");
+        // Enlace a la ruta que activa tu controlador
+        card.setAttribute("href", `#/albumes/${album_id}`);
         // Asignamos el contenido del álbum
         card.textContent = titulo_album;
 
@@ -112,11 +116,13 @@ export const AlbumesController = () => {
       /* Recorremos los álbumes y
         Limitamos a los primeros 6 álbumes para mostrar
         en la vista principal*/
-      data.slice(0,6).forEach(({ titulo_album, descripcion }) => {
+      data.slice(0,6).forEach(({ album_id,titulo_album, descripcion }) => {
         // Creamos un elemento div para cada álbum
         const card = document.createElement("a");
         // Asignamos las clases y el contenido
         card.classList.add("card_album");
+        // Enlace a la ruta que activa tu controlador
+        card.setAttribute("href", `#/albumes/${album_id}`);
         // Asignamos el contenido del álbum
         card.textContent = titulo_album;
 
@@ -155,11 +161,13 @@ export const AlbumesController = () => {
       /* Recorremos los álbumes y
         Limitamos a los primeros 6 álbumes para mostrar
         en la vista principal*/
-      data.slice(0,6).forEach(({ titulo_album, descripcion }) => {
+      data.slice(0,6).forEach(({ album_id,titulo_album, descripcion }) => {
         // Creamos un elemento div para cada álbum
         const card = document.createElement("a");
         // Asignamos las clases y el contenido
         card.classList.add("card_album");
+        // Enlace a la ruta que activa tu controlador
+        card.setAttribute("href", `#/albumes/${album_id}`);
         // Asignamos el contenido del álbum
         card.textContent = titulo_album;
 
@@ -198,11 +206,13 @@ export const AlbumesController = () => {
       /* Recorremos los álbumes y
         Limitamos a los primeros 6 álbumes para mostrar
         en la vista principal*/
-      data.slice(0,6).forEach(({ titulo_album, descripcion }) => {
+      data.slice(0,6).forEach(({ album_id,titulo_album, descripcion }) => {
         // Creamos un elemento div para cada álbum
         const card = document.createElement("a");
         // Asignamos las clases y el contenido
         card.classList.add("card_album");
+        // Enlace a la ruta que activa tu controlador
+        card.setAttribute("href", `#/albumes/${album_id}`);
         // Asignamos el contenido del álbum
         card.textContent = titulo_album;
 
@@ -242,11 +252,13 @@ export const AlbumesController = () => {
       /* Recorremos los álbumes y
         Limitamos a los primeros 6 álbumes para mostrar
         en la vista principal*/
-      data.slice(0,6).forEach(({ titulo_album, descripcion }) => {
+      data.slice(0,6).forEach(({ album_id,titulo_album, descripcion }) => {
         // Creamos un elemento div para cada álbum
         const card = document.createElement("a");
         // Asignamos las clases y el contenido
         card.classList.add("card_album");
+        // Enlace a la ruta que activa tu controlador
+        card.setAttribute("href", `#/albumes/${album_id}`);
         // Asignamos el contenido del álbum
         card.textContent = titulo_album;
 
