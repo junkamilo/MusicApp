@@ -78,6 +78,21 @@ class CancionController {
             return res.status(500).json({ message: "Error al obtener las canciones más populares: " + error.message });
         }
     }
+
+    //metodo para obtner cancioes de cada album por su genero
+    static getCancionesAlbumGenero = async (req, res) => {
+        const { generoId } = req.params;
+        try {
+            // Llamamos al servicio para obtener las canciones por género
+            const response = await CancionService.getCancionesAlbumGenero(generoId);
+            if (response.error) {
+                return res.status(response.code).json({ message: response.message });
+            }
+            return res.status(response.code).json(response);
+        } catch (error) {
+            return res.status(500).json({ message: "Error al obtener las canciones por género: " + error.message });
+        }
+    }
 }
 
 export default CancionController;

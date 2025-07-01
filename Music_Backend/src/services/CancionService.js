@@ -137,6 +137,34 @@ class CancionService {
             };
         }
     }
+    // Método estático para obtener canciones de album por genero
+    static async getCancionesAlbumGenero(generoId) {
+        try {
+            // Creamos una instancia del modelo Cancion y obtenemos las canciones de un género por su ID
+            // Llamamos al método getCancionesByGenero del modelo
+            const cancionModel = new Cancion();
+            const canciones = await cancionModel.getCancionesAlbumGenero(generoId);
+            if (canciones.length === 0) {
+                return {
+                    error: true,
+                    code: 404,
+                    message: "No se encontraron canciones para el género con id: " + generoId
+                };
+            }
+            return {
+                error: false,
+                code: 200,
+                message: "Canciones del género obtenidas correctamente",
+                data: canciones
+            };
+        } catch (error) {
+            return {
+                error: true,
+                code: 500,
+                message: "Error al obtener las canciones del género: " + error.message
+            };
+        }
+    }
 }
 
 export default CancionService;

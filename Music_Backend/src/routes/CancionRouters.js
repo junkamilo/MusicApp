@@ -13,5 +13,7 @@ router.get("/:id", CancionController.getCancionById);
 router.get("/album/:albumId", CancionController.getCancionesByAlbumId);
 // Obtener canciones de un artista por su ID
 router.get("/artista/:id", CancionController.getCancionesByArtistaId);
+//obeteer canciones por cada album de cada género musical
+router.get("/genero/:generoId", CancionController.getCancionesAlbumGenero);
 
 export default router;

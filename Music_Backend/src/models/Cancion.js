@@ -104,6 +104,68 @@ ORDER BY sub.popularidad DESC;
       );
     }
   }
+
+  //metodo para obtener canciones de cada album por cada genero musical
+  async getCancionesAlbumGenero(generoId) {
+    try {
+      const [rows] = await connection.query(
+        `
+      SELECT 
+  final.cancion_id,
+  final.titulo_cancion,
+  final.album_id,
+  final.titulo_album,
+  final.genero_id,
+  final.nombre_genero,
+  final.artista_id,
+  final.nombre_artista,
+  final.popularidad
+FROM (
+  SELECT 
+    c.cancion_id,
+    c.titulo_cancion,
+    c.album_id,
+    c.titulo_album,
+    c.genero_id,
+    g.nombre_genero,
+    a.artista_id,
+    a.nombre_artista,
+    c.popularidad,
+    ROW_NUMBER() OVER (PARTITION BY a.artista_id ORDER BY c.popularidad DESC) AS rn_artista
+  FROM (
+    SELECT 
+      can.cancion_id,
+      can.titulo_cancion,
+      can.album_id,
+      al.titulo_album,
+      cg.genero_id,
+      can.popularidad,
+      ar.artista_id,
+      ROW_NUMBER() OVER (PARTITION BY can.album_id ORDER BY can.popularidad DESC) AS rn_album
+    FROM cancion can
+    JOIN album al ON can.album_id = al.album_id
+    JOIN artistas ar ON al.artista_id = ar.artista_id
+    JOIN cancion_genero cg ON can.cancion_id = cg.cancion_id
+    WHERE cg.genero_id = ?
+  ) AS c
+  JOIN generos_musicales g ON c.genero_id = g.genero_id
+  JOIN artistas a ON c.artista_id = a.artista_id
+  WHERE c.rn_album = 1
+) AS final
+WHERE final.rn_artista = 1
+ORDER BY final.popularidad DESC;
+
+
+      `,
+      [generoId]
+      );
+      return rows;
+    } catch (error) {
+      throw new Error(
+        "Error al obtener las canciones más populares: " + error.message
+      );
+    }
+  }
 }
 
 export default Cancion;
