@@ -1,275 +1,265 @@
-export const AlbumesController = () => {
-  const listar = async () => {
-    // Realizamos una solicitud GET a la API para obtener los canciones mas populares del genero id:1 rock
+export const CancionesController = async () =>{
     try {
-      const request = await fetch("http://localhost:3000/albumes/genero/1", {
+        // Realizamos una petición a la API para obtener las canciones más populares del genero rock
+      const request = await fetch("http://localhost:3000/canciones/genero/1", {
         method: "GET",
         headers: {
           'Content-Type': 'application/json; charset=UTF-8'
         }
       });
 
-        // Verificamos si la solicitud fue exitosa
-      const { data, code, message } = await request.json();
-
-        // Verificamos si hay un error en la respuesta
-      if (data.error) {
-        console.error("Error al obtener los álbumes:", data.message);
-        return;
-      }
-
-      const contentAlbumesrock = document.getElementById('content_cancionRock');
-      if (!contentAlbumesrock) return;
-
-      const verMas = contentAlbumesrock.querySelector('.ver-mas');
-
-      /* Recorremos los álbumes y
-        Limitamos a los primeros 6 álbumes para mostrar
-        en la vista principal*/
-      data.slice(0,6).forEach(({ album_id,titulo_album, descripcion }) => {
-        // Creamos un elemento div para cada álbum
-        const card = document.createElement("a");
-        // Asignamos las clases y el contenido
-        card.classList.add("card_album");
-        // Enlace a la ruta que activa tu controlador
-        card.setAttribute("href", `#/albumes/${album_id}`);
-        // Asignamos el contenido del álbum
-        card.textContent = titulo_album;
-
-        // Agregamos la card al contenedor
-        contentAlbumesrock.insertBefore(card, verMas);
-      });
-
-    } catch (error) {
-      console.error("Error al obtener los álbumes:", error);
-    }
-
-
-    // Realizamos una solicitud GET a la API para obtener los álbumes mas populares del genero id:2 pop
-    try {
-      const request = await fetch("http://localhost:3000/albumes/genero/2", {
-        method: "GET",
-        headers: {
-          'Content-Type': 'application/json; charset=UTF-8'
-        }
-      });
+      console.log(request);
       
-        // Verificamos si la solicitud fue exitosa
-      const { data, code, message } = await request.json();
-
-        // Verificamos si hay un error en la respuesta
+      
+      const {data, code, message} = await request.json();
+      
+      
       if (data.error) {
-        console.error("Error al obtener los álbumes:", data.message);
-        return;
+        console.error("Error al obtener los géneros musicales:", data.message);
+        return;        
       }
 
-      const contentAlbumespop = document.getElementById('content_Albumpop');
-      if (!contentAlbumespop) return;
+      const contentGenerosMusical = document.getElementById('content_cancionRock');
+      if (!contentGenerosMusical) return;
 
-      const verMas = contentAlbumespop.querySelector('.ver-mas');
-
-      /* Recorremos los álbumes y
-        Limitamos a los primeros 6 álbumes para mostrar
-        en la vista principal*/
-      data.slice(0,6).forEach(({ album_id,titulo_album, descripcion }) => {
-        // Creamos un elemento div para cada álbum
+      const verMas = contentGenerosMusical.querySelector('.ver-mas');
+      
+      // Recorremos los géneros
+      data.slice(0,6).forEach(({ genero_id,titulo_cancion, }) => {
+        // Creamos un elemento div para cada género musical
         const card = document.createElement("a");
+        // Asignamos un enlace a la card
+        card.setAttribute("href", `#/generosMusicales/${genero_id}`);
         // Asignamos las clases y el contenido
-        card.classList.add("card_album");
-        // Enlace a la ruta que activa tu controlador
-        card.setAttribute("href", `#/albumes/${album_id}`);
-        // Asignamos el contenido del álbum
-        card.textContent = titulo_album;
+        card.classList.add("card_generoMusical");
+        // Asignamos el contenido del género musical
+        card.textContent = titulo_cancion;
 
-        // Agregamos la card al contenedor
-        contentAlbumespop.insertBefore(card, verMas);
+        //agregamos la card al contenedor
+        contentGenerosMusical.insertBefore(card, verMas);
       });
 
     } catch (error) {
-      console.error("Error al obtener los álbumes:", error);
+      console.error("Error al obtener los géneros musicales:", error);
     }
 
-
-    // Realizamos una solicitud GET a la API para obtener los álbumes mas populares del genero id:3 urbana
     try {
-      const request = await fetch("http://localhost:3000/albumes/genero/3", {
+        // Realizamos una petición a la API para obtener las canciones más populares del genero pop
+      const request = await fetch("http://localhost:3000/canciones/genero/2", {
         method: "GET",
         headers: {
           'Content-Type': 'application/json; charset=UTF-8'
         }
       });
-      
-        // Verificamos si la solicitud fue exitosa
-      const { data, code, message } = await request.json();
 
-        // Verificamos si hay un error en la respuesta
+      console.log(request);
+      
+      
+      const {data, code, message} = await request.json();
+      
+      
       if (data.error) {
-        console.error("Error al obtener los álbumes:", data.message);
-        return;
+        console.error("Error al obtener los géneros musicales:", data.message);
+        return;        
       }
 
-      const contentAlbumesUrbana = document.getElementById('content_AlbumMusicaUrbana');
-      if (!contentAlbumesUrbana) return;
+      const contentGenerosMusical = document.getElementById('content_cancionPop');
+      if (!contentGenerosMusical) return;
 
-      const verMas = contentAlbumesUrbana.querySelector('.ver-mas');
-
-      /* Recorremos los álbumes y
-        Limitamos a los primeros 6 álbumes para mostrar
-        en la vista principal*/
-      data.slice(0,6).forEach(({ album_id,titulo_album, descripcion }) => {
-        // Creamos un elemento div para cada álbum
+      const verMas = contentGenerosMusical.querySelector('.ver-mas');
+      
+      // Recorremos los géneros
+      data.slice(0,6).forEach(({ genero_id,titulo_cancion, }) => {
+        // Creamos un elemento div para cada género musical
         const card = document.createElement("a");
+        // Asignamos un enlace a la card
+        card.setAttribute("href", `#/generosMusicales/${genero_id}`);
         // Asignamos las clases y el contenido
-        card.classList.add("card_album");
-        // Enlace a la ruta que activa tu controlador
-        card.setAttribute("href", `#/albumes/${album_id}`);
-        // Asignamos el contenido del álbum
-        card.textContent = titulo_album;
+        card.classList.add("card_generoMusical");
+        // Asignamos el contenido del género musical
+        card.textContent = titulo_cancion;
 
-        // Agregamos la card al contenedor
-        contentAlbumesUrbana.insertBefore(card, verMas);
+        //agregamos la card al contenedor
+        contentGenerosMusical.insertBefore(card, verMas);
       });
 
     } catch (error) {
-      console.error("Error al obtener los álbumes:", error);
+      console.error("Error al obtener los géneros musicales:", error);
     }
 
-
-    // Realizamos una solicitud GET a la API para obtener los álbumes mas populares del genero id:4 vallenato
     try {
-      const request = await fetch("http://localhost:3000/albumes/genero/4", {
+        // Realizamos una petición a la API para obtener las canciones más populares del genero urbano
+      const request = await fetch("http://localhost:3000/canciones/genero/3", {
         method: "GET",
         headers: {
           'Content-Type': 'application/json; charset=UTF-8'
         }
       });
-      
-        // Verificamos si la solicitud fue exitosa
-      const { data, code, message } = await request.json();
 
-        // Verificamos si hay un error en la respuesta
+      console.log(request);
+      
+      
+      const {data, code, message} = await request.json();
+      
+      
       if (data.error) {
-        console.error("Error al obtener los álbumes:", data.message);
-        return;
+        console.error("Error al obtener los géneros musicales:", data.message);
+        return;        
       }
 
-      const contentAlbumesVallenato = document.getElementById('content_Albumvallenato');
-      if (!contentAlbumesVallenato) return;
+      const contentGenerosMusical = document.getElementById('content_cancionUrbana');
+      if (!contentGenerosMusical) return;
 
-      const verMas = contentAlbumesVallenato.querySelector('.ver-mas');
-
-      /* Recorremos los álbumes y
-        Limitamos a los primeros 6 álbumes para mostrar
-        en la vista principal*/
-      data.slice(0,6).forEach(({ album_id,titulo_album, descripcion }) => {
-        // Creamos un elemento div para cada álbum
+      const verMas = contentGenerosMusical.querySelector('.ver-mas');
+      
+      // Recorremos los géneros
+      data.slice(0,6).forEach(({ genero_id,titulo_cancion, }) => {
+        // Creamos un elemento div para cada género musical
         const card = document.createElement("a");
+        // Asignamos un enlace a la card
+        card.setAttribute("href", `#/generosMusicales/${genero_id}`);
         // Asignamos las clases y el contenido
-        card.classList.add("card_album");
-        // Enlace a la ruta que activa tu controlador
-        card.setAttribute("href", `#/albumes/${album_id}`);
-        // Asignamos el contenido del álbum
-        card.textContent = titulo_album;
+        card.classList.add("card_generoMusical");
+        // Asignamos el contenido del género musical
+        card.textContent = titulo_cancion;
 
-        // Agregamos la card al contenedor
-        contentAlbumesVallenato.insertBefore(card, verMas);
+        //agregamos la card al contenedor
+        contentGenerosMusical.insertBefore(card, verMas);
       });
 
     } catch (error) {
-      console.error("Error al obtener los álbumes:", error);
+      console.error("Error al obtener los géneros musicales:", error);
     }
 
-
-    // Realizamos una solicitud GET a la API para obtener los álbumes mas populares del genero id:5 popular
-    try {
-      const request = await fetch("http://localhost:3000/albumes/genero/5", {
+     try {
+        // Realizamos una petición a la API para obtener las canciones más populares del genero vallenato
+      const request = await fetch("http://localhost:3000/canciones/genero/4", {
         method: "GET",
         headers: {
           'Content-Type': 'application/json; charset=UTF-8'
         }
       });
-      
-        // Verificamos si la solicitud fue exitosa
-      const { data, code, message } = await request.json();
 
-        // Verificamos si hay un error en la respuesta
+      console.log(request);
+      
+      
+      const {data, code, message} = await request.json();
+      
+      
       if (data.error) {
-        console.error("Error al obtener los álbumes:", data.message);
-        return;
+        console.error("Error al obtener los géneros musicales:", data.message);
+        return;        
       }
 
-      const contentAlbumesPopular = document.getElementById('content_AlbumMusicaPopular');
-      if (!contentAlbumesPopular) return;
+      const contentGenerosMusical = document.getElementById('content_cancionVallenato');
+      if (!contentGenerosMusical) return;
 
-      const verMas = contentAlbumesPopular.querySelector('.ver-mas');
-
-      /* Recorremos los álbumes y
-        Limitamos a los primeros 6 álbumes para mostrar
-        en la vista principal*/
-      data.slice(0,6).forEach(({ album_id,titulo_album, descripcion }) => {
-        // Creamos un elemento div para cada álbum
+      const verMas = contentGenerosMusical.querySelector('.ver-mas');
+      
+      // Recorremos los géneros
+      data.slice(0,6).forEach(({ genero_id,titulo_cancion, }) => {
+        // Creamos un elemento div para cada género musical
         const card = document.createElement("a");
+        // Asignamos un enlace a la card
+        card.setAttribute("href", `#/generosMusicales/${genero_id}`);
         // Asignamos las clases y el contenido
-        card.classList.add("card_album");
-        // Enlace a la ruta que activa tu controlador
-        card.setAttribute("href", `#/albumes/${album_id}`);
-        // Asignamos el contenido del álbum
-        card.textContent = titulo_album;
+        card.classList.add("card_generoMusical");
+        // Asignamos el contenido del género musical
+        card.textContent = titulo_cancion;
 
-        // Agregamos la card al contenedor
-        contentAlbumesPopular.insertBefore(card, verMas);
+        //agregamos la card al contenedor
+        contentGenerosMusical.insertBefore(card, verMas);
       });
 
     } catch (error) {
-      console.error("Error al obtener los álbumes:", error);
+      console.error("Error al obtener los géneros musicales:", error);
     }
 
-
-
-    // Realizamos una solicitud GET a la API para obtener los álbumes mas populares del genero id:6 regueton
     try {
-      const request = await fetch("http://localhost:3000/albumes/genero/6", {
+        // Realizamos una petición a la API para obtener las canciones más populares del genero popular
+      const request = await fetch("http://localhost:3000/canciones/genero/5", {
         method: "GET",
         headers: {
           'Content-Type': 'application/json; charset=UTF-8'
         }
       });
-      
-        // Verificamos si la solicitud fue exitosa
-      const { data, code, message } = await request.json();
 
-        // Verificamos si hay un error en la respuesta
+      console.log(request);
+      
+      
+      const {data, code, message} = await request.json();
+      
+      
       if (data.error) {
-        console.error("Error al obtener los álbumes:", data.message);
-        return;
+        console.error("Error al obtener los géneros musicales:", data.message);
+        return;        
       }
 
-      const contentAlbumesRegueton = document.getElementById('content_Albumregueton');
-      if (!contentAlbumesRegueton) return;
+      const contentGenerosMusical = document.getElementById('content_cancionPopular');
+      if (!contentGenerosMusical) return;
 
-      const verMas = contentAlbumesRegueton.querySelector('.ver-mas');
-
-      /* Recorremos los álbumes y
-        Limitamos a los primeros 6 álbumes para mostrar
-        en la vista principal*/
-      data.slice(0,6).forEach(({ album_id,titulo_album, descripcion }) => {
-        // Creamos un elemento div para cada álbum
+      const verMas = contentGenerosMusical.querySelector('.ver-mas');
+      
+      // Recorremos los géneros
+      data.slice(0,6).forEach(({ genero_id,titulo_cancion, }) => {
+        // Creamos un elemento div para cada género musical
         const card = document.createElement("a");
+        // Asignamos un enlace a la card
+        card.setAttribute("href", `#/generosMusicales/${genero_id}`);
         // Asignamos las clases y el contenido
-        card.classList.add("card_album");
-        // Enlace a la ruta que activa tu controlador
-        card.setAttribute("href", `#/albumes/${album_id}`);
-        // Asignamos el contenido del álbum
-        card.textContent = titulo_album;
+        card.classList.add("card_generoMusical");
+        // Asignamos el contenido del género musical
+        card.textContent = titulo_cancion;
 
-        // Agregamos la card al contenedor
-        contentAlbumesRegueton.insertBefore(card, verMas);
+        //agregamos la card al contenedor
+        contentGenerosMusical.insertBefore(card, verMas);
       });
 
     } catch (error) {
-      console.error("Error al obtener los álbumes:", error);
+      console.error("Error al obtener los géneros musicales:", error);
     }
-  };
 
-  listar();
+    try {
+        // Realizamos una petición a la API para obtener las canciones más populares del genero regueton
+      const request = await fetch("http://localhost:3000/canciones/genero/6", {
+        method: "GET",
+        headers: {
+          'Content-Type': 'application/json; charset=UTF-8'
+        }
+      });
+
+      console.log(request);
+      
+      
+      const {data, code, message} = await request.json();
+      
+      
+      if (data.error) {
+        console.error("Error al obtener los géneros musicales:", data.message);
+        return;        
+      }
+
+      const contentGenerosMusical = document.getElementById('content_cancionRegueton');
+      if (!contentGenerosMusical) return;
+
+      const verMas = contentGenerosMusical.querySelector('.ver-mas');
+      
+      // Recorremos los géneros
+      data.slice(0,6).forEach(({ genero_id,titulo_cancion, }) => {
+        // Creamos un elemento div para cada género musical
+        const card = document.createElement("a");
+        // Asignamos un enlace a la card
+        card.setAttribute("href", `#/generosMusicales/${genero_id}`);
+        // Asignamos las clases y el contenido
+        card.classList.add("card_generoMusical");
+        // Asignamos el contenido del género musical
+        card.textContent = titulo_cancion;
+
+        //agregamos la card al contenedor
+        contentGenerosMusical.insertBefore(card, verMas);
+      });
+
+    } catch (error) {
+      console.error("Error al obtener los géneros musicales:", error);
+    }
 }
