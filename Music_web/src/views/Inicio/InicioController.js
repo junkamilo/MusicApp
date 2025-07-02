@@ -22,7 +22,9 @@ export const inicioController = async () =>{
       const contentGenerosMusical = document.getElementById('content_generoMusicales');
       if (!contentGenerosMusical) return;
 
-      const verMas = contentGenerosMusical.querySelector('.ver-mas');
+      // Contenedor específico donde deben ir las cards
+      const contenedorCards = contentGenerosMusical.querySelector('.content_cards');
+      if (!contenedorCards) return;
       
       // Recorremos los géneros
       data.slice(0,6).forEach(({ genero_id,nombre_genero, }) => {
@@ -36,7 +38,8 @@ export const inicioController = async () =>{
         card.textContent = nombre_genero;
 
         //agregamos la card al contenedor
-        contentGenerosMusical.insertBefore(card, verMas);
+        contenedorCards.appendChild(card);
+
       });
 
     } catch (error) {
