@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+
 :root {
   --sidebar-width: 60px;
 }
@@ -74,7 +76,6 @@ footer {
   align-items: flex-start;
   border: 1px solid black;
 }
-
 .content_titulos{
   width: 100%;
   display: flex;
@@ -90,13 +91,16 @@ footer {
 /* Cards generomusical*/
 .card_generoMusical {
   width: 15%;
-  height: 30vh;
-  padding: 1rem;
+  height: 40vh;
   border: 1px solid #333;
   border-radius: 10px;
   background-color: #f8f8f8;
   text-align: center;
-  box-shadow: 2px 2px 5px rgba(0,0,0,0.1);
+  font-family: 'Poppins', sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
 }
 
 .card_generoMusical h3 {
@@ -182,6 +186,7 @@ footer {
   text-align: justify;
   max-width: 600px;
 }
+
 /* Lista de Álbumes del Artista */
 .album-info {
   padding: 1rem;

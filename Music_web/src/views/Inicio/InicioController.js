@@ -1,3 +1,6 @@
+import { albumFavoritos } from "../../components/Agregar Favoritos/AlbumFavorito";
+
+
 export const inicioController = async () =>{
     //hacemos peticion  a los géneros musicales
     try {
@@ -30,6 +33,8 @@ export const inicioController = async () =>{
       data.slice(0,6).forEach(({ genero_id,nombre_genero, }) => {
         // Creamos un elemento div para cada género musical
         const card = document.createElement("a");
+        //agregamos estilos a la card
+        card.classList.add("ver-mas");
         // Asignamos un enlace a la card
         card.setAttribute("href", `#/generosMusicales/${genero_id}`);
         // Asignamos las clases y el contenido
@@ -38,6 +43,9 @@ export const inicioController = async () =>{
         card.textContent = nombre_genero;
 
         //agregamos la card al contenedor
+        const favorito = albumFavoritos();
+
+        card.appendChild(favorito); 
         contenedorCards.appendChild(card);
 
       });
@@ -69,6 +77,10 @@ export const inicioController = async () =>{
       const contentGenerosMusical = document.getElementById('content_ArtistasMusicales');
       if (!contentGenerosMusical) return;
 
+      // Contenedor específico donde deben ir las cards
+      const contenedorCards = contentGenerosMusical.querySelector('.content_cards');
+      if (!contenedorCards) return;
+
       const verMas = contentGenerosMusical.querySelector('.ver-mas');
       
       // Recorremos los artistas
@@ -83,7 +95,7 @@ export const inicioController = async () =>{
         card.textContent = nombre_artista;
 
         //agregamos la card al contenedor
-        contentGenerosMusical.insertBefore(card, verMas);
+        contenedorCards.appendChild(card);
       });
 
     } catch (error) {
@@ -113,6 +125,11 @@ export const inicioController = async () =>{
       const contentGenerosMusical = document.getElementById('content_Albumes');
       if (!contentGenerosMusical) return;
 
+      // Contenedor específico donde deben ir las cards
+      const contenedorCards = contentGenerosMusical.querySelector('.content_cards');
+      if (!contenedorCards) return;
+
+
       const verMas = contentGenerosMusical.querySelector('.ver-mas');
       
       // Recorremos los albumes
@@ -127,7 +144,7 @@ export const inicioController = async () =>{
         card.textContent = titulo_album;
 
         //agregamos la card al contenedor
-        contentGenerosMusical.insertBefore(card, verMas);
+        contenedorCards.appendChild(card);
       });
 
     } catch (error) {
@@ -157,6 +174,10 @@ export const inicioController = async () =>{
       const contentGenerosMusical = document.getElementById('content_canciones');
       if (!contentGenerosMusical) return;
 
+      // Contenedor específico donde deben ir las cards
+      const contenedorCards = contentGenerosMusical.querySelector('.content_cards');
+      if (!contenedorCards) return;
+
       const verMas = contentGenerosMusical.querySelector('.ver-mas');
       
       // Recorremos las canciones
@@ -171,7 +192,7 @@ export const inicioController = async () =>{
         card.textContent = titulo_cancion;
 
         //agregamos la card al contenedor
-        contentGenerosMusical.insertBefore(card, verMas);
+        contenedorCards.appendChild(card);
       });
 
     } catch (error) {

@@ -1,0 +1,19 @@
+/* components/Agregar favoritos/favoritos.css */
+
+.corazon-icon {
+  font-size: 20px;
+  color: #aaa;
+  cursor: pointer;
+  transition: color 0.3s ease, transform 0.2s ease;
+}
+
+.corazon-icon:hover {
+  color: red;
+  transform: scale(1.2);
+}
+
+/* Versión activa (ya es favorito) */
+.corazon-icon.favorito {
+  color: red;
+  font-weight: bold;
+}

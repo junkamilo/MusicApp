@@ -7,6 +7,7 @@ import { CancionesController } from "../views/Canciones/CancionesController.js";
 import { generosController } from "../views/Generos/generosController.js";
 import { generosMusicalesController } from "../views/Generos/generosMusicalesController.js";
 import { inicioController } from "../views/Inicio/InicioController.js";
+//import { loginController } from "../views/login/loginController.js";
 
 const routes = {
   "/":{
@@ -41,6 +42,10 @@ const routes = {
     "template": "Generos/generosMusicales.html",
     controlador : generosMusicalesController
   },
+  /*Login:{
+    "template": "login/login.html",
+    controlador: loginController
+  }*/
 };
 
 
