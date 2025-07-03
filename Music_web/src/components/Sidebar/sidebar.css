@@ -18,7 +18,7 @@ aside .menu {
 }
 
 /* Estilos opcionales para los botones */
-#buttonAbrir, #buttonCerra {
+#buttonAbrir, #buttonCerra ,.loginButton {
   padding: 8px 12px;
   font-size: 14px;
   border: none;

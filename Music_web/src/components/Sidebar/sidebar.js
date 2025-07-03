@@ -18,12 +18,12 @@ export const sidebar = async () => {
   buttonCerra.setAttribute("id", "buttonCerra");
   buttonCerra.textContent = "Cerrar";
 
-  const dummyItem = document.createElement("p");
-  dummyItem.textContent = "Aquí el contenido del menú";
-  dummyItem.style.color = "#fff";
+  const loginButton = document.createElement("button");
+  loginButton.textContent = "Iniciar sesión";
+  loginButton.classList.add("loginButton");
 
   menuContainer.appendChild(buttonCerra);
-  menuContainer.appendChild(dummyItem);
+  menuContainer.appendChild(loginButton);
 
   sidebar.appendChild(buttonAbrir);
   sidebar.appendChild(menuContainer);
@@ -37,6 +37,10 @@ export const sidebar = async () => {
     document.documentElement.style.setProperty('--sidebar-width', '60px');
     menuContainer.style.display = 'none';
   });
+
+  loginButton.addEventListener("click", () => {
+  window.location.hash = "#Login";
+});
 };
 
 
