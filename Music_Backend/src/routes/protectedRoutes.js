@@ -11,4 +11,12 @@ router.get("/perfil", verifyToken, (req, res) => {
   });
 });
 
+router.get("/protegido", verifyToken, (req, res) => {
+  res.json({
+    status: "success",
+    message: "Acceso autorizado",
+    user: req.user,
+  });
+});
+
 export default router;
