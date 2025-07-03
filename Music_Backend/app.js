@@ -7,6 +7,8 @@ import ArtistasRouters from './src/routes/ArtistasRouters.js';
 import AlbumRouters from './src/routes/AlbumRouters.js';
 import CancionRouters from './src/routes/CancionRouters.js';
 import GenerosRouters from './src/routes/GenerosRouters.js';
+import authRutas from './src/routes/authRutas.js';
+import protectedRoutes from './src/routes/protectedRoutes.js';
 
 // Importamos dotenv para manejar las variables de entorno
 dotenv.config();
@@ -30,6 +32,8 @@ app.use('/artistas', ArtistasRouters);
 app.use('/albumes', AlbumRouters);
 app.use('/canciones', CancionRouters);
 app.use('/generosMusicales', GenerosRouters);
+app.use('/auth',authRutas);
+app.use("/api", protectedRoutes);
 
 
 //puerto en el que se ejecutara la aplicacion
