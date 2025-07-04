@@ -1,3 +1,4 @@
+import { estaAutenticado } from "../helpers/auth.js";
 import { loadView } from "../helpers/loadView.js";
 import { AlbumesController } from "../views/Albumes/AlbumesController.js";
 import { AlbumesMusicalesController } from "../views/Albumes/albumesMusicalesController.js";
@@ -13,38 +14,47 @@ const routes = {
   "/":{
     "template": "Inicio/inicio.html",
     controlador: inicioController,
+    private: false
   },
   Albumes:{
     "template": "Albumes/albumes.html",
-    controlador: AlbumesController
+    controlador: AlbumesController,
+    private: true
   },
   "/albumes/:id":{
     "template": "Albumes/albumesMusicales.html",
-    controlador: AlbumesMusicalesController
+    controlador: AlbumesMusicalesController,
+    private: true
   },
   Artistas:{
     "template": "Artistas/artistas.html",
-    controlador : artistasController
+    controlador : artistasController,
+    private: true
   },
   "/artistas/:id":{
     "template": "Artistas/perfilArtistas.html",
-    controlador : perfilArtistasController
+    controlador : perfilArtistasController,
+    private: true
   },
   Canciones:{
     "template": "Canciones/canciones.html",
-    controlador : CancionesController
+    controlador : CancionesController,
+    private: true
   },
   Generos:{
     "template": "Generos/generos.html",
-    controlador : generosController
+    controlador : generosController,
+    private: true
   },
   "/generosMusicales/:id":{
     "template": "Generos/generosMusicales.html",
-    controlador : generosMusicalesController
+    controlador : generosMusicalesController,
+    private: true
   },
   Login:{
     "template": "login/login.html",
-    controlador: loginController
+    controlador: loginController,
+    private: false
   }
 };
 
@@ -60,11 +70,11 @@ export const router = async (app) => {
   }
   
   //si las rutas son privadas y el usuario no esta autenticado
-  /*if (rutas.private && !estaAutenticado()) {
+  if (rutas.private && !estaAutenticado()) {
     //lo redirijimos a que se inicie seccion(login)
-    window.location.hash = "#login";
+    window.location.hash = "#Login";
     return
-  }*/
+  }
   // return
   
   // Llamando la vista

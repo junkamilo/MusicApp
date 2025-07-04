@@ -7,40 +7,71 @@ export const sidebar = async () => {
     return;
   }
 
-  const buttonAbrir = document.createElement("button");
-  buttonAbrir.setAttribute("id", "buttonAbrir");
-  buttonAbrir.textContent = "☰";
+  const toggleButton = document.createElement("button");
+  toggleButton.setAttribute("id", "toggleSidebar");
+  toggleButton.textContent = "☰";
 
   const menuContainer = document.createElement("div");
   menuContainer.classList.add("menu");
 
-  const buttonCerra = document.createElement("button");
-  buttonCerra.setAttribute("id", "buttonCerra");
-  buttonCerra.textContent = "Cerrar";
+  // Simular si el usuario está logueado
+  const usuarioLogueado = false; // Aquí lo cambiarás cuando tengas auth
 
-  const loginButton = document.createElement("button");
-  loginButton.textContent = "Iniciar sesión";
-  loginButton.classList.add("loginButton");
+  if (!usuarioLogueado) {
+    const bienvenida = document.createElement("p");
+    bienvenida.textContent = "Bienvenido! Inicia sesión para explorar música.";
+    bienvenida.classList.add("mensajeLogin");
 
-  menuContainer.appendChild(buttonCerra);
-  menuContainer.appendChild(loginButton);
+    const loginBtn = document.createElement("button");
+    loginBtn.textContent = "Iniciar sesión";
+    loginBtn.classList.add("loginButton");
+    loginBtn.addEventListener("click", () => {
+      window.location.hash = "#Login"; // modo por defecto: Sign In
+    });
 
-  sidebar.appendChild(buttonAbrir);
+    const registerBtn = document.createElement("button");
+    registerBtn.textContent = "Registrarse";
+    registerBtn.classList.add("registerButton");
+    registerBtn.addEventListener("click", () => {
+      window.location.hash = "#Login";
+    });
+
+    menuContainer.append(bienvenida, loginBtn, registerBtn);
+  } else {
+    const navItems = [
+      { label: "Inicio", icon: "🎵", hash: "#Home" },
+      { label: "Géneros", icon: "🎧", hash: "#Generos" },
+      { label: "Artistas", icon: "👨‍🎤", hash: "#Artistas" },
+      { label: "Álbumes", icon: "💿", hash: "#Albumes" },
+      { label: "Favoritos", icon: "❤️", hash: "#Favoritos" },
+    ];
+
+    navItems.forEach(({ label, icon, hash }) => {
+      const btn = document.createElement("button");
+      btn.classList.add("navItem");
+      btn.innerHTML = `${icon} <span>${label}</span>`;
+      btn.addEventListener("click", () => {
+        window.location.hash = hash;
+      });
+      menuContainer.appendChild(btn);
+    });
+  }
+
+  sidebar.appendChild(toggleButton);
   sidebar.appendChild(menuContainer);
 
-  buttonAbrir.addEventListener("click", () => {
-    document.documentElement.style.setProperty('--sidebar-width', '250px');
-    menuContainer.style.display = 'flex';
+  // Estado abierto o cerrado
+  let isOpen = false;
+  toggleButton.addEventListener("click", () => {
+    isOpen = !isOpen;
+    if (isOpen) {
+      document.documentElement.style.setProperty("--sidebar-width", "250px");
+      menuContainer.style.display = "flex";
+      toggleButton.textContent = "×";
+    } else {
+      document.documentElement.style.setProperty("--sidebar-width", "60px");
+      menuContainer.style.display = "none";
+      toggleButton.textContent = "☰";
+    }
   });
-
-  buttonCerra.addEventListener("click", () => {
-    document.documentElement.style.setProperty('--sidebar-width', '60px');
-    menuContainer.style.display = 'none';
-  });
-
-  loginButton.addEventListener("click", () => {
-  window.location.hash = "#Login";
-});
 };
-
-
