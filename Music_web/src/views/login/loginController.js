@@ -3,51 +3,41 @@ import { error, success } from "../../helpers/alerts.js";
 import { setData } from "../../helpers/auth.js";
 
 export const loginController = () => {
-  console.log("✅ loginController cargado correctamente");
 
-  const sign_in_btn = document.querySelector("#sign-in-btn");
-  const sign_up_btn = document.querySelector("#sign-up-btn");
   const container = document.querySelector(".container");
 
-  if (!sign_in_btn || !sign_up_btn || !container) {
-    console.warn("❌ Faltan elementos para alternar login/registro");
-  }
+  // Botones para cambiar entre formularios
+  const signInBtn = document.querySelector("#sign-in-btn");
+  const signUpBtn = document.querySelector("#sign-up-btn");
 
-  // Alternar entre formularios
-  sign_up_btn?.addEventListener("click", () => {
+  signUpBtn?.addEventListener("click", () => {
     container?.classList.add("sign-up-mode");
-    console.log("🟦 Modo registro activado");
   });
 
-  sign_in_btn?.addEventListener("click", () => {
+  signInBtn?.addEventListener("click", () => {
     container?.classList.remove("sign-up-mode");
-    console.log("🟨 Modo login activado");
   });
 
-  // Buscar elementos inmediatamente (sin esperar DOMContentLoaded)
-  const form = document.querySelector("#form-login");
-  const emailInput = document.querySelector("#form-login #email");
-  const passwordInput = document.querySelector("#form-login #password");
+  //ingresamos a login
+  const loginForm = document.querySelector("#form-login");
+  const loginEmail = document.querySelector("#email");
+  const loginPassword = document.querySelector("#password");
 
-  if (!form || !emailInput || !passwordInput) {
-    console.error("❌ No se encontró el formulario o los inputs");
-    return;
-  }
-
-  console.log("✅ Formulario login encontrado y listo");
-
-  form.addEventListener("submit", async (e) => {
+  loginForm?.addEventListener("submit", async (e) => {
     e.preventDefault();
 
     const data = {
-      email: emailInput.value.trim(),
-      contrasena: passwordInput.value.trim(),
+      email: loginEmail?.value?.trim(),
+      contrasena: loginPassword?.value,
     };
 
-    console.log("📤 Enviando datos:", data);
+    if (!data.email || !data.contrasena) {
+      error({ message: "Por favor completa todos los campos de login." });
+      return;
+    }
 
     try {
-      const solicitud = await fetch("http://localhost:3000/auth/login", {
+      const res = await fetch("http://localhost:3000/auth/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json; charset=UTF-8",
@@ -55,25 +45,76 @@ export const loginController = () => {
         body: JSON.stringify(data),
       });
 
-      const respuesta = await solicitud.json();
-      console.log("📥 Respuesta del backend:", respuesta);
+      const respuesta = await res.json();
+      console.log("📥 Respuesta login:", respuesta);
 
-      if (respuesta.status === "success") {
-        success(respuesta.message);
-        
+      if (!respuesta.error) {
+        success(respuesta.message || "Inicio de sesión exitoso");
         setData(respuesta.data);
-
         window.dispatchEvent(new Event("usuario:logueado"));
-
         window.location.hash = "#/";
       } else {
         error(respuesta.message || "Credenciales inválidas");
       }
-    } catch (err) {
-      console.error("❌ Error de red:", err);
-      error("No se pudo conectar al servidor");
+    } catch (ex) {
+      error({ message: "Error de conexión con el servidor." });
+    }
+  });
+
+  //ingresamos a registro
+  const registerForm = document.querySelector("#form-register");
+  const registerName = document.querySelector("#register-username");
+  const registerEmail = document.querySelector("#register-email");
+  const registerPassword = document.querySelector("#register-password");
+
+  registerForm?.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const data = {
+      nombre: registerName?.value?.trim(),
+      email: registerEmail?.value?.trim(),
+      contrasena: registerPassword?.value,
+    };
+
+    if (!data.nombre || !data.email || !data.contrasena) {
+      error({ message: "Por favor completa todos los campos de registro." });
+      return;
+    }
+
+    try {
+      const res = await fetch("http://localhost:3000/auth/registro", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json; charset=UTF-8",
+        },
+        body: JSON.stringify(data),
+      });
+
+      const respuesta = await res.json();
+      console.log("📥 Respuesta registro:", respuesta);
+
+      if (!respuesta.error) {
+        // Forzar visualmente el modo login
+        container?.classList.remove("sign-up-mode");
+
+        // Mostrar mensaje de éxito
+        success(respuesta.message || "Registro exitoso");
+
+        // Limpiar campos del formulario de registro
+        registerName.value = "";
+        registerEmail.value = "";
+        registerPassword.value = "";
+
+        // Opcional: enfocar campo de email en el login
+        loginEmail?.focus();
+
+        // Redirigir a login (si usas rutas)
+        window.location.hash = "#Login";
+      } else {
+        error(respuesta.message || "No se pudo registrar");
+      }
+    } catch (ex) {
+      error({ message: "Error de conexión con el servidor." });
     }
   });
 };
-
-
