@@ -1,4 +1,6 @@
 import "./sidebar.css";
+import { estaAutenticado } from "../../helpers/auth.js";
+
 
 export const sidebar = async () => {
   const sidebar = document.getElementById("sidebar");
@@ -7,6 +9,9 @@ export const sidebar = async () => {
     return;
   }
 
+  // ✅ Limpiar contenido anterior
+  sidebar.innerHTML = "";
+
   const toggleButton = document.createElement("button");
   toggleButton.setAttribute("id", "toggleSidebar");
   toggleButton.textContent = "☰";
@@ -14,8 +19,8 @@ export const sidebar = async () => {
   const menuContainer = document.createElement("div");
   menuContainer.classList.add("menu");
 
-  // Simular si el usuario está logueado
-  const usuarioLogueado = false; // Aquí lo cambiarás cuando tengas auth
+  //si el usuario está logueado
+  const usuarioLogueado = estaAutenticado();
 
   if (!usuarioLogueado) {
     const bienvenida = document.createElement("p");
@@ -40,7 +45,7 @@ export const sidebar = async () => {
   } else {
     const navItems = [
       { label: "Inicio", icon: "🎵", hash: "#Home" },
-      { label: "Géneros", icon: "🎧", hash: "#Generos" },
+      { label: "Géneros", icon: "🎧", hash: "#GenerosFavoritos" },
       { label: "Artistas", icon: "👨‍🎤", hash: "#Artistas" },
       { label: "Álbumes", icon: "💿", hash: "#Albumes" },
       { label: "Favoritos", icon: "❤️", hash: "#Favoritos" },
@@ -75,3 +80,18 @@ export const sidebar = async () => {
     }
   });
 };
+
+// ✅ Escuchar eventos globales para volver a cargar el sidebar
+window.addEventListener("usuario:logout", async () => {
+  const sidebarEl = document.getElementById("sidebar");
+  if (sidebarEl) {
+    await sidebar();
+  }
+});
+
+window.addEventListener("usuario:logueado", async () => {
+  const sidebarEl = document.getElementById("sidebar");
+  if (sidebarEl) {
+    await sidebar();
+  }
+});

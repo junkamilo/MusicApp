@@ -18,3 +18,15 @@ export const success = (data) =>{
     showConfirmButton: false,
   });
 }
+
+export const AgregadoGenerosFavoritos = (nombreGenero) => {
+  Swal.fire({
+    title: "¡Agregado!",
+    text: `El género musical ${nombreGenero} fue agregado a favoritos`,
+    icon: "success",
+    timer: 2000,
+    showConfirmButton: false,
+    toast: true,
+    position: "top-end"
+  });
+}

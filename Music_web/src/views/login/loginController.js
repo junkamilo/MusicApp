@@ -1,8 +1,13 @@
 import "./login.css";
 import { error, success } from "../../helpers/alerts.js";
-import { setData } from "../../helpers/auth.js";
+import { setData , estaAutenticado} from "../../helpers/auth.js";
 
 export const loginController = () => {
+    // ✅ Si ya está autenticado, redirige y no muestra el formulario
+  if (estaAutenticado()) {
+    window.location.hash = "#Home"; // o cualquier otra ruta segura
+    return;
+  }
 
   const container = document.querySelector(".container");
 

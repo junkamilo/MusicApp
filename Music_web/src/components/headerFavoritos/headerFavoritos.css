@@ -1,0 +1,105 @@
+.container_favoritos {
+  width: 100%;
+  background: linear-gradient(to bottom, #3d1f8b, #121212);
+  padding: 2rem 2rem 3rem;
+  color: white;
+}
+
+.header_favoritos {
+  display: flex;
+  align-items: flex-end;
+  gap: 2rem;
+}
+
+.logo_favoritos {
+  width: 170px;
+  height: 170px;
+  min-width: 170px;
+  background: linear-gradient(135deg, #86f7c9, #8a63e4);
+  border-radius: 8px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+}
+
+.logo_favoritos svg {
+  width: 64px;
+  height: 64px;
+}
+
+.main_favoritos {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.titulo_favoritos {
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: #ffffffcc;
+  text-transform: uppercase;
+}
+
+.titulo_tusMegustas {
+  font-size: 4rem;
+  font-weight: 800;
+  margin: 0;
+}
+
+.logo_perfil {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.8rem;
+}
+
+.avatar_favoritos {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1px solid white;
+}
+
+.conteo_favoritos {
+  font-size: 0.9rem;
+  color: #ffffffcc;
+}
+.vista_favoritos {
+  background-color: #121212;
+  min-height: 100vh;
+}
+
+.lista_generos_favoritos {
+  margin-top: 2rem;
+  padding: 0 2rem 2rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 1.5rem;
+}
+
+.card_genero_favorito {
+  background-color: #181818;
+  padding: 1.2rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.card_genero_favorito:hover {
+  background-color: #282828;
+  transform: scale(1.03);
+}
+
+.card_genero_favorito p {
+  margin: 0;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: white;
+}
+

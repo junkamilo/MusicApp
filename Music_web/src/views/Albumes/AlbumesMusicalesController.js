@@ -7,8 +7,7 @@ export const AlbumesMusicalesController = async (params) => {
       const { data: album } = await resAlbum.json();
 
       document.getElementById("nombreAlbum").textContent = album.nombre_album;
-      document.getElementById("descripcionAlbum").textContent =
-        album.descripcion;
+      document.getElementById("descripcionAlbum").textContent = album.descripcion;
 
       // Obtener canciones del álbum
       const resCanciones = await fetch(

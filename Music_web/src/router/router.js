@@ -6,6 +6,7 @@ import { artistasController } from "../views/Artistas/ArtistasController.js";
 import { perfilArtistasController } from "../views/Artistas/perfilArtistasController.js";
 import { CancionesController } from "../views/Canciones/CancionesController.js";
 import { generosController } from "../views/Generos/generosController.js";
+import { generosFavoritosController } from "../views/Generos/generosFavoritosController.js";
 import { generosMusicalesController } from "../views/Generos/generosMusicalesController.js";
 import { inicioController } from "../views/Inicio/InicioController.js";
 import { loginController } from "../views/login/loginController.js";
@@ -51,6 +52,11 @@ const routes = {
     controlador : generosMusicalesController,
     private: true
   },
+  GenerosFavoritos:{
+    "template": "Generos/generosFavoritos.html",
+    controlador : generosFavoritosController,
+    private: true
+  },
   Login:{
     "template": "login/login.html",
     controlador: loginController,
@@ -59,7 +65,8 @@ const routes = {
 };
 
 
-export const router = async (app) => {  
+export const router = async (app) => {
+
   const hash = location.hash.slice(1);
   const [ rutas, params ] = matchRoute(hash)
 
