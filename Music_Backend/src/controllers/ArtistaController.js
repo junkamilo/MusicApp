@@ -124,6 +124,77 @@ class ArtistaController {
             return res.status(500).json({ message: "Error al obtener los artistas por género id: " + error.message });
         }
     }
+    //agregamos un artista favorito de un usuario
+    static addArtistaAFavoritos = async (req, res) => {
+        const { artistaId } = req.body; //obtenemos el id del usuario y del artista desde el cuerpo de la solicitud
+        const usuarioId = req.user.id; //obtenemos el id del usuario desde los parámetros de la solicitud
+        try {
+            //llamamos al servicio para agregar el artista favorito del usuario
+            const response = await ArtistasService.addArtistaFavorito(usuarioId, artistaId);
+            //verificamos si hay un error
+            if (response.error) {
+                return res.status(response.code).json({ message: response.message });
+            }
+            //retornamos el mensaje de éxito
+            return res.status(response.code).json({ message: response.message });
+        } catch (error) {
+            //en caso de error, retornamos un mensaje de error
+            return res.status(500).json({ message: "Error al agregar el artista favorito: " + error.message });
+        }
+    }
+    //obtenemos los artistas favoritos de un usuario
+    static getArtistasFavoritosByUserId = async (req, res) => {
+        const userId  = req.user.id; //obtenemos el id del usuario desde los parámetros de la solicitud
+        try {
+            //llamamos al servicio para obtener los artistas favoritos del usuario por su id
+            const response = await ArtistasService.getArtistasFavoritos(userId);
+            //verificamos si hay un error
+            if (response.error) {
+                return res.status(response.code).json({ message: response.message });
+            }
+            //retornamos los artistas favoritos obtenidos
+            return res.status(response.code).json(response);
+        } catch (error) {
+            //en caso de error, retornamos un mensaje de error
+            return res.status(500).json({ message: "Error al obtener los artistas favoritos: " + error.message });
+        }
+    }
+
+    //eliminamos un artista de favoritos
+    static eliminarArtistaFavorito = async (req, res) => {
+        const { artistaId, userId } = req.user.id; //obtenemos el id del artista y del usuario desde los parámetros de la solicitud
+        try {
+            //llamamos al servicio para eliminar el artista de favoritos del usuario
+            const response = await ArtistasService.eliminarArtistaFavorito(artistaId, userId);
+            //verificamos si hay un error
+            if (response.error) {
+                return res.status(response.code).json({ message: response.message });
+            }
+            //retornamos el mensaje de éxito
+            return res.status(response.code).json({ message: response.message });
+        } catch (error) {
+            //en caso de error, retornamos un mensaje de error
+            return res.status(500).json({ message: "Error al eliminar el artista de favoritos: " + error.message });
+        }
+    }
+    //eliminamos todos los artistas favoritos de un usuario
+    static eliminarTodosArtistasFavoritos = async (req, res) => {
+        const { userId } = req.user.id; //obtenemos el id del usuario desde los parámetros de la solicitud
+        try {
+            //llamamos al servicio para eliminar todos los artistas favoritos del usuario por su id
+            const response = await ArtistasService.eliminarTodosArtistasFavoritos(userId);
+            //verificamos si hay un error
+            if (response.error) {
+                return res.status(response.code).json({ message: response.message });
+            }
+            //retornamos el mensaje de éxito
+            return res.status(response.code).json({ message: response.message });
+        } catch (error) {
+            //en caso de error, retornamos un mensaje de error
+            return res.status(500).json({ message: "Error al eliminar todos los artistas favoritos: " + error.message });
+        }
+    }
+
 }
 
 export default ArtistaController;

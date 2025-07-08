@@ -1,16 +1,34 @@
 import express from "express";
 import ArtistaController from "../controllers/ArtistaController.js";
+import { verifyToken } from "../middlewares/auth/tokenMiddleware.js";
 
 const router = express.Router();
 
-//obtener todos los Artistas
+// Obtener todos los artistas
 router.get("/", ArtistaController.getAllArtistas);
-//obtener artistas destacados por género
+
+// Obtener artistas destacados por género
 router.get("/destacados", ArtistaController.getArtistasDestacadosPorGenero);
-//obtener un Artista por su id
-router.get("/:id", ArtistaController.getArtistaById);
-//obtener artitas con sus respectivos generos musicales
+
+// Obtener artistas con sus respectivos géneros musicales
 router.get("/genero/:generoId", ArtistaController.getArtistasPorGeneroId);
+
+// Agregar un artista a favoritos
+router.post("/favoritos", verifyToken,ArtistaController.addArtistaAFavoritos);
+
+// Obtener artistas favoritos del usuario
+router.get("/favoritos", verifyToken,ArtistaController.getArtistasFavoritosByUserId);
+
+// Eliminar un artista de favoritos
+router.delete("/favoritos", verifyToken,ArtistaController.eliminarArtistaFavorito);
+
+// Eliminar todos los artistas favoritos del usuario
+router.delete("/favoritos/todos", verifyToken,ArtistaController.eliminarTodosArtistasFavoritos);
+
+// Obtener un artista por su ID (esta debe ir al final)
+router.get("/:id", ArtistaController.getArtistaById);
+
+
 
 
 export default router;

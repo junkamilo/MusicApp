@@ -221,6 +221,108 @@ class ArtistasService {
             };
         }
     }
+
+    //metodo para agregar artistas a favoritos de un usuario
+    static async addArtistaFavorito(userId, artistaId) {
+        try {
+            //creamos la instancia del modelo Artista
+            const OBJArtista = new Artista();
+            //llamamos al método addArtistaFavorito del modelo
+            const result = await OBJArtista.addArtistaFavorito(userId, artistaId);
+            //retornamos el resultado de la operación
+            return {
+                error: false,
+                code: 201,
+                message: "Artista agregado a favoritos correctamente",
+                data: result
+            };
+        } catch (error) {
+            //retornamos un error en caso de que ocurra una excepción
+            return {
+                error: true,
+                code: 500,
+                message: "Error al agregar el artista a favoritos: " + error.message
+            };
+        }
+    }
+
+    //método para obtener los artistas favoritos de un usuario
+    static async getArtistasFavoritos(userId) {
+        try {
+            //creamos la instancia del modelo Artista
+            const OBJArtista = new Artista();
+            //llamamos al método getArtistasFavoritos del modelo
+            const artistasFavoritos = await OBJArtista.getArtistasFavoritos(userId);
+            //validamos si no hay artistas favoritos
+            if (artistasFavoritos.length === 0) {
+                return {
+                    error: true,
+                    code: 404,
+                    message: "No se encontraron artistas favoritos para el usuario con id: " + userId
+                };
+            }
+            //retornamos los artistas favoritos obtenidos
+            return {
+                error: false,
+                code: 200,
+                message: "Artistas favoritos obtenidos correctamente",
+                data: artistasFavoritos
+            };
+        } catch (error) {
+            //retornamos un error en caso de que ocurra una excepción
+            return {
+                error: true,
+                code: 500,
+                message: "Error al obtener los artistas favoritos: " + error.message
+            };
+        }
+    }
+    //método para eliminar un artista de favoritos
+    static async eliminarArtistaFavorito(artistaId, userId) {
+        try {
+            //creamos la instancia del modelo Artista
+            const OBJArtista = new Artista();
+            //llamamos al método eliminarArtistaFavorito del modelo
+            const result = await OBJArtista.eliminarArtistaFavorito(artistaId, userId);
+            //retornamos el resultado de la operación
+            return {
+                error: false,
+                code: 200,
+                message: "Artista eliminado de favoritos correctamente",
+                data: result
+            };
+        } catch (error) {
+            //retornamos un error en caso de que ocurra una excepción
+            return {
+                error: true,
+                code: 500,
+                message: "Error al eliminar el artista de favoritos: " + error.message
+            };
+        }
+    }
+    //método para eliminar todos los artistas favoritos de un usuario
+    static async eliminarTodosArtistasFavoritos(userId) {
+        try {
+            //creamos la instancia del modelo Artista
+            const OBJArtista = new Artista();
+            //llamamos al método eliminarTodosArtistasFavoritos del modelo
+            const result = await OBJArtista.eliminarTodosArtistasFavoritos(userId);
+            //retornamos el resultado de la operación
+            return {
+                error: false,
+                code: 200,
+                message: "Todos los artistas favoritos eliminados correctamente",
+                data: result
+            };
+        } catch (error) {
+            //retornamos un error en caso de que ocurra una excepción
+            return {
+                error: true,
+                code: 500,
+                message: "Error al eliminar todos los artistas favoritos: " + error.message
+            };
+        }
+    }
 }
 
 export default ArtistasService;
