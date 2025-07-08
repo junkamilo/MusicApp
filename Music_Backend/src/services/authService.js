@@ -77,7 +77,7 @@ class AuthService {
     }
   }
 
-  //generamos el accessToken 
+  //generamos el accessToken
   static generateAccessToken(user) {
     return jwt.sign(
       {
@@ -114,15 +114,16 @@ class AuthService {
       const user = await Usuario.findByEmail(decoded.email);
       console.log("Usuario encontrado:", user);
       if (!user || user.refreshToken !== refreshToken) {
-      console.log("Token guardado:", user?.refresh_token);
-      console.log("Token recibido:", refreshToken);
+        console.log("Token guardado:", user?.refresh_token);
+        console.log("Token recibido:", refreshToken);
         return { error: true, code: 403, message: "Token inválido" };
       }
 
       // Generamos nuevo access token
       const accessToken = this.generateAccessToken(user);
       // Validamos si tenemos que renovar el token de refreso y asignamos el nuevo
-      refreshToken = await this.renewAccessToken(refreshToken, user);
+      const newRefreshToken = await this.renewAccessToken(refreshToken, user);
+      const refreshToSend = newRefreshToken || refreshToken;
       // Retornamos los token
       return {
         error: false,
@@ -130,7 +131,7 @@ class AuthService {
         message: "Token actualizado correctamente",
         data: {
           accessToken,
-          refreshToken,
+          refreshToken: refreshToSend,
         },
       };
     } catch (error) {

@@ -12,7 +12,7 @@ router.post("/registro", AuthController.register);
 //ruta para iniciar sesion
 router.post("/login", AuthController.login);
 
-// Ruta para refrescar el token del usuario autenticado, falta el middleware de verificación del token de refresco
+// Ruta para refrescar el token del usuario autenticado
 router.post("/refresh", verifyRefreshToken,AuthController.refreshToken);
 
 // Logout
