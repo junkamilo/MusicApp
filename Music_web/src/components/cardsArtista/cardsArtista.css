@@ -1,0 +1,52 @@
+.card_artista {
+  background-color: #181818;
+  padding: 1rem;
+  border-radius: 12px;
+  text-align: center;
+  color: white;
+  width: 160px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  transition: background 0.3s ease, transform 0.2s ease;
+  position: relative;
+  cursor: pointer;
+}
+
+.card_artista:hover {
+  background-color: #282828;
+  transform: scale(1.03);
+}
+
+.imagen_artista {
+  width: 120px;
+  height: 120px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 2px solid #ffffff44;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+.nombre_artista {
+  font-size: 1rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+.tipo_artista {
+  font-size: 0.85rem;
+  color: #cccccc;
+  margin: 0;
+}
+
+.btn_favorito {
+  background: none;
+  border: none;
+  font-size: 1.2rem;
+  color: white;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  cursor: pointer;
+}

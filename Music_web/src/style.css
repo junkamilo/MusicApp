@@ -99,17 +99,6 @@ footer {
   color: #555;
 }
 
-/*Cards Artistas*/
-.card_artista {
-  width: 200px;
-  height: 30vh;
-  padding: 1rem;
-  border: 1px solid #333;
-  border-radius: 10px;
-  background-color: #f8f8f8;
-  text-align: center;
-  box-shadow: 2px 2px 5px rgba(0,0,0,0.1);
-}
 
 /*Cards Albumes*/
 .card_album {

@@ -1,10 +1,13 @@
 import { estaAutenticado } from "../helpers/auth.js";
 import { loadView } from "../helpers/loadView.js";
 import { AlbumesController } from "../views/Albumes/AlbumesController.js";
+import { albumesFavoritosController } from "../views/Albumes/albumesFavoritosController.js";
 import { AlbumesMusicalesController } from "../views/Albumes/albumesMusicalesController.js";
 import { artistasController } from "../views/Artistas/ArtistasController.js";
+import { artistasFavoritosController } from "../views/Artistas/artistasFavoritosController.js";
 import { perfilArtistasController } from "../views/Artistas/perfilArtistasController.js";
 import { CancionesController } from "../views/Canciones/CancionesController.js";
+import { cancionesFavoritosController } from "../views/Canciones/cancionesFavoritosController.js";
 import { generosController } from "../views/Generos/generosController.js";
 import { generosFavoritosController } from "../views/Generos/generosFavoritosController.js";
 import { generosMusicalesController } from "../views/Generos/generosMusicalesController.js";
@@ -22,6 +25,11 @@ const routes = {
     controlador: AlbumesController,
     private: true
   },
+  AlbumesFavoritos:{
+    "template": "Albumes/albumesFavoritos.html",
+    controlador: albumesFavoritosController,
+    private: true
+  },
   "/albumes/:id":{
     "template": "Albumes/albumesMusicales.html",
     controlador: AlbumesMusicalesController,
@@ -32,6 +40,11 @@ const routes = {
     controlador : artistasController,
     private: true
   },
+  ArtistasFavoritos:{
+    "template": "Artistas/artistasFavoritos.html",
+    controlador : artistasFavoritosController,
+    private: true
+  },
   "/artistas/:id":{
     "template": "Artistas/perfilArtistas.html",
     controlador : perfilArtistasController,
@@ -40,6 +53,11 @@ const routes = {
   Canciones:{
     "template": "Canciones/canciones.html",
     controlador : CancionesController,
+    private: true
+  },
+  CancionesFavoritos:{
+    "template": "Canciones/cancionesFavoritos.html",
+    controlador : cancionesFavoritosController,
     private: true
   },
   Generos:{

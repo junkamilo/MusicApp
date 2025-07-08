@@ -46,9 +46,9 @@ export const sidebar = async () => {
     const navItems = [
       { label: "Inicio", icon: "🎵", hash: "#Home" },
       { label: "Géneros", icon: "🎧", hash: "#GenerosFavoritos" },
-      { label: "Artistas", icon: "👨‍🎤", hash: "#Artistas" },
-      { label: "Álbumes", icon: "💿", hash: "#Albumes" },
-      { label: "Favoritos", icon: "❤️", hash: "#Favoritos" },
+      { label: "Artistas", icon: "👨‍🎤", hash: "#ArtistasFavoritos" },
+      { label: "Álbumes", icon: "💿", hash: "#AlbumesFavoritos" },
+      { label: "Canciones Favoritas", icon: "❤️", hash: "#CancionesFavoritos" },
     ];
 
     navItems.forEach(({ label, icon, hash }) => {

@@ -1,4 +1,5 @@
 import { generosFavoritos } from "../../components/Agregar Favoritos/Favoritos";
+import { cardsArtista } from "../../components/cardsArtista/cardsArtista";
 
 export const inicioController = async () => {
   //hacemos peticion  a los géneros musicales
@@ -81,20 +82,11 @@ export const inicioController = async () => {
 
     const verMas = contentGenerosMusical.querySelector(".ver-mas");
 
-    // Recorremos los artistas
-    data.slice(0, 6).forEach(({ artista_id, nombre_artista }) => {
-      // Creamos un elemento div para cada género musical
-      const card = document.createElement("a");
-      // Asignamos un enlace a la card
-      card.setAttribute("href", `#/artistas/${artista_id}`);
-      // Asignamos las clases y el contenido
-      card.classList.add("card_artista");
-      // Asignamos el nombre del artista
-      card.textContent = nombre_artista;
+    contenedorCards.innerHTML = "";
 
-      //agregamos la card al contenedor
-      contenedorCards.appendChild(card);
-    });
+    // Recorremos los artistas
+    cardsArtista(data.slice(0,6), contenedorCards);
+    
   } catch (error) {
     console.error("Error al obtener los artistas destacados:", error);
   }
