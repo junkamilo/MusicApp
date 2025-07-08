@@ -1,0 +1,161 @@
+
+:root {
+    --primary-music-color: #2ED162; /* Verde brillante */
+    --secondary-music-color: #1DB954; /* Verde un poco más oscuro */
+    --dark-bg: #121212; /* Fondo muy oscuro */
+    --card-bg-light: #1A1A1A; /* Fondo de la card un poco más claro que el global */
+    --text-light: #E0E0E0; /* Texto claro */
+    --text-dark: #A0A0A0; /* Texto secundario */
+    --play-button-color: var(--primary-music-color); /* Color del botón de play */
+    --play-button-bg: rgba(0, 0, 0, 0.7); /* Fondo del botón de play */
+
+    /* Variables para las transformaciones de las cards */
+    --card-hover-translate-y: -8px;
+    --card-hover-scale: 1.03; /* Una escala un poco más sutil para estas cards */
+}
+
+/* --- Estilo base de la tarjeta de artista favorito --- */
+.card_artista_favorito {
+    width: 100%;
+    max-width: 200px; /* Tamaño máximo para las cards */
+    min-width: 150px; /* Tamaño mínimo */
+    background-color: var(--card-bg-light); /* Fondo de la card */
+    border-radius: 8px; /* Bordes redondeados */
+    padding: 1rem; /* Padding interno */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 0.8rem;
+    cursor: pointer;
+    position: relative; /* FUNDAMENTAL para el posicionamiento del play */
+    overflow: hidden; /* Muy importante para el efecto circular de la imagen */
+    transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4); /* Sombra inicial */
+}
+
+/* Efecto hover en la tarjeta completa */
+.card_artista_favorito_hover { /* Esta clase se añade/quita con JS en mouseenter/mouseleave */
+    background-color: #282828; /* Un poco más oscuro al hacer hover */
+    transform: translateY(var(--card-hover-translate-y)) scale(var(--card-hover-scale));
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.7);
+    z-index: 5;
+
+    /* Compensación de margen para evitar el recorte con overflow-x: auto */
+    margin-top: calc(var(--card-hover-translate-y) - 2px);
+    margin-bottom: calc(var(--card-hover-translate-y) * -1 + 2px);
+}
+
+/* --- Contenedor de la imagen del artista (circular) --- */
+.imagen_artista_favorito_wrapper {
+    width: 150px; /* Tamaño más grande para la imagen circular */
+    height: 150px;
+    border-radius: 50%; /* HACE LA IMAGEN CIRCULAR */
+    overflow: hidden; /* Recorta la imagen para el círculo */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+/* Imagen del artista */
+.imagen_artista_favorito {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Ajusta la imagen al contenedor */
+}
+
+/* --- Contenedor del nombre y tipo --- */
+.info_artista_favorito_container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.2rem;
+}
+
+/* Nombre del artista */
+.nombre_artista_favorito {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--text-light);
+    margin: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+}
+
+/* Tipo (Artista) */
+.tipo_artista_favorito {
+    font-size: 0.85rem;
+    color: var(--text-dark);
+    margin: 0;
+    text-transform: capitalize;
+}
+
+/* --- Icono de Play (aparece en hover) --- */
+.play_icon_favorito {
+    background-color: var(--play-button-bg); /* Fondo semitransparente oscuro */
+    color: var(--play-button-color); /* Color del icono de play (verde) */
+    border: none;
+    border-radius: 50%; /* Circular */
+    width: 45px; /* Tamaño del botón de play */
+    height: 45px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.2rem; /* Tamaño del icono */
+    cursor: pointer;
+    position: absolute;
+    bottom: 10px; /* Posicionado en la parte inferior derecha */
+    right: 10px;
+    opacity: 0; /* Oculto por defecto */
+    transform: translateY(10px); /* Ligeramente fuera de la vista */
+    transition: opacity 0.3s ease, transform 0.3s ease, background-color 0.2s ease;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5); /* Sombra para el botón de play */
+}
+
+/* Hace visible el icono de Play al hacer hover en la card */
+.card_artista_favorito_hover .play_icon_favorito {
+    opacity: 1; /* Se vuelve visible */
+    transform: translateY(0); /* El botón de play se desliza hacia arriba */
+}
+
+/* Efecto hover en el propio botón de Play */
+.play_icon_favorito:hover {
+    background-color: rgba(0, 0, 0, 0.9); /* Fondo más oscuro al hacer hover */
+    transform: scale(1.05); /* Ligero crecimiento */
+}
+
+/* Efecto de "clic" en el botón de Play */
+.play_icon_favorito:active {
+    transform: scale(0.95);
+    transition: transform 0.1s ease;
+}
+.contenedor_artistas_favoritos {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 2rem; /* Espacio entre cards */
+    padding: 2rem;
+    width: 100%;
+    max-width: 1400px;
+    margin: 0 auto; /* Centrado horizontal */
+    justify-items: center; /* Centra las cards horizontalmente */
+    background-color: var(--dark-bg); /* Fondo oscuro si deseas */
+    border: none; /* Puedes quitar el borde blanco */
+}
+.eliminar_icon_favorito {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: transparent;
+  border: none;
+  color: #e74c3c;
+  font-size: 1.1rem;
+  cursor: pointer;
+  display: none;
+}
+
+.card_artista_favorito_hover .eliminar_icon_favorito {
+  display: inline;
+}

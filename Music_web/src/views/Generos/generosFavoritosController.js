@@ -6,7 +6,7 @@ export const generosFavoritosController = async () =>{
     const app = document.getElementById("app");
 
   // Limpia el contenedor por si acaso
-  app.innerHTML = "";
+    app.innerHTML = "";
 
     if (!token) {
     window.location.hash = "#Login";

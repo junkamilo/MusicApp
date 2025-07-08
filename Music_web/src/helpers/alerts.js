@@ -30,3 +30,15 @@ export const AgregadoGenerosFavoritos = (nombreGenero) => {
     position: "top-end"
   });
 }
+
+export const AgregadoArtistasFavoritos = (nombreArtista) => {
+  Swal.fire({
+    title: "¡Agregado!",
+    text: `El Artista ${nombreArtista} fue agregado a favoritos`,
+    icon: "success",
+    timer: 2000,
+    showConfirmButton: false,
+    toast: true,
+    position: "top-end"
+  });
+}

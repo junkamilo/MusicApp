@@ -1,5 +1,9 @@
 import { generosFavoritos } from "../../components/Agregar Favoritos/Favoritos";
+import { cardAlbum } from "../../components/cardAlbumes/cardAlbum";
+import { cardCancion } from "../../components/cardCancion/cardCancion";
+import { cardGenero } from "../../components/cardGenero/cardGenero";
 import { cardsArtista } from "../../components/cardsArtista/cardsArtista";
+import { contentCards } from "../../components/ContentCards/contentCards";
 
 export const inicioController = async () => {
   //hacemos peticion  a los géneros musicales
@@ -31,23 +35,8 @@ export const inicioController = async () => {
     if (!contenedorCards) return;
 
     // Recorremos los géneros
-    data.slice(0, 6).forEach(({ genero_id, nombre_genero }) => {
-      // Creamos un elemento div para cada género musical
-      const card = document.createElement("a");
-      //agregamos estilos a la card
-      card.classList.add("ver-mas");
-      // Asignamos un enlace a la card
-      card.setAttribute("href", `#/generosMusicales/${genero_id}`);
-      // Asignamos las clases y el contenido
-      card.classList.add("card_generoMusical");
-      // Asignamos el contenido del género musical
-      card.textContent = nombre_genero;
+    contentCards(data, contenedorCards, cardGenero, 6);
 
-      const favorito = generosFavoritos(genero_id, nombre_genero);
-
-      card.appendChild(favorito);
-      contenedorCards.appendChild(card);
-    });
   } catch (error) {
     console.error("Error al obtener los géneros musicales:", error);
   }
@@ -120,19 +109,7 @@ export const inicioController = async () => {
     const verMas = contentGenerosMusical.querySelector(".ver-mas");
 
     // Recorremos los albumes
-    data.slice(0, 6).forEach(({ album_id, titulo_album }) => {
-      // Creamos un elemento a para los albumes
-      const card = document.createElement("a");
-      // Asignamos un enlace a la card
-      card.setAttribute("href", `#/albumes/${album_id}`);
-      // Asignamos las clases y el contenido
-      card.classList.add("card_album");
-      // Asignamos el contenido del album
-      card.textContent = titulo_album;
-
-      //agregamos la card al contenedor
-      contenedorCards.appendChild(card);
-    });
+    cardAlbum(data.slice(0,6), contenedorCards);
   } catch (error) {
     console.error("Error al obtener los géneros musicales:", error);
   }
@@ -166,19 +143,8 @@ export const inicioController = async () => {
     const verMas = contentGenerosMusical.querySelector(".ver-mas");
 
     // Recorremos las canciones
-    data.slice(0, 6).forEach(({ titulo_cancion, descripcion }) => {
-      // Creamos un elemento div para cada género musical
-      const card = document.createElement("a");
-      // Asignamos un enlace a la card
-      card.setAttribute("href", `#/canciones/${titulo_cancion}`);
-      // Asignamos las clases y el contenido
-      card.classList.add("card_cancion");
-      // Asignamos el contenido de la canción
-      card.textContent = titulo_cancion;
+    cardCancion(data.slice(0,6), contenedorCards);
 
-      //agregamos la card al contenedor
-      contenedorCards.appendChild(card);
-    });
   } catch (error) {
     console.error("Error al obtener las canciones:", error);
   }

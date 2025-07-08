@@ -1,0 +1,93 @@
+/* Variables CSS - Asegúrate de que estas estén definidas globalmente o importadas */
+:root {
+    --primary-music-color: #2ED162; /* Verde brillante, como Spotify */
+    --secondary-music-color: #1DB954; /* Un verde un poco más oscuro */
+    --dark-bg: #121212; /* Fondo muy oscuro para el body/main */
+    --card-bg: #1B1B1B; /* Fondo de la card un poco más claro que el global */
+    --section-bg: #2b2a2a; /* Fondo de la sección de contenido, intermedio */
+    --text-light: #E0E0E0; /* Texto claro */
+    --text-dark: #A0A0A0; /* Texto secundario */
+    --hover-gradient-start: #3A3A3A;
+    --hover-gradient-end: #282828;
+}
+
+/* Contenedor principal de cada sección (Géneros, Artistas, Álbumes, Canciones) */
+.content {
+    width: 100%;
+    height: 60vh;
+    background-color: var(--section-bg);
+    border-radius: 16px;
+    padding: 1.5rem 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    justify-content: center;
+    align-items: flex-start;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.6);
+    margin-bottom: 2.5rem;
+}
+
+/* Contenedor de títulos */
+.content_titulos {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.content_titulos h3 {
+    font-size: 1.8rem;
+    color: var(--text-light);
+    margin: 0;
+    font-weight: 700;
+    letter-spacing: 0.8px;
+}
+
+/* Enlace "Ver más" */
+.ver-mas {
+    font-size: 1rem;
+    text-decoration: none;
+    color: var(--primary-music-color);
+    font-weight: 600;
+    transition: color 0.2s ease, text-decoration 0.2s ease;
+}
+
+.ver-mas:hover {
+    color: var(--secondary-music-color);
+    text-decoration: underline;
+}
+
+/* Contenedor de las Cards (donde se generan las tarjetas) */
+.content_cards {
+
+    width: 100%;
+    height: 100%;
+    display: flex;
+    gap: 2rem; /* Espacio entre las cards */
+    justify-content: center;
+    align-items: center;
+    overflow-x: auto; /* Habilitar scroll horizontal */
+    box-sizing: border-box; /* Asegura que el padding se incluya en el ancho */
+}
+
+/* Estilos para el scrollbar (Webkit) */
+.content_cards::-webkit-scrollbar {
+    height: 8px;
+}
+
+.content_cards::-webkit-scrollbar-track {
+    background: var(--dark-bg);
+    border-radius: 10px;
+}
+
+.content_cards::-webkit-scrollbar-thumb {
+    background-color: var(--primary-music-color);
+    border-radius: 10px;
+    border: 2px solid var(--dark-bg);
+}
+
+.content_cards::-webkit-scrollbar-thumb:hover {
+    background-color: var(--secondary-music-color);
+}
