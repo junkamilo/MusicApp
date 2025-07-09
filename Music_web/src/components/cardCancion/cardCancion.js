@@ -35,7 +35,11 @@ export const cardCancion = (data = [], contenedor) => {
 
       // Reproducir audio
       const audio = document.getElementById("audioPlayer");
-      audio.src = `http://localhost:3000/uploads${url_archivo_audio}`;
+      const host = window.location.hostname;
+      audio.src = `http://${host}:3000/uploads${encodeURI(url_archivo_audio)}`;
+      audio.onerror = () => {
+  console.error("❌ Error al cargar el audio:", audio.src);
+};
       audio.play();
 
       console.log(`▶️ Reproduciendo: ${titulo_cancion}`);
