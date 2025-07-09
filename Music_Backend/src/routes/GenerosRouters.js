@@ -8,10 +8,11 @@ const router = express.Router();
 router.get("/favoritos", verifyToken,GenerosController.getGenerosFavoritosByUserId);
 // Agregar un género favorito
 router.post("/favoritos", verifyToken,GenerosController.addGeneroFavorito);
-// Eliminar un género favorito
-router.delete("/favoritos", verifyToken,GenerosController.removeGeneroFavorito);
 // Eliminar todos los géneros favoritos de un usuario
 router.delete("/favoritos/todos", verifyToken,GenerosController.removeAllGenerosFavoritos);
+// Eliminar un género favorito
+router.delete("/favoritos/:id", verifyToken,GenerosController.removeGeneroFavorito);
+
 
 // Obtener todos los géneros musicales
 router.get("/", GenerosController.getAllGeneros);

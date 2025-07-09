@@ -253,14 +253,6 @@ class ArtistasService {
             const OBJArtista = new Artista();
             //llamamos al método getArtistasFavoritos del modelo
             const artistasFavoritos = await OBJArtista.getArtistasFavoritos(userId);
-            //validamos si no hay artistas favoritos
-            if (artistasFavoritos.length === 0) {
-                return {
-                    error: true,
-                    code: 404,
-                    message: "No se encontraron artistas favoritos para el usuario con id: " + userId
-                };
-            }
             //retornamos los artistas favoritos obtenidos
             return {
                 error: false,

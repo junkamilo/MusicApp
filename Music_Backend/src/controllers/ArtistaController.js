@@ -162,7 +162,8 @@ class ArtistaController {
 
     //eliminamos un artista de favoritos
     static eliminarArtistaFavorito = async (req, res) => {
-        const { artistaId, userId } = req.user.id; //obtenemos el id del artista y del usuario desde los parámetros de la solicitud
+        const userId = req.user.id;
+        const artistaId = req.params.id;
         try {
             //llamamos al servicio para eliminar el artista de favoritos del usuario
             const response = await ArtistasService.eliminarArtistaFavorito(artistaId, userId);
@@ -179,7 +180,7 @@ class ArtistaController {
     }
     //eliminamos todos los artistas favoritos de un usuario
     static eliminarTodosArtistasFavoritos = async (req, res) => {
-        const { userId } = req.user.id; //obtenemos el id del usuario desde los parámetros de la solicitud
+        const userId = req.user.id; //obtenemos el id del usuario desde los parámetros de la solicitud
         try {
             //llamamos al servicio para eliminar todos los artistas favoritos del usuario por su id
             const response = await ArtistasService.eliminarTodosArtistasFavoritos(userId);
