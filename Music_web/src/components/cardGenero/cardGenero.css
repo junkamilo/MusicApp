@@ -98,3 +98,37 @@
     box-shadow: 0 0 20px rgba(46, 209, 98, 0.8);
     transform: translateY(-5px) scale(1.02);
 }
+/* Botón para eliminar todos los géneros favoritos */
+.btn_eliminar_todos_generos {
+  background-color: var(--primary-music-color);
+  color: var(--text-light);
+  border: none;
+  padding: 0.7rem 1.4rem;
+  font-size: 1rem;
+  font-weight: bold;
+  border-radius: 12px;
+  cursor: pointer;
+  margin: 1.2rem auto;
+  display: block;
+  transition: background 0.3s ease, transform 0.2s;
+}
+
+.btn_eliminar_todos_generos:hover {
+  background-color: var(--secondary-music-color);
+  transform: scale(1.05);
+}
+
+/* Botón para eliminar un solo género favorito */
+.btn_eliminar_genero {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: #ff5c5c;
+  cursor: pointer;
+  transition: transform 0.2s, color 0.3s;
+}
+
+.btn_eliminar_genero:hover {
+  color: #ff1a1a;
+  transform: scale(1.2);
+}

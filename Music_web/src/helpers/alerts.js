@@ -42,3 +42,25 @@ export const AgregadoArtistasFavoritos = (nombreArtista) => {
     position: "top-end"
   });
 }
+export const EliminadoArtistasFavoritos = (nombreArtista) => {
+  Swal.fire({
+    title: "Eliminado",
+    text: `El artista ${nombreArtista} fue eliminado de tus favoritos`,
+    icon: "success",
+    timer: 2000,
+    showConfirmButton: false,
+    toast: true,
+    position: "top-end"
+  });
+};
+export const confirmarEliminacion = async (nombreArtista) => {
+  return Swal.fire({
+    title: `¿Eliminar a ${nombreArtista}?`,
+    text: "Esta acción no se puede deshacer",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonText: "Sí, eliminar",
+    cancelButtonText: "Cancelar",
+    reverseButtons: true,
+  });
+};

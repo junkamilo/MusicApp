@@ -1,25 +1,30 @@
+import { eliminarGeneroFavorito, eliminarTodosGenerosFavoritos } from "../../components/EliminarFavorito/eliminarGeneroFavorito.js";
 import { headerFavoritos } from "../../components/headerFavoritos/headerFavoritos.js";
 import { error } from "../../helpers/alerts.js";
 
-export const generosFavoritosController = async () =>{
-    const token = localStorage.getItem("accessToken");
-    const app = document.getElementById("app");
+export const generosFavoritosController = async () => {
+  const token = localStorage.getItem("accessToken");
+  const app = document.getElementById("app");
 
   // Limpia el contenedor por si acaso
-    app.innerHTML = "";
+  app.innerHTML = "";
 
-    if (!token) {
+  if (!token) {
     window.location.hash = "#Login";
     return;
   }
-try {
-    const response = await fetch("http://localhost:3000/generosMusicales/favoritos", {
+
+  try {
+    const response = await fetch(
+      "http://localhost:3000/generosMusicales/favoritos",
+      {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
-          "Authorization": `Bearer ${token}`,
+          Authorization: `Bearer ${token}`,
         },
-      });
+      }
+    );
 
     const { data } = await response.json();
 
@@ -35,35 +40,61 @@ try {
       usuario: "Juan Camilo",
       cantidad: data.length,
       tipoItem: "géneros",
-      avatarUrl: "./assets/perfil_default.png"
+      avatarUrl: "./assets/perfil_default.png",
     });
 
     app.appendChild(header);
+
+    // Botón eliminar todos (si hay géneros)
+    if (data.length > 0) {
+      const btnEliminarTodos = document.createElement("button");
+      btnEliminarTodos.textContent = "Eliminar todos los géneros favoritos";
+      btnEliminarTodos.classList.add("btn_eliminar_todos_generos");
+
+      btnEliminarTodos.addEventListener("click", async () => {
+        await eliminarTodosGenerosFavoritos(() => generosFavoritosController());
+      });
+
+      app.appendChild(btnEliminarTodos);
+    }
 
     // LISTA DE CARDS
     const lista = document.createElement("div");
     lista.classList.add("lista_generos_favoritos");
 
-    data.forEach(({ genero_id,nombre_genero,}) => {
-        // Creamos un elemento div para cada género musical
-        const card = document.createElement("a");
-        //agregamos estilos a la card
-        card.classList.add("card_genero_favorito");
-        // Asignamos un enlace a la card
-        card.setAttribute("href", `#/generosMusicales/${genero_id}`);
-        
-        const nombre = document.createElement("p");
-        nombre.textContent = nombre_genero;        
+    data.forEach(({ genero_id, nombre_genero }) => {
+      const card = document.createElement("div");
+      card.classList.add("card_genero_favorito");
 
-        card.appendChild(nombre);
-        lista.appendChild(card);
+      // Nombre del género
+      const nombre = document.createElement("p");
+      nombre.textContent = nombre_genero;
+
+      // Botón ❌ para eliminar solo ese género
+      const btnEliminar = document.createElement("button");
+      btnEliminar.textContent = "❌";
+      btnEliminar.classList.add("btn_eliminar_genero");
+      btnEliminar.title = "Eliminar este género favorito";
+
+      btnEliminar.addEventListener("click", async (e) => {
+        e.stopPropagation(); // evita redirección accidental
+        await eliminarGeneroFavorito(genero_id, () => generosFavoritosController());
       });
 
-    app.appendChild(lista);
+      // Redirección al hacer clic en la card
+      card.addEventListener("click", () => {
+        window.location.hash = `#/generosMusicales/${genero_id}`;
+      });
 
+      card.appendChild(nombre);
+      card.appendChild(btnEliminar);
+      lista.appendChild(card);
+    });
+
+    app.appendChild(lista);
   } catch (err) {
     console.error("Error al cargar géneros favoritos:", err);
     error({ message: "No se pudieron cargar tus géneros favoritos." });
   }
-}
+};
 

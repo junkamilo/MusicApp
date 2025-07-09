@@ -1,5 +1,6 @@
 import { cardsArtistaFavorito } from "../../components/cardsArtista/cardArtistaFavorito";
 import { contentCards } from "../../components/ContentCards/contentCards";
+import { eliminarTodosArtistasFavoritos } from "../../components/EliminarFavorito/eliminarArtistaFavorito";
 import { headerFavoritos } from "../../components/headerFavoritos/headerFavoritos";
 import { error } from "../../helpers/alerts";
 
@@ -17,7 +18,7 @@ export const artistasFavoritosController = async () => {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
-        "Authorization": `Bearer ${token}`,
+        Authorization: `Bearer ${token}`,
       },
     });
 
@@ -37,23 +38,37 @@ export const artistasFavoritosController = async () => {
       tipo: "Artistas",
       titulo: "Tus artistas favoritos",
       usuario: "Juan Camilo",
-      cantidad: data.length,
+      cantidad: data.data.length,
       tipoItem: "artistas",
-      avatarUrl: "./assets/perfil_default.png"
+      avatarUrl: "./assets/perfil_default.png",
     });
 
     app.appendChild(header);
+
+    // Botón para eliminar todos los favoritos
+    if (data.data.length > 0) {
+  const btnEliminarTodos = document.createElement("button");
+  btnEliminarTodos.textContent = "Eliminar todos los artistas favoritos";
+  btnEliminarTodos.classList.add("btn_eliminar_todos_artistas");
+
+  btnEliminarTodos.addEventListener("click", async () => {
+    await eliminarTodosArtistasFavoritos(() => {
+      // Recargar la página o actualizar el contenido después de eliminar
+      artistasFavoritosController();
+    });
+  });
+
+  app.appendChild(btnEliminarTodos);
+}
 
     // CONTENEDOR DE CARDS
     const contenedor = document.createElement("div");
     contenedor.classList.add("contenedor_artistas_favoritos");
 
     // ✅ Uso correcto de contentCards
-    contentCards(data.data, contenedor, cardsArtistaFavorito); // opcional: pasa un 4° argumento para limitar
-
+    contentCards(data.data, contenedor, cardsArtistaFavorito, data.data.length);
 
     app.appendChild(contenedor);
-
   } catch (err) {
     console.error("Error al cargar artistas favoritos:", err);
     error({ message: "No se pudieron cargar tus artistas favoritos." });
