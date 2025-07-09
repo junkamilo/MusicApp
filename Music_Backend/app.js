@@ -45,6 +45,7 @@ app.use('/auth',authRutas);
 app.use("/api", protectedRoutes);
 app.use('/api', AudioRouter);
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+console.log("📂 Servidor sirviendo archivos desde:", path.join(__dirname, "uploads"));
 
 
 

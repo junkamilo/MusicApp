@@ -22,7 +22,7 @@ class AudioService {
       fs.renameSync(file.path, destino);
 
       // Ruta que se guardará en la base de datos
-      const rutaBD = `/uploads/audio/${nombreFinal}`;
+      const rutaBD = `/audio/${nombreFinal}`;;
 
       // Actualizar base de datos
       await AudioModel.actualizarRutaAudio(cancionId, rutaBD);
