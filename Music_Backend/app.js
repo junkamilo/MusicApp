@@ -3,18 +3,27 @@ import dotenv from "dotenv";
 import cors from "cors";
 import bodyParser from "body-parser";
 import cookieParser from "cookie-parser";
+import { fileURLToPath } from 'url';
+import path, { dirname } from 'path';
+
 import ArtistasRouters from './src/routes/ArtistasRouters.js';
 import AlbumRouters from './src/routes/AlbumRouters.js';
 import CancionRouters from './src/routes/CancionRouters.js';
 import GenerosRouters from './src/routes/GenerosRouters.js';
 import authRutas from './src/routes/authRutas.js';
 import protectedRoutes from './src/routes/protectedRoutes.js';
+import AudioRouter from './src/routes/Audio.js';
+
 
 // Importamos dotenv para manejar las variables de entorno
 dotenv.config();
 
 //creamos la instancia de express
 const app = express();
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
 
 //habilitamos el cors
 app.use(cors());
@@ -34,6 +43,10 @@ app.use('/canciones', CancionRouters);
 app.use('/generosMusicales', GenerosRouters);
 app.use('/auth',authRutas);
 app.use("/api", protectedRoutes);
+app.use('/api', AudioRouter);
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+
+
 
 
 //puerto en el que se ejecutara la aplicacion
