@@ -3,48 +3,47 @@ import "./cardCancion.css";
 export const cardCancion = (data = [], contenedor) => {
   if (!Array.isArray(data) || !contenedor) return;
 
-  data.forEach(({ cancion_id, titulo_cancion, artista_cancion, imagen_album, favorito = false }) => {
+  data.forEach(({ cancion_id, titulo_cancion, artista_cancion, imagen_album, url_archivo_audio, favorito = false }) => {
     const card = document.createElement("div");
-    card.classList.add("card_cancion");
-    card.classList.add("card_cancion_innovadora"); // Clase para estilos modernos
+    card.classList.add("card_cancion", "card_cancion_innovadora");
 
     // Envoltura para la imagen de la canción/álbum
     const imgWrapper = document.createElement("div");
     imgWrapper.classList.add("imagen_cancion_wrapper");
+
     const img = document.createElement("img");
     img.classList.add("imagen_cancion");
-    img.src = imagen_album || "https://via.placeholder.com/140/8A2BE2/FFFFFF?text=Cancion"; // Marcador de posición
+    img.src = imagen_album || "https://via.placeholder.com/140/8A2BE2/FFFFFF?text=Cancion";
     img.alt = titulo_cancion;
     imgWrapper.appendChild(img);
 
-    // Botón de Reproducción (superpuesto en la imagen)
+    // Botón de Reproducción
     const playButton = document.createElement("button");
     playButton.classList.add("btn_play_cancion");
-    playButton.innerHTML = '▶️'; // Icono de reproducción
+    playButton.innerHTML = '▶️';
     playButton.addEventListener("click", (e) => {
-      e.stopPropagation(); // Evita que el clic en el botón redirija la tarjeta
+      e.stopPropagation(); // Evita redirección
 
-        // 1. Mostrar reproductor
-  const footer = document.getElementById("footerPlayer");
-  footer.classList.remove("hidden");
+      // Mostrar el reproductor
+      const footer = document.getElementById("footerPlayer");
+      footer.classList.remove("hidden");
 
-  // 2. Cargar datos
-  document.getElementById("playerCover").src = url_portada;
-  document.getElementById("playerTitle").textContent = titulo_cancion;
-  document.getElementById("playerArtist").textContent = nombre_artista;
+      // Cargar datos en el reproductor
+      document.getElementById("playerCover").src = img.src;
+      document.getElementById("playerTitle").textContent = titulo_cancion;
+      document.getElementById("playerArtist").textContent = artista_cancion;
 
-  // 3. Reproducir
-  const audio = document.getElementById("audioPlayer");
-  audio.src = url_archivo_audio; // Esta URL debe estar completa
-  audio.play();
-      console.log(`Reproduciendo: ${titulo_cancion}`);
-      // Lógica para reproducir la canción
+      // Reproducir audio
+      const audio = document.getElementById("audioPlayer");
+      audio.src = `http://localhost:3000/uploads${url_archivo_audio}`;
+      audio.play();
+
+      console.log(`▶️ Reproduciendo: ${titulo_cancion}`);
     });
-    imgWrapper.appendChild(playButton); // El botón de reproducción va dentro del wrapper de la imagen
-
+    imgWrapper.appendChild(playButton);
     card.appendChild(imgWrapper);
 
-    // Contenedor para el título de la canción y el artista
+    // Info título y artista
     const infoContainer = document.createElement("div");
     infoContainer.classList.add("info_cancion_container");
 
@@ -60,20 +59,19 @@ export const cardCancion = (data = [], contenedor) => {
 
     card.appendChild(infoContainer);
 
-    // Botón de Favorito
+    // Botón de favorito
     const botonFavorito = document.createElement("button");
-    botonFavorito.classList.add("btn_favorito_cancion"); // Clase específica para el corazón de la canción
+    botonFavorito.classList.add("btn_favorito_cancion");
     botonFavorito.innerHTML = favorito ? "❤️" : "🤍";
     botonFavorito.addEventListener("click", (e) => {
-      e.stopPropagation(); // Evita que el clic en el botón redirija la tarjeta
+      e.stopPropagation();
       favorito = !favorito;
       botonFavorito.innerHTML = favorito ? "❤️" : "🤍";
-      console.log(`Canción ${titulo_cancion} ahora es favorita:`, favorito);
-      // Lógica para el fetch
+      console.log(`Favorito: ${titulo_cancion}`, favorito);
     });
     card.appendChild(botonFavorito);
 
-    // Eventos de hover para la tarjeta
+    // Hover efecto
     card.addEventListener("mouseenter", () => {
       card.classList.add("card_cancion_hover");
     });
@@ -81,13 +79,10 @@ export const cardCancion = (data = [], contenedor) => {
       card.classList.remove("card_cancion_hover");
     });
 
-    // Lógica de redirección para toda la tarjeta (excluyendo clics en botones)
+    // Redirección
     card.addEventListener("click", () => {
       if (cancion_id) {
         window.location.href = `#/canciones/${cancion_id}`;
-        console.log(`Redirigiendo a: #/canciones/${cancion_id}`);
-      } else {
-        console.warn(`Canción ${titulo_cancion} no tiene un cancion_id para redireccionar.`);
       }
     });
 
