@@ -3,7 +3,7 @@ import "./cardGenero.css";
 
 
 export const cardGenero = (data = [], contenedor) => {
-  if (!Array.isArray(data) || !contenedor) return;
+  if (!Array.isArray(data) || !contenedor) retur-n;
 
   data.forEach(({ nombre_genero, genero_id, favorito = false }) => {
     const card = document.createElement("div");

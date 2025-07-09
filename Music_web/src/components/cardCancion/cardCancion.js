@@ -23,6 +23,20 @@ export const cardCancion = (data = [], contenedor) => {
     playButton.innerHTML = '▶️'; // Icono de reproducción
     playButton.addEventListener("click", (e) => {
       e.stopPropagation(); // Evita que el clic en el botón redirija la tarjeta
+
+        // 1. Mostrar reproductor
+  const footer = document.getElementById("footerPlayer");
+  footer.classList.remove("hidden");
+
+  // 2. Cargar datos
+  document.getElementById("playerCover").src = url_portada;
+  document.getElementById("playerTitle").textContent = titulo_cancion;
+  document.getElementById("playerArtist").textContent = nombre_artista;
+
+  // 3. Reproducir
+  const audio = document.getElementById("audioPlayer");
+  audio.src = url_archivo_audio; // Esta URL debe estar completa
+  audio.play();
       console.log(`Reproduciendo: ${titulo_cancion}`);
       // Lógica para reproducir la canción
     });
