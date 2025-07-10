@@ -75,7 +75,7 @@ class GenerosController {
     //eliminamos un género favorito
     static removeGeneroFavorito = async (req, res) => {
         const userId = req.user.id; //obtenemos el id del usuario desde el token de autenticación
-        const { generoId } = req.body; //obtenemos el id del género desde el cuerpo de la solicitud
+        const generoId = req.params.id; //obtenemos el id del género desde el cuerpo de la solicitud
         try {
             //llamamos al servicio para eliminar el género favorito
             const response = await GenerosService.removeGeneroFavorito(userId, generoId);

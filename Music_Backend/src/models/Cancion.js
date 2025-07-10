@@ -119,7 +119,9 @@ ORDER BY sub.popularidad DESC;
   final.nombre_genero,
   final.artista_id,
   final.nombre_artista,
-  final.popularidad
+  final.popularidad,
+  final.url_archivo_audio,
+  final.url_portada_album
 FROM (
   SELECT 
     c.cancion_id,
@@ -131,6 +133,8 @@ FROM (
     a.artista_id,
     a.nombre_artista,
     c.popularidad,
+    c.url_archivo_audio,
+    c.url_portada_album,
     ROW_NUMBER() OVER (PARTITION BY a.artista_id ORDER BY c.popularidad DESC) AS rn_artista
   FROM (
     SELECT 
@@ -141,6 +145,8 @@ FROM (
       cg.genero_id,
       can.popularidad,
       ar.artista_id,
+      can.url_archivo_audio,
+      al.url_portada_album AS url_portada_album,
       ROW_NUMBER() OVER (PARTITION BY can.album_id ORDER BY can.popularidad DESC) AS rn_album
     FROM cancion can
     JOIN album al ON can.album_id = al.album_id
@@ -154,8 +160,6 @@ FROM (
 ) AS final
 WHERE final.rn_artista = 1
 ORDER BY final.popularidad DESC;
-
-
       `,
       [generoId]
       );
