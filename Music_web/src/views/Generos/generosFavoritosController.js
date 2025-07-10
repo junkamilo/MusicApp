@@ -1,6 +1,9 @@
-import { eliminarGeneroFavorito, eliminarTodosGenerosFavoritos } from "../../components/EliminarFavorito/eliminarGeneroFavorito.js";
+import {
+  eliminarGeneroFavorito,
+  eliminarTodosGenerosFavoritos,
+} from "../../components/EliminarFavorito/eliminarGeneroFavorito.js";
 import { headerFavoritos } from "../../components/headerFavoritos/headerFavoritos.js";
-import { error } from "../../helpers/alerts.js";
+import { EliminadoGeneroFavorito, error } from "../../helpers/alerts.js";
 
 export const generosFavoritosController = async () => {
   const token = localStorage.getItem("accessToken");
@@ -77,8 +80,12 @@ export const generosFavoritosController = async () => {
       btnEliminar.title = "Eliminar este género favorito";
 
       btnEliminar.addEventListener("click", async (e) => {
-        e.stopPropagation(); // evita redirección accidental
-        await eliminarGeneroFavorito(genero_id, () => generosFavoritosController());
+        e.stopPropagation();
+
+        await eliminarGeneroFavorito(genero_id, () => {
+          EliminadoGeneroFavorito(nombre_genero); // ✅ aquí se muestra el Swal
+          generosFavoritosController(); // recarga la lista
+        });
       });
 
       // Redirección al hacer clic en la card
@@ -97,4 +104,3 @@ export const generosFavoritosController = async () => {
     error({ message: "No se pudieron cargar tus géneros favoritos." });
   }
 };
-

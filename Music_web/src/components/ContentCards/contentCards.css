@@ -14,7 +14,6 @@
 /* Contenedor principal de cada sección (Géneros, Artistas, Álbumes, Canciones) */
 .content {
     width: 100%;
-    height: 60vh;
     background-color: var(--section-bg);
     border-radius: 16px;
     padding: 1.5rem 2rem;
@@ -61,15 +60,15 @@
 
 /* Contenedor de las Cards (donde se generan las tarjetas) */
 .content_cards {
-
     width: 100%;
-    height: 100%;
-    display: flex;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
     gap: 2rem; /* Espacio entre las cards */
     justify-content: center;
     align-items: center;
-    overflow-x: auto; /* Habilitar scroll horizontal */
+    overflow: visible; /* Habilitar scroll horizontal */
     box-sizing: border-box; /* Asegura que el padding se incluya en el ancho */
+    padding: 0 1.5rem 1rem 1.5rem;
 }
 
 /* Estilos para el scrollbar (Webkit) */

@@ -64,3 +64,14 @@ export const confirmarEliminacion = async (nombreArtista) => {
     reverseButtons: true,
   });
 };
+export const EliminadoGeneroFavorito = (nombreGenero) => {
+  Swal.fire({
+    title: "Eliminado",
+    text: `El género ${nombreGenero} fue eliminado de tus favoritos`,
+    icon: "success",
+    timer: 2000,
+    showConfirmButton: false,
+    toast: true,
+    position: "top-end"
+  });
+};

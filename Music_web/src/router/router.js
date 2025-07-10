@@ -2,7 +2,7 @@ import { estaAutenticado } from "../helpers/auth.js";
 import { loadView } from "../helpers/loadView.js";
 import { AlbumesController } from "../views/Albumes/AlbumesController.js";
 import { albumesFavoritosController } from "../views/Albumes/albumesFavoritosController.js";
-import { AlbumesMusicalesController } from "../views/Albumes/albumesMusicalesController.js";
+import { AlbumesMusicalesController } from "../views/Albumes/AlbumesMusicalesController.js";
 import { artistasController } from "../views/Artistas/ArtistasController.js";
 import { artistasFavoritosController } from "../views/Artistas/artistasFavoritosController.js";
 import { perfilArtistasController } from "../views/Artistas/perfilArtistasController.js";
