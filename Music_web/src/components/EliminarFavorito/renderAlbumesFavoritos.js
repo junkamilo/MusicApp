@@ -1,10 +1,10 @@
 
 
-import { error } from "../../helpers/alerts";
+import { confirmarEliminarAlbum, confirmarEliminarTodosAlbumes, error } from "../../helpers/alerts";
+import { eliminarAlbumFavorito, eliminarTodosAlbumesFavoritos } from "../../helpers/apiEliminarFavoritos";
 import { cardAlbum } from "../cardAlbumes/cardAlbum";
 import { contentCards } from "../ContentCards/contentCards";
 import { headerFavoritos } from "../headerFavoritos/headerFavoritos";
-import { eliminarAlbumFavorito, eliminarTodosAlbumesFavoritos } from "./eliminarAlbumFavorito";
 
 export const renderAlbumesFavorito = async (app) => {
     app.innerHTML = ""; // Limpia el contenedor principal
@@ -53,7 +53,10 @@ export const renderAlbumesFavorito = async (app) => {
             btnEliminarTodos.classList.add("btn_eliminar_todos_generos"); // Clase específica
             
             btnEliminarTodos.addEventListener("click", async () => {
-                await eliminarTodosAlbumesFavoritos(() => renderAlbumesFavorito(app)); // Recarga la lista
+                const confirmacion = await confirmarEliminarTodosAlbumes();
+                if (confirmacion.isConfirmed) {
+                    await eliminarTodosAlbumesFavoritos(() => renderAlbumesFavorito(app));
+                }
             });
             btnEliminarTodosContainer.appendChild(btnEliminarTodos);
         }
@@ -68,20 +71,21 @@ export const renderAlbumesFavorito = async (app) => {
         // 4️⃣ Usa contentCards para renderizar usando cardAlbum
         contentCards(data, contenedorCards, (items, containerElement) => {
             items.forEach(({ album_id, titulo_album, url_portada_album, artista_id, nombre_artista }) => {
-                // Pasamos isFavoritePage = true y el callback de eliminación
                 cardAlbum(
-                    [{ album_id, titulo_album, url_portada_album, artista_id, nombre_artista }], // cardAlbum espera un array
+                    [{ album_id, titulo_album, url_portada_album, artista_id, nombre_artista }],
                     containerElement,
-                    true, // isFavoritePage: true
-                    async (id, name) => { // onDeleteCallback
-                        await eliminarAlbumFavorito(id, name, () => {
-                            // EliminadoAlbumFavorito(name); // La alerta ya se muestra en eliminarAlbumFavorito
-                            renderAlbumesFavorito(app); // Recarga la lista
-                        });
+                    true,
+                    async (id, name) => {
+                        const confirmacion = await confirmarEliminarAlbum(name);
+                        if (confirmacion.isConfirmed) {
+                            await eliminarAlbumFavorito(id, name, () => {
+                                renderAlbumesFavorito(app);
+                            });
+                        }
                     }
                 );
             });
-        }, 100); // Puedes ajustar el límite si es necesario
+        }, 100);
 
     } catch (err) {
         console.error("Error al cargar álbumes favoritos:", err);

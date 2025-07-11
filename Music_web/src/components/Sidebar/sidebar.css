@@ -1,94 +1,247 @@
-aside {
-  grid-area: sidebar;
-  background-color: #111;
-  color: white;
-  border-radius: 10px;
-  box-shadow: 2px 0 15px rgba(0, 0, 0, 0.3);
-  display: flex;
-  flex-direction: column;
-  position: relative;
-  transition: width 0.3s ease;
-  width: var(--sidebar-width, 60px);
-  padding: 10px;
-  overflow: hidden;
+/* sidebar.css (NUEVO DISEÑO INNOVADOR) */
+
+/* Variables CSS (asegúrate de que estén disponibles globalmente) */
+:root {
+    --primary-music-color: #2ED162; /* Verde vibrante */
+    --secondary-music-color: #1DB954; /* Verde un poco más oscuro */
+    --dark-bg: #121212; /* Fondo muy oscuro */
+    --sidebar-bg-start: #1A1A1A; /* Fondo del sidebar más claro que el global */
+    --sidebar-bg-end: #0A0A0A; /* Fondo del sidebar más oscuro */
+    --text-light: #E0E0E0; /* Texto claro */
+    --text-dark: #A0A0A0; /* Texto secundario */
+    --nav-item-bg-hover: #282828; /* Fondo de item de nav al hover */
+    --nav-item-active-bg: var(--primary-music-color); /* Fondo de item activo */
+    --nav-item-active-color: var(--dark-bg); /* Color de texto de item activo */
+
+    /* Variables para el ancho del sidebar (controladas por JS) */
+    --sidebar-width: 60px; /* Ancho por defecto (cerrado) */
 }
 
-/* Botón hamburguesa */
+/* Base del Sidebar (aside) */
+aside {
+    grid-area: sidebar;
+    background: linear-gradient(to bottom, var(--sidebar-bg-start), var(--sidebar-bg-end)); /* Degradado sutil */
+    color: var(--text-light);
+    border-radius: 16px; /* Bordes más redondeados */
+    box-shadow: 5px 0 20px rgba(0, 0, 0, 0.5); /* Sombra más pronunciada */
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    transition: width 0.3s ease, background 0.3s ease; /* Transición para el ancho y el fondo */
+    width: var(--sidebar-width); /* Controlado por la variable CSS */
+    padding: 1.5rem 1rem; /* Más padding para que el contenido no esté pegado */
+    overflow-x: hidden; /* Oculta el scroll horizontal */
+    overflow-y: auto; /* Permite scroll vertical si el contenido es largo */
+    box-sizing: border-box; /* Incluye padding en el ancho */
+    z-index: 100; /* Asegura que esté por encima del contenido principal */
+}
+
+/* Estilos para el scrollbar del sidebar (Webkit) */
+aside::-webkit-scrollbar {
+    width: 8px;
+}
+
+aside::-webkit-scrollbar-track {
+    background: var(--dark-bg);
+    border-radius: 10px;
+}
+
+aside::-webkit-scrollbar-thumb {
+    background-color: var(--primary-music-color);
+    border-radius: 10px;
+    border: 2px solid var(--dark-bg);
+}
+
+aside::-webkit-scrollbar-thumb:hover {
+    background-color: var(--secondary-music-color);
+}
+
+
+/* Botón de alternar (hamburguesa/cerrar) */
 #toggleSidebar {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  width: 32px;
-  height: 32px;
-  font-size: 22px;
-  background-color: transparent;
-  color: #fff;
-  border: none;
-  cursor: pointer;
-  z-index: 1;
-  transition: transform 0.2s ease;
+    position: absolute;
+    top: 1.5rem; /* Alineado con el padding superior */
+    right: 1rem; /* Alineado con el padding derecho */
+    width: 40px; /* Tamaño más grande para el botón */
+    height: 40px;
+    font-size: 1.5rem; /* Tamaño del icono */
+    background-color: rgba(255, 255, 255, 0.05); /* Fondo semitransparente */
+    color: var(--text-light);
+    border: none;
+    border-radius: 50%; /* Circular */
+    cursor: pointer;
+    z-index: 101; /* Por encima del sidebar */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: background-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
 }
 
 #toggleSidebar:hover {
-  transform: scale(1.1);
+    background-color: rgba(255, 255, 255, 0.15); /* Más opaco al hover */
+    transform: scale(1.1);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
 }
 
-/* Menú */
+/* Menú de navegación */
 .menu {
-  display: none;
-  flex-direction: column;
-  margin-top: 50px;
-  gap: 10px;
+    display: flex; /* Siempre flex, la visibilidad se controla por JS con display: none/flex */
+    flex-direction: column;
+    margin-top: 3.5rem; /* Espacio para el botón de toggle */
+    gap: 0.8rem; /* Espacio entre los elementos de navegación */
+    flex-grow: 1; /* Permite que el menú ocupe el espacio restante */
 }
 
-/* Mensaje login */
+/* Mensaje de bienvenida (no logueado) */
 .mensajeLogin {
-  font-size: 14px;
-  color: #bbb;
-  text-align: center;
-  margin-bottom: 15px;
+    font-size: 0.9rem;
+    color: var(--text-dark);
+    text-align: center;
+    margin-bottom: 1.5rem;
+    padding: 0 0.5rem;
+    line-height: 1.4;
 }
 
-/* Botón login */
+/* Botones de Login y Registro */
 .loginButton, .registerButton {
-  padding: 10px;
-  font-size: 14px;
-  border: none;
-  border-radius: 5px;
-  background-color: #3a3a3a;
-  color: white;
-  cursor: pointer;
-  transition: background-color 0.3s ease, transform 0.2s ease;
+    padding: 0.8rem 1.2rem;
+    font-size: 1rem;
+    border: none;
+    border-radius: 50px; /* Botones tipo píldora */
+    background-color: var(--primary-music-color); /* Verde vibrante */
+    color: var(--dark-bg); /* Texto oscuro */
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    margin: 0.3rem 0; /* Espacio entre ellos */
 }
 
-.loginButton:hover,
+.registerButton {
+    background-color: var(--card-bg); /* Fondo más oscuro para el registro */
+    color: var(--text-light);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.loginButton:hover {
+    background-color: var(--secondary-music-color);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4);
+}
+
 .registerButton:hover {
-  background-color: #555;
-  transform: scale(1.03);
+    background-color: var(--nav-item-bg-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4);
 }
 
-/* Navegación para usuario logueado */
+/* Elementos de navegación (navItem) para usuario logueado */
 .navItem {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  background-color: #2a2a2a;
-  border: none;
-  padding: 10px;
-  border-radius: 6px;
-  color: #fff;
-  cursor: pointer;
-  font-size: 15px;
-  transition: background-color 0.2s ease, transform 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.8rem; /* Espacio entre icono y texto */
+    background: none; /* Sin fondo por defecto */
+    border: none;
+    padding: 0.8rem 1rem; /* Padding generoso */
+    border-radius: 8px; /* Bordes redondeados */
+    color: var(--text-dark); /* Color de texto por defecto */
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 600;
+    text-align: left; /* Alinea el texto a la izquierda */
+    transition: background-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+    width: 100%; /* Ocupa todo el ancho disponible */
+}
+
+.navItem i {
+    font-size: 1.2rem; /* Tamaño del icono de Font Awesome */
+    color: var(--text-dark); /* Color del icono por defecto */
+    transition: color 0.2s ease;
 }
 
 .navItem span {
-  white-space: nowrap;
+    white-space: nowrap; /* Evita que el texto salte de línea */
+    opacity: 1; /* Visible cuando el sidebar está abierto */
+    transition: opacity 0.2s ease;
 }
 
+/* Efecto hover en navItem */
 .navItem:hover {
-  background-color: #444;
-  transform: scale(1.03);
+    background-color: var(--nav-item-bg-hover); /* Fondo más claro al hover */
+    color: var(--text-light); /* Texto más claro */
+    transform: translateX(5px); /* Ligerísimo desplazamiento a la derecha */
+}
+
+.navItem:hover i {
+    color: var(--primary-music-color); /* Icono se vuelve verde al hover */
+}
+
+/* Estado activo del navItem */
+.navItem.active {
+    background-color: var(--nav-item-active-bg); /* Fondo verde para el activo */
+    color: var(--nav-item-active-color); /* Texto oscuro para el activo */
+    font-weight: 700;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+}
+
+.navItem.active i {
+    color: var(--nav-item-active-color); /* Icono oscuro para el activo */
+}
+
+/* Media Queries para responsividad */
+@media (max-width: 768px) {
+    aside {
+        width: var(--sidebar-width, 0px); /* Por defecto, oculto en móvil */
+        position: fixed; /* Fijo en la pantalla */
+        height: 100vh; /* Ocupa toda la altura */
+        top: 0;
+        left: 0;
+        border-radius: 0; /* Sin bordes redondeados en móvil */
+        box-shadow: 0 0 30px rgba(0, 0, 0, 0.7);
+        padding: 1rem;
+    }
+
+    #toggleSidebar {
+        top: 1rem;
+        right: 1rem;
+    }
+
+    .menu {
+        margin-top: 3rem;
+        padding-top: 1rem;
+        border-top: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    /* Cuando el sidebar está cerrado en móvil */
+    aside[style*="--sidebar-width: 60px"] .menu {
+        display: none; /* Oculta el menú completamente */
+    }
+    aside[style*="--sidebar-width: 60px"] #toggleSidebar {
+        /* Ajusta la posición del botón cuando está cerrado */
+        left: 1rem; /* Mueve el botón a la izquierda cuando está cerrado */
+        right: auto;
+    }
+
+    /* Cuando el sidebar está abierto en móvil */
+    aside[style*="--sidebar-width: 250px"] .menu {
+        display: flex;
+    }
+}
+
+@media (max-width: 480px) {
+    .loginButton, .registerButton {
+        padding: 0.6rem 1rem;
+        font-size: 0.9rem;
+    }
+    .navItem {
+        padding: 0.6rem 0.8rem;
+        font-size: 0.9rem;
+    }
+    .navItem i {
+        font-size: 1rem;
+    }
 }
 
 

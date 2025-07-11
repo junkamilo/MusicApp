@@ -8,11 +8,13 @@ import { artistasFavoritosController } from "../views/Artistas/artistasFavoritos
 import { perfilArtistasController } from "../views/Artistas/perfilArtistasController.js";
 import { CancionesController } from "../views/Canciones/CancionesController.js";
 import { cancionesFavoritosController } from "../views/Canciones/cancionesFavoritosController.js";
+import { editarPerfilUsuario } from "../views/editarPerfilUsuario/editarPerfilUsuario.js";
 import { generosController } from "../views/Generos/generosController.js";
 import { generosFavoritosController } from "../views/Generos/generosFavoritosController.js";
 import { generosMusicalesController } from "../views/Generos/generosMusicalesController.js";
 import { inicioController } from "../views/Inicio/InicioController.js";
 import { loginController } from "../views/login/loginController.js";
+import { perfilUsuario } from "../views/perfilUsuario/perfilUsuario.js";
 
 const routes = {
   "/":{
@@ -79,6 +81,16 @@ const routes = {
     "template": "login/login.html",
     controlador: loginController,
     private: false
+  },
+  Perfil:{
+    "template": "perfilUsuario/perfilUsuario.html",
+    controlador: perfilUsuario,
+    private: true
+  },
+  EditarPerfil:{
+    "template": "editarPerfilUsuario/editarPerfilUsuario.html",
+    controlador: editarPerfilUsuario,
+    private: true
   }
 };
 

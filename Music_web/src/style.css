@@ -1,145 +1,309 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+/* style.css (DISEÑO ESPECTACULAR Y AMBIENTE MUSICAL) */
 
+/* Importa la fuente Poppins (manteniendo tu elección) */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap');
+
+/* Variables CSS Globales - Consolidadas y mejoradas */
 :root {
-  --sidebar-width: 60px;
-}
-*{
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
+    --primary-music-color: #2ED162; /* Verde vibrante */
+    --secondary-music-color: #1DB954; /* Verde un poco más oscuro */
+    --dark-bg: #121212; /* Fondo muy oscuro principal */
+    --light-bg: #1A1A1A; /* Fondo ligeramente más claro para secciones/cards */
+    --lighter-bg: #282828; /* Fondo aún más claro para elementos interactivos */
+    --text-light: #E0E0E0; /* Texto claro principal */
+    --text-dark: #A0A0A0; /* Texto secundario/desactivado */
+    --border-color-subtle: rgba(255, 255, 255, 0.08); /* Borde muy sutil */
+    --shadow-color-dark: rgba(0, 0, 0, 0.7); /* Sombra oscura para profundidad */
+    --shadow-color-light: rgba(0, 0, 0, 0.4); /* Sombra más suave */
+
+    /* Variables para el ancho del sidebar (controladas por JS) */
+    --sidebar-width: 60px; /* Ancho por defecto (cerrado) */
+    --header-height: 80px; /* Altura del header */
+    --footer-height: 70px; /* Altura del footer del reproductor */
 }
 
+/* Reset básico */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+/* Cuerpo de la página - Layout Grid principal */
 body {
-  display: grid;
-  grid-template-columns: var(--sidebar-width, 60px) 1fr;
-  grid-template-rows: 70px 1fr 60px;
-  grid-template-areas:
-    "sidebar header"
-    "sidebar main"
-    "sidebar footer";
-  height: 100vh;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background: linear-gradient(90deg, rgba(240, 240, 240, 1) 0%, rgba(220, 220, 220, 1) 100%);
-  gap: 10px;
-  padding: 10px;
+    display: grid;
+    /* Define las columnas: sidebar (ancho variable) y el resto del contenido */
+    grid-template-columns: var(--sidebar-width) 1fr;
+    /* Define las filas: header, main content, footer (reproductor) */
+    grid-template-rows: var(--header-height) 1fr var(--footer-height);
+    /* Asigna áreas a la cuadrícula */
+    grid-template-areas:
+        "sidebar header"
+        "sidebar app" /* CAMBIO: de "main" a "app" para coincidir con el HTML sugerido */
+        "sidebar footer";
+    
+    height: 100vh; /* Ocupa el 100% de la altura de la ventana */
+    font-family: 'Poppins', sans-serif; /* Usamos Poppins como fuente principal */
+    color: var(--text-light); /* Color de texto por defecto */
+    
+    /* Fondo principal con un degradado sutil y oscuro para un ambiente inmersivo */
+    background: linear-gradient(180deg, #0A0A0A 0%, #121212 50%, #0A0A0A 100%);
+    background-attachment: fixed; /* Para que el degradado no se mueva con el scroll */
+    
+    gap: 1.5rem; /* Espacio entre las áreas de la cuadrícula */
+    padding: 1.5rem; /* Padding general alrededor de todo el layout */
+    overflow-y: auto; /* Evita el scroll del body, el scroll lo manejará el main/app */
 }
-/* Main content */
-main {
-  grid-area: main;
-  background-color: #f9f9f9;
-  padding: 20px;
-  border-radius: 10px;
-  overflow-y: auto;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-  min-height: 0;
+
+/* Contenedor principal de la aplicación (donde se carga el contenido dinámico) */
+#app { /* CAMBIO: de 'main' a '#app' */
+    grid-area: app; /* Asignado al área 'app' en el grid */
+    background-color: var(--dark-bg); /* Fondo oscuro para el contenido principal */
+    padding: 2rem; /* Padding interno generoso */
+    border-radius: 16px; /* Bordes redondeados consistentes */
+    overflow-y: auto; /* Habilita el scroll vertical si el contenido excede el tamaño */
+    box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.5), 0 8px 30px var(--shadow-color-dark); /* Sombra interna y externa */
+    display: flex;
+    flex-direction: column;
+    gap: 2.5rem; /* Espacio entre las secciones de contenido */
+    min-height: 100%; /* Necesario para que el overflow-y funcione en flex/grid containers */
+    position: relative; /* Para posibles elementos posicionados dentro */
+    height: 100%;
+}
+
+/* Estilos para el scrollbar de #app (Webkit) */
+#app::-webkit-scrollbar {
+    width: 10px;
+}
+
+#app::-webkit-scrollbar-track {
+    background: var(--light-bg);
+    border-radius: 10px;
+}
+
+#app::-webkit-scrollbar-thumb {
+    background-color: var(--primary-music-color);
+    border-radius: 10px;
+    border: 2px solid var(--dark-bg);
+}
+
+#app::-webkit-scrollbar-thumb:hover {
+    background-color: var(--secondary-music-color);
 }
 
 
-/* Footer */
+/* Footer - Reproductor de Música Fijo */
 footer {
-  grid-area: footer;
-  background-color: #333;
-  color: white;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border-radius: 10px;
-  font-size: 14px;
+    grid-area: footer;
+    background: linear-gradient(90deg, var(--light-bg), var(--dark-bg)); /* Degradado sutil */
+    color: var(--text-light);
+    display: flex;
+    justify-content: center; /* Centra el contenido */
+    align-items: center;
+    border-radius: 16px; /* Bordes redondeados */
+    font-size: 0.9rem;
+    box-shadow: 0 -8px 25px var(--shadow-color-dark); /* Sombra superior para que "flote" */
+    padding: 0.5rem 1rem; /* Padding interno */
+    position: relative; /* Para el reproductor interno */
 }
 
-/* Perfil del Artista */
-.perfil-artista-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 1rem;
-  padding: 2rem;
-  background-color: #fff;
-  border-radius: 10px;
-  box-shadow: 2px 2px 8px rgba(0,0,0,0.1);
+/* Footer Player - Estilos para el reproductor en sí */
+#footerPlayer {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 1rem; /* Padding interno del reproductor */
 }
 
-.perfil-artista-container h3 {
-  font-size: 2rem;
-  color: #222;
-}
-
-.perfil-artista-container h4 {
-  font-size: 1.2rem;
-  color: #666;
-}
-
-.perfil-artista-container p {
-  font-size: 1rem;
-  color: #444;
-  text-align: justify;
-  max-width: 600px;
-}
-
-/* Lista de Álbumes del Artista */
-.album-info {
-  padding: 1rem;
-  background-color: #f2f2f2;
-  border-radius: 8px;
-  margin-bottom: 1rem;
-}
-
-.canciones-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-  gap: 1rem;
-}
-
-.card-cancion {
-  border: 1px solid #ccc;
-  padding: 1rem;
-  border-radius: 6px;
-  background: #fff;
-}
-#app {
-  min-height: 100vh;
-  background-color: var(--dark-bg); /* fondo oscuro si ya usas variables */
-  color: white;
-  overflow-y: auto;
-}
-.footer-player {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  background-color: #121212;
-  color: white;
-  padding: 10px 20px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  z-index: 9999;
-  border-top: 1px solid #333;
-}
-
-.footer-player.hidden {
-  display: none;
+#footerPlayer.hidden {
+    display: none;
 }
 
 .player-info {
-  display: flex;
-  align-items: center;
-  gap: 10px;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
 }
 
 .player-info img {
-  width: 50px;
-  height: 50px;
-  object-fit: cover;
-  border-radius: 5px;
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+    border-radius: 8px; /* Bordes redondeados para la portada del reproductor */
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+}
+
+.player-info h4 {
+    font-size: 1rem;
+    color: var(--text-light);
+    margin: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 150px; /* Limita el ancho del título */
+}
+
+.player-info p {
+    font-size: 0.8rem;
+    color: var(--text-dark);
+    margin: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 150px; /* Limita el ancho del artista */
 }
 
 audio {
-  width: 60%;
+    width: 50%; /* Ajusta el ancho del control de audio */
+    min-width: 250px; /* Ancho mínimo para que no se vea muy pequeño */
+    height: 40px; /* Altura estándar para el control de audio */
+    background-color: var(--lighter-bg); /* Fondo del reproductor */
+    border-radius: 50px; /* Bordes redondeados */
+    outline: none;
+    transition: all 0.3s ease;
 }
 
+/* Estilos para el control de audio (Webkit) */
+audio::-webkit-media-controls-panel {
+    background-color: var(--lighter-bg);
+    border-radius: 50px;
+    color: var(--text-light);
+}
+
+audio::-webkit-media-controls-play-button {
+    color: var(--primary-music-color);
+}
+
+audio::-webkit-media-controls-current-time-display,
+audio::-webkit-media-controls-time-remaining-display {
+    color: var(--text-light);
+}
+
+audio::-webkit-media-controls-timeline {
+    background-color: var(--dark-bg);
+    border-radius: 10px;
+}
+
+audio::-webkit-media-controls-volume-slider {
+    background-color: var(--dark-bg);
+    border-radius: 10px;
+}
+
+/* --- ESTILOS ANTIGUOS QUE PUEDEN SER ELIMINADOS O ESTÁN DUPLICADOS --- */
+/* Estos estilos probablemente ya están siendo manejados por los CSS de los componentes
+   (artistProfile.css, albumProfile.css, genreProfile.css, cardAlbum.css, cardCancion.css, etc.)
+   Si no los usas directamente en tu HTML principal, puedes eliminarlos para mantener el código limpio. */
+/*
+.perfil-artista-container, .album-info, .canciones-grid, .card-cancion {
+    // Revisa si estas clases aún se usan fuera de los componentes.
+    // Si no, elimínalas de aquí para evitar conflictos y redundancia.
+}
+*/
+
+/* Media Queries para Responsividad General */
+@media (max-width: 1024px) {
+    body {
+        gap: 1rem;
+        padding: 1rem;
+        grid-template-rows: var(--header-height) 1fr var(--footer-height); /* Mantener alturas */
+    }
+    #app {
+        padding: 1.5rem;
+        gap: 2rem;
+    }
+    footer {
+        font-size: 0.8rem;
+    }
+    .player-info h4, .player-info p {
+        max-width: 100px;
+    }
+    audio {
+        width: 45%;
+        min-width: 200px;
+    }
+}
+
+@media (max-width: 768px) {
+    body {
+        /* En pantallas pequeñas, el sidebar se superpone o se oculta */
+        grid-template-columns: 1fr; /* Una sola columna */
+        grid-template-areas:
+            "header"
+            "app"
+            "footer";
+        padding: 0.8rem; /* Menos padding general */
+    }
+
+    /* El sidebar se gestiona con JS para su visibilidad y posición fija en móvil */
+    aside {
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 100vh;
+        width: var(--sidebar-width, 0px); /* Controlado por JS, por defecto oculto */
+        border-radius: 0;
+        box-shadow: 0 0 30px rgba(0, 0, 0, 0.7);
+        z-index: 1000; /* Asegura que esté por encima de todo */
+    }
+
+    header {
+        border-radius: 0; /* Sin bordes redondeados en móvil */
+    }
+
+    #app {
+        padding: 1rem;
+        gap: 1.5rem;
+        border-radius: 0; /* Sin bordes redondeados en móvil */
+    }
+
+    footer {
+        border-radius: 0; /* Sin bordes redondeados en móvil */
+        height: var(--footer-height); /* Altura fija para el footer */
+    }
+
+    .player-info h4, .player-info p {
+        max-width: 80px;
+        font-size: 0.9rem;
+    }
+    .player-info img {
+        width: 40px;
+        height: 40px;
+    }
+    audio {
+        width: 40%;
+        min-width: 150px;
+        height: 35px;
+    }
+}
+
+@media (max-width: 480px) {
+    body {
+        padding: 0.5rem;
+        grid-template-rows: 60px 1fr 60px; /* Alturas más pequeñas para header/footer */
+        --header-height: 60px;
+        --footer-height: 60px;
+    }
+    #app {
+        padding: 0.8rem;
+        gap: 1rem;
+    }
+    .player-info h4 {
+        font-size: 0.8rem;
+    }
+    .player-info p {
+        font-size: 0.7rem;
+    }
+    .player-info img {
+        width: 35px;
+        height: 35px;
+    }
+    audio {
+        width: 35%;
+        min-width: 120px;
+        height: 30px;
+    }
+}
 
 

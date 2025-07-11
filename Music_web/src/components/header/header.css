@@ -1,142 +1,240 @@
-/* Header */
+/* header.css (NUEVO DISEÑO ESPECTACULAR) */
+
+/* Variables CSS (asegúrate de que estén disponibles globalmente) */
+:root {
+    --primary-music-color: #2ED162; /* Verde vibrante */
+    --secondary-music-color: #1DB954; /* Verde un poco más oscuro */
+    --dark-bg: #121212; /* Fondo muy oscuro */
+    --header-bg-start: #1A1A1A; /* Fondo del header más claro que el global */
+    --header-bg-end: #0A0A0A; /* Fondo del header más oscuro */
+    --text-light: #E0E0E0; /* Texto claro */
+    --text-dark: #A0A0A0; /* Texto secundario */
+    --input-bg: #282828; /* Fondo del input de búsqueda */
+    --input-border-focus: var(--primary-music-color); /* Borde del input al enfocar */
+}
+
+/* Header principal */
 header {
-  grid-area: header;
-  background-color: #ffffff;
-  display: flex;
-  align-items: center;
-  padding: 8px 16px;
-  border-radius: 16px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    grid-area: header;
+    background: linear-gradient(90deg, var(--header-bg-start), var(--header-bg-end)); /* Degradado horizontal */
+    display: flex;
+    align-items: center;
+    padding: 0.8rem 1.5rem; /* Padding ajustado */
+    border-radius: 16px; /* Bordes más redondeados */
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5); /* Sombra más pronunciada */
+    position: sticky; /* Fijo en la parte superior al hacer scroll */
+    top: 0;
+    z-index: 99; /* Asegura que esté por encima del contenido */
+    box-sizing: border-box; /* Incluye padding en el ancho */
 }
 
 /* Contenedor principal del header */
 .content_header {
-  width: 100%;
-  height: 100%;
-  border-radius: 10px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 2%;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1.5rem; /* Espacio entre los elementos principales */
 }
 
-/* Botones home y perfil */
-.content_home {
-  width: 48px;
-  height: 48px;
-  border-radius: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: #f0f0f0;
-  transition: background-color 0.3s ease;
+/* Estilos generales para los enlaces de iconos (Home, Perfil) */
+.icon_link {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 48px; /* Tamaño del botón circular */
+    height: 48px;
+    border-radius: 50%; /* Circular */
+    background-color: var(--input-bg); /* Fondo oscuro similar al input */
+    text-decoration: none;
+    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
 }
 
-.content_home:hover {
-  background-color: #e0e0e0;
+.icon_link i {
+    font-size: 1.3rem; /* Tamaño del icono */
+    color: var(--text-light); /* Color del icono */
+    transition: color 0.2s ease, transform 0.2s ease;
 }
 
-.icon_home {
-  text-decoration: none;
-  color: #222;
-  font-weight: bold;
-  font-family: 'Poppins', sans-serif;
-}
-.icon_home svg {
-  width: 24px;
-  height: 24px;
-  fill: #222;
-  transition: transform 0.2s ease, fill 0.2s ease;
+.icon_link:hover {
+    background-color: var(--hover-gradient-start); /* Fondo más claro al hover */
+    transform: translateY(-3px); /* Ligeramente elevado */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
 }
 
-.content_home:hover .icon_home svg {
-  transform: scale(1.15);
-  fill: #4caf50; /* color vibrante al pasar el mouse */
+.icon_link:hover i {
+    color: var(--primary-music-color); /* Icono se vuelve verde al hover */
+    transform: scale(1.15); /* Ligerísimo zoom al icono */
 }
 
-/* Contenedor de buscador */
+/* Contenedor del buscador */
 .content_buscador {
-  width: 50%;
-  height: 45px;
-  border-radius: 30px;
-  display: flex;
-  background-color: #f6f6f6;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-  overflow: hidden;
-  transition: all 0.3s ease-in-out;
+    flex-grow: 1; /* Ocupa el espacio restante */
+    max-width: 600px; /* Ancho máximo para el buscador */
+    height: 48px; /* Altura consistente con los botones */
+    border-radius: 50px; /* Bordes muy redondeados (píldora) */
+    display: flex;
+    background-color: var(--input-bg); /* Fondo oscuro */
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    overflow: hidden;
+    transition: all 0.3s ease-in-out, width 0.3s ease;
+    border: 1px solid transparent; /* Borde inicial transparente */
 }
-/* animación al enfocar */
-.content_buscador:has(.text_buscador:focus) {
-  width: 55%;
-  background-color: #ffffff;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+
+/* Animación al enfocar el buscador */
+.content_buscador:focus-within { /* Usa :focus-within para detectar foco en cualquier hijo */
+    background-color: var(--dark-bg); /* Fondo aún más oscuro al enfocar */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5), 0 0 0 2px var(--input-border-focus); /* Sombra y borde verde */
+    border-color: var(--input-border-focus); /* Borde verde */
 }
 
 /* Icono de lupa */
 .content_lupa {
-  width: 40px;
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+    width: 50px; /* Ancho para el icono */
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
-.img-lupa {
-  width: 20px;
-  height: 20px;
-  object-fit: contain;
-  opacity: 0.6;
-  transition: transform 0.2s ease;
+.content_lupa i {
+    font-size: 1.1rem; /* Tamaño del icono de lupa */
+    color: var(--text-dark); /* Color secundario */
+    transition: color 0.2s ease;
 }
 
-/* Input */
+.content_buscador:focus-within .content_lupa i {
+    color: var(--primary-music-color); /* Lupa se vuelve verde al enfocar */
+}
+
+/* Input de búsqueda */
 .buscador {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: center;
+    flex-grow: 1; /* Ocupa el espacio restante */
+    height: 100%;
+    display: flex;
+    align-items: center;
 }
 
 .text_buscador {
-  border: none;
-  width: 100%;
-  height: 100%;
-  padding: 0 12px;
-  font-size: 15px;
-  font-family: 'Poppins', sans-serif;
-  background-color: transparent;
-  outline: none;
-  color: #333;
-  transition: box-shadow 0.3s ease-in-out;
+    border: none;
+    width: 100%;
+    height: 100%;
+    padding: 0 12px;
+    font-size: 1rem;
+    font-family: 'Inter', sans-serif; /* Usar Inter para consistencia */
+    background-color: transparent;
+    outline: none;
+    color: var(--text-light); /* Color de texto claro */
+    transition: color 0.2s ease;
 }
 .text_buscador::placeholder {
-  color: #aaa;
+    color: var(--text-dark); /* Color de placeholder secundario */
 }
 
-/* efecto adicional al enfocar el input */
-.text_buscador:focus {
-  box-shadow: inset 0 -2px 0 #4caf50;
-}
+/* Contenedor del botón de logout */
 .content_logout {
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  padding-right: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
 }
 
+/* Botón de Logout */
 .btn-logout {
-  padding: 8px 16px;
-  background: linear-gradient(135deg, #ff416c, #ff4b2b);
-  border: none;
-  border-radius: 20px;
-  color: white;
-  font-weight: bold;
-  cursor: pointer;
-  transition: transform 0.2s ease, background 0.3s ease;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    padding: 0.8rem 1.5rem; /* Padding ajustado */
+    background: linear-gradient(135deg, #FF6B6B, #FF4757); /* Degradado de rojos */
+    border: none;
+    border-radius: 50px; /* Botón tipo píldora */
+    color: var(--white); /* Texto blanco */
+    font-weight: 700;
+    cursor: pointer;
+    transition: transform 0.2s ease, background 0.3s ease, box-shadow 0.2s ease;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    letter-spacing: 0.5px;
+    font-size: 0.95rem;
 }
 
 .btn-logout:hover {
-  transform: scale(1.05);
-  background: linear-gradient(135deg, #ff4b2b, #ff416c);
+    transform: translateY(-3px); /* Ligeramente elevado */
+    background: linear-gradient(135deg, #FF4757, #FF6B6B); /* Invertir degradado al hover */
+    box-shadow: 0 6px 15px rgba(0,0,0,0.4);
+}
+
+.btn-logout:active {
+    transform: translateY(0);
+}
+
+/* Media Queries para responsividad */
+@media (max-width: 1024px) {
+    .content_header {
+        gap: 1rem;
+    }
+    .content_buscador {
+        max-width: 400px;
+    }
+}
+
+@media (max-width: 768px) {
+    header {
+        padding: 0.6rem 1rem;
+        border-radius: 0; /* Sin bordes redondeados en móvil */
+    }
+    .content_header {
+        flex-wrap: wrap; /* Permite que los elementos salten de línea */
+        justify-content: center;
+        gap: 0.8rem;
+    }
+    .icon_link {
+        width: 40px;
+        height: 40px;
+    }
+    .icon_link i {
+        font-size: 1.1rem;
+    }
+    .content_buscador {
+        width: 100%; /* Ocupa todo el ancho */
+        max-width: none; /* Elimina la restricción de ancho máximo */
+        height: 40px;
+    }
+    .content_lupa {
+        width: 40px;
+    }
+    .content_lupa i {
+        font-size: 1rem;
+    }
+    .text_buscador {
+        font-size: 0.9rem;
+    }
+    .btn-logout {
+        padding: 0.6rem 1.2rem;
+        font-size: 0.85rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .content_header {
+        flex-direction: column; /* Apila los elementos verticalmente */
+        gap: 0.5rem;
+    }
+    .icon_link {
+        width: 36px;
+        height: 36px;
+    }
+    .icon_link i {
+        font-size: 1rem;
+    }
+    .content_buscador {
+        height: 36px;
+    }
+    .content_lupa {
+        width: 36px;
+    }
+    .text_buscador {
+        font-size: 0.85rem;
+    }
+    .btn-logout {
+        width: 100%; /* Ocupa todo el ancho */
+        text-align: center;
+    }
 }

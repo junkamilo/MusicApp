@@ -111,6 +111,8 @@ export const EliminadosTodosGeneros = () => {
     position: "top-end"
   });
 };
+
+//Alerts de albumes
 export const AgregadoAlbumFavorito = (nombreAlbum) => {
   Swal.fire({
     title: "¡Agregado!",
@@ -122,3 +124,123 @@ export const AgregadoAlbumFavorito = (nombreAlbum) => {
     position: "top-end"
   });
 };
+// Alerta después de eliminar todos los álbumes
+export const EliminadoTodosAlbumesFavoritos = () => {
+  Swal.fire({
+    title: "Eliminados",
+    text: "Todos los álbumes favoritos han sido eliminados",
+    icon: "success",
+    timer: 2000,
+    showConfirmButton: false,
+    toast: true,
+    position: "top-end"
+  });
+};
+//Alerta despues de eliinar todos los albumes
+export const EliminadoAlbumFavorito = (albumName) => {
+  Swal.fire({
+    title: "Eliminado",
+    text: `El album ${albumName} fue eliminado de tus favoritos`,
+    icon: "success",
+    timer: 2000,
+    showConfirmButton: false,
+    toast: true,
+    position: "top-end"
+  });
+};
+// Confirmación antes de eliminar todos los álbumes favoritos
+export const confirmarEliminarTodosAlbumes = async () => {
+  return Swal.fire({
+    title: "¿Eliminar todos los géneros favoritos?",
+    text: "Esta acción eliminará todos tus géneros favoritos y no se puede deshacer.",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonText: "Sí, eliminar todos",
+    cancelButtonText: "Cancelar",
+    reverseButtons: true,
+  });
+};
+// Confirmación antes de eliminar un álbum favorito
+export const confirmarEliminarAlbum = async (nombreAlbum) => {
+  return Swal.fire({
+    title: `¿Eliminar a ${nombreAlbum}?`,
+    text: "Esta acción no se puede deshacer",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonText: "Sí, eliminar",
+    cancelButtonText: "Cancelar",
+    reverseButtons: true,
+  });
+};
+
+//Alerts de canciones
+export const AgregadoCancionFavorita = (nombreCancion) => {
+  Swal.fire({
+    title: "¡Agregado!",
+    text: `La canción "${nombreCancion}" fue agregada a favoritos`,
+    icon: "success",
+    timer: 2000,
+    showConfirmButton: false,
+    toast: true,
+    position: "top-end"
+  });
+};
+// Alerta después de eliminar todos las canciones favoritas
+export const EliminadoTodosCancionesFavoritas = () => {
+  Swal.fire({
+    title: "Eliminados",
+    text: "Todos las canciones favoritas han sido eliminadas",
+    icon: "success",
+    timer: 2000,
+    showConfirmButton: false,
+    toast: true,
+    position: "top-end"
+  });
+};
+//Alerta despues de eliminar una cancion favorita
+export const EliminadoCancionFavorita = (cancionName) => {
+  Swal.fire({
+    title: "Eliminado",
+    text: `La canción ${cancionName} fue eliminada de tus favoritos`,
+    icon: "success",
+    timer: 2000,
+    showConfirmButton: false,
+    toast: true,
+    position: "top-end"
+  });
+};
+// Confirmación antes de eliminar todas las canciones favoritas
+export const confirmarEliminarTodasCanciones = async () => {
+  return Swal.fire({
+    title: "¿Eliminar todas las canciones favoritas?",
+    text: "Esta acción eliminará todas tus canciones favoritas y no se puede deshacer.",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonText: "Sí, eliminar todos",
+    cancelButtonText: "Cancelar",
+    reverseButtons: true,
+  });
+};
+// Confirmación antes de eliminar una canción favorita
+export const confirmarEliminarCancion = async (nombreCancion) => {
+  return Swal.fire({
+    title: `¿Eliminar a ${nombreCancion}?`,
+    text: "Esta acción no se puede deshacer",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonText: "Sí, eliminar",
+    cancelButtonText: "Cancelar",
+    reverseButtons: true,
+  });
+};
+export const AgregadoCancionFavoritos = (nombreCancion) => {
+  Swal.fire({
+    title: "¡Agregado!",
+    text: `la canción ${nombreCancion} fue agregada a favoritos`,
+    icon: "success",
+    timer: 2000,
+    showConfirmButton: false,
+    toast: true,
+    position: "top-end"
+  });
+}
