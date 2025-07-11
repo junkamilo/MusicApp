@@ -129,7 +129,8 @@ class AlbumController {
 
     // Método para eliminar un álbum de favoritos
     static removeAlbumFromFavorites = async (req, res) => {
-        const { userId, albumId } = req.params;
+        const userId = req.user.id;
+        const albumId = req.params.id;
         try {
             // Llamamos al servicio para eliminar un álbum de favoritos
             // y manejamos la respuesta
@@ -145,7 +146,7 @@ class AlbumController {
 
     // Método para eliminar todos los álbumes favoritos de un usuario
     static removeAllFavorites = async (req, res) => {
-        const { userId } = req.params;
+        const userId = req.user.id;
         try {
             // Llamamos al servicio para eliminar todos los álbumes favoritos de un usuario
             // y manejamos la respuesta
@@ -153,7 +154,7 @@ class AlbumController {
             if (response.error) {
                 return res.status(response.code).json({ message: response.message });
             }
-            return res.status(response.code).json(response);
+            return res.status(response.code).json({ message: response.message });
         } catch (error) {
             return res.status(500).json({ message: "Error al eliminar todos los álbumes favoritos del usuario: " + error.message });
         }

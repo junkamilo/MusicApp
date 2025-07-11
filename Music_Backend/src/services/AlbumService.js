@@ -162,25 +162,22 @@ class AlbumService {
     static async getAlbumesFavoritosByUserId(userId) {
         try {
             const albumModel = new Album();
+
             const albumesFavoritos = await albumModel.getAlbumesFavoritosByUserId(userId);
-            if (albumesFavoritos.length === 0) {
-                return {
-                    error: true,
-                    code: 404,
-                    message: "No se encontraron álbumes favoritos para el usuario con id: " + userId
-                };
-            }
+            //retornamos los álbumes favoritos obtenidos
             return {
                 error: false,
                 code: 200,
-                message: "Álbumes favoritos obtenidos correctamente",
+                message: "álbumes favoritos obtenidos correctamente",
                 data: albumesFavoritos
             };
         } catch (error) {
+            //retornamos un error en caso de que ocurra una excepción
             return {
                 error: true,
                 code: 500,
                 message: "Error al obtener los álbumes favoritos del usuario: " + error.message
+
             };
         }
     }

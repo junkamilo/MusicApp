@@ -170,6 +170,91 @@ ORDER BY final.popularidad DESC;
       );
     }
   }
+
+  //metodo para obtener las canciones favoritas de un usuario
+  async getCancionesFavoritosByUserId(userId) {
+  try {
+    const [rows] = await connection.query(
+      `
+      SELECT 
+    c.cancion_id,
+    c.titulo_cancion,
+    c.duracion,
+    c.numero_pista,
+    c.reproducciones,
+    al.album_id,
+    al.titulo_album,
+    al.url_portada_album,
+    ar.artista_id,
+    ar.nombre_artista
+FROM Favorito_Cancion fc
+JOIN cancion c ON fc.cancion_id = c.cancion_id
+JOIN album al ON c.album_id = al.album_id
+JOIN artistas ar ON al.artista_id = ar.artista_id
+WHERE fc.id_usuario = ?;
+      `,
+      [userId]
+    );
+
+    return rows;
+    
+  } catch (error) {
+    // Este catch ahora solo captura errores de SQL u otros
+    throw new Error("Error al obtener los álbumes favoritos del usuario: " + error.message);
+  }
+}
+
+// Método para agregar un cancion a favoritos
+  async addCancionToFavorites(userId, cancionId) {
+    try {
+      const [result] = await connection.query(
+        "INSERT INTO Favorito_Cancion (id_usuario, cancion_id) VALUES (?, ?)",
+        [userId, cancionId]
+      );
+      if (result.affectedRows === 0) {
+        throw new Error("No se pudo agregar la cancion a favoritos");
+      }
+      return { affectedRows: result.affectedRows, message: "Canción agregada a favoritos exitosamente" };
+    } catch (error) {
+      throw new Error("Error al agregar la cancion a favoritos: " + error.message);
+    }
+  }
+
+  // Método para eliminar una canción de favoritos
+    async removeCancionFromFavorites(userId, cancionId) {
+    try {
+      const [result] = await connection.query(
+        "DELETE FROM Favorito_Cancion WHERE id_usuario = ? AND cancion_id = ?",
+        [userId, cancionId]
+      );
+      if (result.affectedRows === 0) {
+        throw new Error("No se pudo eliminar la cancion de favoritos");
+      }
+      return { affectedRows: result.affectedRows, message: "Canción eliminada de favoritos exitosamente" };
+    } catch (error) {
+      throw new Error(
+        "Error al eliminar la cancion de favoritos: " + error.message
+      );
+    }
+  }
+
+  // Método para eliminar todas las canciones favoritas de un usuario
+    async removeAllFavorites(userId) {
+    try {
+      const [result] = await connection.query(
+        "DELETE FROM Favorito_Cancion WHERE id_usuario = ?",
+        [userId]
+      );
+      if (result.affectedRows === 0) {
+        throw new Error("No se pudieron eliminar las canciones favoritas");
+      }
+      return { affectedRows: result.affectedRows, message: "Canciones eliminadas de favoritos exitosamente" };
+    } catch (error) {
+      throw new Error(
+        "Error al eliminar todas las canciones favoritas: " + error.message
+      );
+    }
+  }
 }
 
 export default Cancion;

@@ -18,5 +18,8 @@ router.post("/refresh", verifyRefreshToken,AuthController.refreshToken);
 // Logout
 router.post("/logout", verifyToken,AuthController.logout);
 
+// Ruta para obtener la información del usuario autenticado
+router.get("/user-info", verifyToken, AuthController.getUsuarioInfo);
+
 
 export default router;

@@ -141,33 +141,33 @@ class Album {
   }
 
   //metodo para obtener albumes favoritos de un usuario
-  async getAlbumesFavoritosByUserId(userId) {
-    try {
-      const [rows] = await connection.query(
-        `
-        SELECT 
-    a.album_id,
-    a.titulo_album,
-    a.url_portada_album,
-    ar.artista_id,
-    ar.nombre_artista
-FROM Favorito_Album fa
-JOIN album a ON fa.album_id = a.album_id
-JOIN artistas ar ON a.artista_id = ar.artista_id
-WHERE fa.id_usuario = ?;
+  //metodo para obtener albumes favoritos de un usuario
+async getAlbumesFavoritosByUserId(userId) {
+  try {
+    const [rows] = await connection.query(
+      `
+      SELECT 
+        a.album_id,
+        a.titulo_album,
+        a.url_portada_album,
+        ar.artista_id,
+        ar.nombre_artista
+      FROM Favorito_Album fa
+      JOIN album a ON fa.album_id = a.album_id
+      JOIN artistas ar ON a.artista_id = ar.artista_id
+      WHERE fa.id_usuario = ?;
       `,
-        [userId]
-      );
-      if (rows.length === 0) {
-        throw new Error("No se encontraron álbumes favoritos para el usuario");
-      }
-      return rows;
-    } catch (error) {
-      throw new Error(
-        "Error al obtener los álbumes favoritos del usuario: " + error.message
-      );
-    }
+      [userId]
+    );
+
+    return rows;
+    
+  } catch (error) {
+    // Este catch ahora solo captura errores de SQL u otros
+    throw new Error("Error al obtener los álbumes favoritos del usuario: " + error.message);
   }
+}
+
 
   // Método para agregar un álbum a favoritos
   async addAlbumToFavorites(userId, albumId) {

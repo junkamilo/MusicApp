@@ -164,6 +164,19 @@ class AuthService {
     return newRefreshToken;
   }
 
+  //Obtener información del usuario
+  static async obtenerInfoUsuario(userId) {
+    try {
+      const userInfo = await Usuario.getUserInfo(userId);
+      if (!userInfo) {
+        return { error: true, code: 404, message: "Usuario no encontrado" };
+      }
+      return { error: false, code: 200, data: userInfo };
+    } catch (error) {
+      return { error: true, code: 500, message: "Error al obtener la información del usuario" };
+    }
+  } 
+
   //Cerrar sesión
   static async logout(userId) {
     await Usuario.updateRefreshToken(userId, null);

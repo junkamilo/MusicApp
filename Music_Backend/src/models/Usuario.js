@@ -33,4 +33,10 @@ export class Usuario {
     const [rows] = await db.query("SELECT * FROM Usuarios WHERE id_usuario = ?", [id_usuario]);
     return rows[0];
   }
+
+  //informacion de usuario
+  static async getUserInfo(id_usuario) {
+    const [rows] = await db.query("SELECT nombre, email, fecha_registro, url_foto_perfil FROM Usuarios WHERE id_usuario = ?", [id_usuario]);
+    return rows[0];
+  }
 }

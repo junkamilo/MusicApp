@@ -10,11 +10,11 @@ router.get("/favoritos", verifyToken, AlbumController.getAlbumesFavoritosByUserI
 // Agregar un álbum a favoritos
 router.post("/favoritos", verifyToken, AlbumController.addAlbumToFavorites);
 
-// Eliminar un álbum específico de favoritos
-router.delete("/favoritos/:userId/:albumId", verifyToken, AlbumController.removeAlbumFromFavorites);
+// Eliminar todos los álbumes del usuario
+router.delete("/favoritos/todos", verifyToken, AlbumController.removeAllFavorites);
 
-// Eliminar todos los álbumes favoritos de un usuario
-router.delete("/favoritos/:userId", verifyToken, AlbumController.removeAllFavorites);
+// Eliminar un álbum de favoritos
+router.delete("/favoritos/:id", verifyToken, AlbumController.removeAlbumFromFavorites);
 
 // Obtener álbumes más populares (global)
 router.get("/populares", AlbumController.getAlbumesMasPopulares);
@@ -28,10 +28,10 @@ router.get("/genero/:generoId", AlbumController.getAlbumesPorGeneroId);
 // Obtener canciones de un álbum por su ID
 router.get("/:albumId/canciones", AlbumController.getCancionesByAlbumId);
 
-// Obtener todos los álbumes
-router.get("/", AlbumController.getAllAlbumes);
-
 // Obtener un álbum por su ID
 router.get("/:id", AlbumController.getAlbumById);
+
+// Obtener todos los álbumes
+router.get("/", AlbumController.getAllAlbumes);
 
 export default router;

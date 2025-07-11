@@ -80,6 +80,28 @@ static refreshToken = async (req, res) => {
   }
 };
 
+  // Obtener información del usuario
+  static async getUsuarioInfo(req, res) {
+  try {
+    console.log("🔎 req.user:", req.user);
+    const userId = req.user.id;
+    const userInfoResult = await AuthService.obtenerInfoUsuario(userId);
+
+    if (userInfoResult.error) {
+      return ResponseProvider.error(res, userInfoResult.message, userInfoResult.code);
+    }
+
+    return ResponseProvider.success(
+      res,
+      userInfoResult.data,
+      "Información del usuario obtenida correctamente",
+      200
+    );
+  } catch (error) {
+    return ResponseProvider.error(res, "Error al obtener la información del usuario", 500);
+  }
+}
+
 
 }
 
