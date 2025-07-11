@@ -83,10 +83,10 @@ class Album {
   }
 
   //metodo para obtener albumes mas populares
-async getAlbumesMasPopulares() {
-  try {
-    const [rows] = await connection.query(
-      `
+  async getAlbumesMasPopulares() {
+    try {
+      const [rows] = await connection.query(
+        `
       SELECT 
         a.album_id, 
         a.titulo_album, 
@@ -108,18 +108,17 @@ async getAlbumesMasPopulares() {
       ORDER BY a.popularidad DESC
       LIMIT 6;
       `
-    );
-    if (rows.length === 0) {
-      throw new Error("No se encontraron álbumes populares");
+      );
+      if (rows.length === 0) {
+        throw new Error("No se encontraron álbumes populares");
+      }
+      return rows;
+    } catch (error) {
+      throw new Error(
+        "Error al obtener los álbumes populares: " + error.message
+      );
     }
-    return rows;
-  } catch (error) {
-    throw new Error(
-      "Error al obtener los álbumes populares: " + error.message
-    );
   }
-}
-
 
   //metodo para obtener cacniones de un album por su id
   async getCancionesByAlbumId(albumId) {
@@ -137,6 +136,87 @@ async getAlbumesMasPopulares() {
     } catch (error) {
       throw new Error(
         "Error al obtener las canciones del álbum: " + error.message
+      );
+    }
+  }
+
+  //metodo para obtener albumes favoritos de un usuario
+  async getAlbumesFavoritosByUserId(userId) {
+    try {
+      const [rows] = await connection.query(
+        `
+        SELECT 
+    a.album_id,
+    a.titulo_album,
+    a.url_portada_album,
+    ar.artista_id,
+    ar.nombre_artista
+FROM Favorito_Album fa
+JOIN album a ON fa.album_id = a.album_id
+JOIN artistas ar ON a.artista_id = ar.artista_id
+WHERE fa.id_usuario = ?;
+      `,
+        [userId]
+      );
+      if (rows.length === 0) {
+        throw new Error("No se encontraron álbumes favoritos para el usuario");
+      }
+      return rows;
+    } catch (error) {
+      throw new Error(
+        "Error al obtener los álbumes favoritos del usuario: " + error.message
+      );
+    }
+  }
+
+  // Método para agregar un álbum a favoritos
+  async addAlbumToFavorites(userId, albumId) {
+    try {
+      const [result] = await connection.query(
+        "INSERT INTO Favorito_Album (id_usuario, album_id) VALUES (?, ?)",
+        [userId, albumId]
+      );
+      if (result.affectedRows === 0) {
+        throw new Error("No se pudo agregar el álbum a favoritos");
+      }
+      return { affectedRows: result.affectedRows, message: "Álbum agregado a favoritos exitosamente" };
+    } catch (error) {
+      throw new Error("Error al agregar el álbum a favoritos: " + error.message);
+    }
+  }
+
+  // Método para eliminar un álbum de favoritos
+  async removeAlbumFromFavorites(userId, albumId) {
+    try {
+      const [result] = await connection.query(
+        "DELETE FROM Favorito_Album WHERE id_usuario = ? AND album_id = ?",
+        [userId, albumId]
+      );
+      if (result.affectedRows === 0) {
+        throw new Error("No se pudo eliminar el álbum de favoritos");
+      }
+      return { affectedRows: result.affectedRows, message: "Álbum eliminado de favoritos exitosamente" };
+    } catch (error) {
+      throw new Error(
+        "Error al eliminar el álbum de favoritos: " + error.message
+      );
+    }
+  }
+
+  // Método para eliminar todos los álbumes favoritos de un usuario
+  async removeAllFavorites(userId) {
+    try {
+      const [result] = await connection.query(
+        "DELETE FROM Favorito_Album WHERE id_usuario = ?",
+        [userId]
+      );
+      if (result.affectedRows === 0) {
+        throw new Error("No se pudieron eliminar los álbumes favoritos");
+      }
+      return { affectedRows: result.affectedRows, message: "Álbumes eliminados de favoritos exitosamente" };
+    } catch (error) {
+      throw new Error(
+        "Error al eliminar todos los álbumes favoritos: " + error.message
       );
     }
   }

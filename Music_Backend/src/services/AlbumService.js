@@ -157,6 +157,111 @@ class AlbumService {
             };
         }
     }
+
+    // Método estático para obtener álbumes favoritos de un usuario
+    static async getAlbumesFavoritosByUserId(userId) {
+        try {
+            const albumModel = new Album();
+            const albumesFavoritos = await albumModel.getAlbumesFavoritosByUserId(userId);
+            if (albumesFavoritos.length === 0) {
+                return {
+                    error: true,
+                    code: 404,
+                    message: "No se encontraron álbumes favoritos para el usuario con id: " + userId
+                };
+            }
+            return {
+                error: false,
+                code: 200,
+                message: "Álbumes favoritos obtenidos correctamente",
+                data: albumesFavoritos
+            };
+        } catch (error) {
+            return {
+                error: true,
+                code: 500,
+                message: "Error al obtener los álbumes favoritos del usuario: " + error.message
+            };
+        }
+    }
+
+    // Método estático para agregar un álbum a favoritos
+    static async addAlbumToFavorites(userId, albumId) {
+        try {
+            const albumModel = new Album();
+            const result = await albumModel.addAlbumToFavorites(userId, albumId);
+            if (result.affectedRows === 0) {
+                return {
+                    error: true,
+                    code: 404,
+                    message: "No se pudo agregar el álbum a favoritos"
+                };
+            }
+            return {
+                error: false,
+                code: 200,
+                message: "Álbum agregado a favoritos correctamente"
+            };
+        } catch (error) {
+            return {
+                error: true,
+                code: 500,
+                message: "Error al agregar el álbum a favoritos: " + error.message
+            };
+        }
+    }
+
+    // Método estático para eliminar un álbum de favoritos
+    static async removeAlbumFromFavorites(userId, albumId) {
+        try {
+            const albumModel = new Album();
+            const result = await albumModel.removeAlbumFromFavorites(userId, albumId);
+            if (result.affectedRows === 0) {
+                return {
+                    error: true,
+                    code: 404,
+                    message: "No se pudo eliminar el álbum de favoritos"
+                };
+            }
+            return {
+                error: false,
+                code: 200,
+                message: "Álbum eliminado de favoritos correctamente"
+            };
+        } catch (error) {
+            return {
+                error: true,
+                code: 500,
+                message: "Error al eliminar el álbum de favoritos: " + error.message
+            };
+        }
+    }
+
+    // Método estático para eliminar todos los álbumes favoritos de un usuario
+    static async removeAllFavorites(userId) {
+        try {
+            const albumModel = new Album();
+            const result = await albumModel.removeAllFavorites(userId);
+            if (result.affectedRows === 0) {
+                return {
+                    error: true,
+                    code: 404,
+                    message: "No se pudieron eliminar los álbumes favoritos"
+                };
+            }
+            return {
+                error: false,
+                code: 200,
+                message: "Todos los álbumes favoritos eliminados correctamente"
+            };
+        } catch (error) {
+            return {
+                error: true,
+                code: 500,
+                message: "Error al eliminar todos los álbumes favoritos: " + error.message
+            };
+        }
+    }
 }
 
 export default AlbumService;

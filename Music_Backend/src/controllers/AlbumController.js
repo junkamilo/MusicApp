@@ -93,6 +93,71 @@ class AlbumController {
             return res.status(500).json({ message: "Error al obtener los álbumes más populares: " + error.message });
         }
     }
+
+    // Método para obtener los álbumes favoritos de un usuario
+    static getAlbumesFavoritosByUserId = async (req, res) => {
+        const userId = req.user.id;;
+        try {
+            // Llamamos al servicio para obtener los álbumes favoritos de un usuario
+            // y manejamos la respuesta
+            const response = await AlbumService.getAlbumesFavoritosByUserId(userId);
+            if (response.error) {
+                return res.status(response.code).json({ message: response.message });
+            }
+            return res.status(response.code).json(response);
+        } catch (error) {
+            return res.status(500).json({ message: "Error al obtener los álbumes favoritos del usuario: " + error.message });
+        }
+    }
+
+    // Método para agregar un álbum a favoritos
+    static addAlbumToFavorites = async (req, res) => {
+        const userId = req.user.id;
+        const { albumId } = req.body;
+        try {
+            // Llamamos al servicio para agregar un álbum a favoritos
+            // y manejamos la respuesta
+            const response = await AlbumService.addAlbumToFavorites(userId, albumId);
+            if (response.error) {
+                return res.status(response.code).json({ message: response.message });
+            }
+            return res.status(response.code).json(response);
+        } catch (error) {
+            return res.status(500).json({ message: "Error al agregar el álbum a favoritos: " + error.message });
+        }
+    }
+
+    // Método para eliminar un álbum de favoritos
+    static removeAlbumFromFavorites = async (req, res) => {
+        const { userId, albumId } = req.params;
+        try {
+            // Llamamos al servicio para eliminar un álbum de favoritos
+            // y manejamos la respuesta
+            const response = await AlbumService.removeAlbumFromFavorites(userId, albumId);
+            if (response.error) {
+                return res.status(response.code).json({ message: response.message });
+            }
+            return res.status(response.code).json(response);
+        } catch (error) {
+            return res.status(500).json({ message: "Error al eliminar el álbum de favoritos: " + error.message });
+        }
+    }
+
+    // Método para eliminar todos los álbumes favoritos de un usuario
+    static removeAllFavorites = async (req, res) => {
+        const { userId } = req.params;
+        try {
+            // Llamamos al servicio para eliminar todos los álbumes favoritos de un usuario
+            // y manejamos la respuesta
+            const response = await AlbumService.removeAllFavorites(userId);
+            if (response.error) {
+                return res.status(response.code).json({ message: response.message });
+            }
+            return res.status(response.code).json(response);
+        } catch (error) {
+            return res.status(500).json({ message: "Error al eliminar todos los álbumes favoritos del usuario: " + error.message });
+        }
+    }
 }
 
 export default AlbumController;
