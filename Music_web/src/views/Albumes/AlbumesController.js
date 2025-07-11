@@ -1,275 +1,41 @@
-export const AlbumesController = () => {
-  const listar = async () => {
-    // Realizamos una solicitud GET a la API para obtener los álbumes mas populares del genero id:1 rock
+
+import { cardAlbum } from "../../components/cardAlbumes/cardAlbum.js";
+import { contentCards } from "../../components/ContentCards/contentCards.js";
+
+export const AlbumesController = async () => {
+  const generos = [
+    { id: 1, containerId: "content_Albumrock" },
+    { id: 2, containerId: "content_Albumpop" },
+    { id: 3, containerId: "content_AlbumMusicaUrbana" },
+    { id: 4, containerId: "content_Albumvallenato" },
+    { id: 5, containerId: "content_AlbumMusicaPopular" },
+    { id: 6, containerId: "content_Albumregueton" },
+  ];
+
+  for (const genero of generos) {
     try {
-      const request = await fetch("http://localhost:3000/albumes/genero/1", {
+      const response = await fetch(`http://localhost:3000/albumes/genero/${genero.id}`, {
         method: "GET",
         headers: {
-          'Content-Type': 'application/json; charset=UTF-8'
+          "Content-Type": "application/json; charset=UTF-8"
         }
       });
 
-        // Verificamos si la solicitud fue exitosa
-      const { data, code, message } = await request.json();
+      const { data } = await response.json();
 
-        // Verificamos si hay un error en la respuesta
       if (data.error) {
-        console.error("Error al obtener los álbumes:", data.message);
-        return;
+        console.error(`Error al obtener álbumes del género ${genero.id}:`, data.message);
+        continue;
       }
 
-      const contentAlbumesrock = document.getElementById('content_Albumrock');
-      if (!contentAlbumesrock) return;
+      const contentContainer = document.getElementById(genero.containerId);
+      if (!contentContainer) continue;
 
-      const verMas = contentAlbumesrock.querySelector('.ver-mas');
-
-      /* Recorremos los álbumes y
-        Limitamos a los primeros 6 álbumes para mostrar
-        en la vista principal*/
-      data.slice(0,6).forEach(({ album_id,titulo_album, descripcion }) => {
-        // Creamos un elemento div para cada álbum
-        const card = document.createElement("a");
-        // Asignamos las clases y el contenido
-        card.classList.add("card_album");
-        // Enlace a la ruta que activa tu controlador
-        card.setAttribute("href", `#/albumes/${album_id}`);
-        // Asignamos el contenido del álbum
-        card.textContent = titulo_album;
-
-        // Agregamos la card al contenedor
-        contentAlbumesrock.insertBefore(card, verMas);
-      });
+      // Llama al componente reutilizable para renderizar
+      contentCards(data, contentContainer, cardAlbum, 6);
 
     } catch (error) {
-      console.error("Error al obtener los álbumes:", error);
+      console.error(`Error al obtener álbumes del género ${genero.id}:`, error);
     }
-
-
-    // Realizamos una solicitud GET a la API para obtener los álbumes mas populares del genero id:2 pop
-    try {
-      const request = await fetch("http://localhost:3000/albumes/genero/2", {
-        method: "GET",
-        headers: {
-          'Content-Type': 'application/json; charset=UTF-8'
-        }
-      });
-      
-        // Verificamos si la solicitud fue exitosa
-      const { data, code, message } = await request.json();
-
-        // Verificamos si hay un error en la respuesta
-      if (data.error) {
-        console.error("Error al obtener los álbumes:", data.message);
-        return;
-      }
-
-      const contentAlbumespop = document.getElementById('content_Albumpop');
-      if (!contentAlbumespop) return;
-
-      const verMas = contentAlbumespop.querySelector('.ver-mas');
-
-      /* Recorremos los álbumes y
-        Limitamos a los primeros 6 álbumes para mostrar
-        en la vista principal*/
-      data.slice(0,6).forEach(({ album_id,titulo_album, descripcion }) => {
-        // Creamos un elemento div para cada álbum
-        const card = document.createElement("a");
-        // Asignamos las clases y el contenido
-        card.classList.add("card_album");
-        // Enlace a la ruta que activa tu controlador
-        card.setAttribute("href", `#/albumes/${album_id}`);
-        // Asignamos el contenido del álbum
-        card.textContent = titulo_album;
-
-        // Agregamos la card al contenedor
-        contentAlbumespop.insertBefore(card, verMas);
-      });
-
-    } catch (error) {
-      console.error("Error al obtener los álbumes:", error);
-    }
-
-
-    // Realizamos una solicitud GET a la API para obtener los álbumes mas populares del genero id:3 urbana
-    try {
-      const request = await fetch("http://localhost:3000/albumes/genero/3", {
-        method: "GET",
-        headers: {
-          'Content-Type': 'application/json; charset=UTF-8'
-        }
-      });
-      
-        // Verificamos si la solicitud fue exitosa
-      const { data, code, message } = await request.json();
-
-        // Verificamos si hay un error en la respuesta
-      if (data.error) {
-        console.error("Error al obtener los álbumes:", data.message);
-        return;
-      }
-
-      const contentAlbumesUrbana = document.getElementById('content_AlbumMusicaUrbana');
-      if (!contentAlbumesUrbana) return;
-
-      const verMas = contentAlbumesUrbana.querySelector('.ver-mas');
-
-      /* Recorremos los álbumes y
-        Limitamos a los primeros 6 álbumes para mostrar
-        en la vista principal*/
-      data.slice(0,6).forEach(({ album_id,titulo_album, descripcion }) => {
-        // Creamos un elemento div para cada álbum
-        const card = document.createElement("a");
-        // Asignamos las clases y el contenido
-        card.classList.add("card_album");
-        // Enlace a la ruta que activa tu controlador
-        card.setAttribute("href", `#/albumes/${album_id}`);
-        // Asignamos el contenido del álbum
-        card.textContent = titulo_album;
-
-        // Agregamos la card al contenedor
-        contentAlbumesUrbana.insertBefore(card, verMas);
-      });
-
-    } catch (error) {
-      console.error("Error al obtener los álbumes:", error);
-    }
-
-
-    // Realizamos una solicitud GET a la API para obtener los álbumes mas populares del genero id:4 vallenato
-    try {
-      const request = await fetch("http://localhost:3000/albumes/genero/4", {
-        method: "GET",
-        headers: {
-          'Content-Type': 'application/json; charset=UTF-8'
-        }
-      });
-      
-        // Verificamos si la solicitud fue exitosa
-      const { data, code, message } = await request.json();
-
-        // Verificamos si hay un error en la respuesta
-      if (data.error) {
-        console.error("Error al obtener los álbumes:", data.message);
-        return;
-      }
-
-      const contentAlbumesVallenato = document.getElementById('content_Albumvallenato');
-      if (!contentAlbumesVallenato) return;
-
-      const verMas = contentAlbumesVallenato.querySelector('.ver-mas');
-
-      /* Recorremos los álbumes y
-        Limitamos a los primeros 6 álbumes para mostrar
-        en la vista principal*/
-      data.slice(0,6).forEach(({ album_id,titulo_album, descripcion }) => {
-        // Creamos un elemento div para cada álbum
-        const card = document.createElement("a");
-        // Asignamos las clases y el contenido
-        card.classList.add("card_album");
-        // Enlace a la ruta que activa tu controlador
-        card.setAttribute("href", `#/albumes/${album_id}`);
-        // Asignamos el contenido del álbum
-        card.textContent = titulo_album;
-
-        // Agregamos la card al contenedor
-        contentAlbumesVallenato.insertBefore(card, verMas);
-      });
-
-    } catch (error) {
-      console.error("Error al obtener los álbumes:", error);
-    }
-
-
-    // Realizamos una solicitud GET a la API para obtener los álbumes mas populares del genero id:5 popular
-    try {
-      const request = await fetch("http://localhost:3000/albumes/genero/5", {
-        method: "GET",
-        headers: {
-          'Content-Type': 'application/json; charset=UTF-8'
-        }
-      });
-      
-        // Verificamos si la solicitud fue exitosa
-      const { data, code, message } = await request.json();
-
-        // Verificamos si hay un error en la respuesta
-      if (data.error) {
-        console.error("Error al obtener los álbumes:", data.message);
-        return;
-      }
-
-      const contentAlbumesPopular = document.getElementById('content_AlbumMusicaPopular');
-      if (!contentAlbumesPopular) return;
-
-      const verMas = contentAlbumesPopular.querySelector('.ver-mas');
-
-      /* Recorremos los álbumes y
-        Limitamos a los primeros 6 álbumes para mostrar
-        en la vista principal*/
-      data.slice(0,6).forEach(({ album_id,titulo_album, descripcion }) => {
-        // Creamos un elemento div para cada álbum
-        const card = document.createElement("a");
-        // Asignamos las clases y el contenido
-        card.classList.add("card_album");
-        // Enlace a la ruta que activa tu controlador
-        card.setAttribute("href", `#/albumes/${album_id}`);
-        // Asignamos el contenido del álbum
-        card.textContent = titulo_album;
-
-        // Agregamos la card al contenedor
-        contentAlbumesPopular.insertBefore(card, verMas);
-      });
-
-    } catch (error) {
-      console.error("Error al obtener los álbumes:", error);
-    }
-
-
-
-    // Realizamos una solicitud GET a la API para obtener los álbumes mas populares del genero id:6 regueton
-    try {
-      const request = await fetch("http://localhost:3000/albumes/genero/6", {
-        method: "GET",
-        headers: {
-          'Content-Type': 'application/json; charset=UTF-8'
-        }
-      });
-      
-        // Verificamos si la solicitud fue exitosa
-      const { data, code, message } = await request.json();
-
-        // Verificamos si hay un error en la respuesta
-      if (data.error) {
-        console.error("Error al obtener los álbumes:", data.message);
-        return;
-      }
-
-      const contentAlbumesRegueton = document.getElementById('content_Albumregueton');
-      if (!contentAlbumesRegueton) return;
-
-      const verMas = contentAlbumesRegueton.querySelector('.ver-mas');
-
-      /* Recorremos los álbumes y
-        Limitamos a los primeros 6 álbumes para mostrar
-        en la vista principal*/
-      data.slice(0,6).forEach(({ album_id,titulo_album, descripcion }) => {
-        // Creamos un elemento div para cada álbum
-        const card = document.createElement("a");
-        // Asignamos las clases y el contenido
-        card.classList.add("card_album");
-        // Enlace a la ruta que activa tu controlador
-        card.setAttribute("href", `#/albumes/${album_id}`);
-        // Asignamos el contenido del álbum
-        card.textContent = titulo_album;
-
-        // Agregamos la card al contenedor
-        contentAlbumesRegueton.insertBefore(card, verMas);
-      });
-
-    } catch (error) {
-      console.error("Error al obtener los álbumes:", error);
-    }
-  };
-
-  listar();
-}
+  }
+};

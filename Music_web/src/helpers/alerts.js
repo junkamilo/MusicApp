@@ -75,3 +75,50 @@ export const EliminadoGeneroFavorito = (nombreGenero) => {
     position: "top-end"
   });
 };
+export const confirmarEliminacionGenero = async (nombreGenero) => {
+  return Swal.fire({
+    title: `¿Eliminar a ${nombreGenero}?`,
+    text: "Esta acción no se puede deshacer",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonText: "Sí, eliminar",
+    cancelButtonText: "Cancelar",
+    reverseButtons: true,
+  });
+};
+// Confirmación antes de eliminar todos
+export const confirmarEliminarTodosGeneros = async () => {
+  return Swal.fire({
+    title: "¿Eliminar todos los géneros favoritos?",
+    text: "Esta acción eliminará todos tus géneros favoritos y no se puede deshacer.",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonText: "Sí, eliminar todos",
+    cancelButtonText: "Cancelar",
+    reverseButtons: true,
+  });
+};
+
+// Alerta después de eliminar todos
+export const EliminadosTodosGeneros = () => {
+  Swal.fire({
+    title: "Eliminados",
+    text: "Todos los géneros favoritos han sido eliminados",
+    icon: "success",
+    timer: 2000,
+    showConfirmButton: false,
+    toast: true,
+    position: "top-end"
+  });
+};
+export const AgregadoAlbumFavorito = (nombreAlbum) => {
+  Swal.fire({
+    title: "¡Agregado!",
+    text: `El álbum "${nombreAlbum}" fue agregado a favoritos`,
+    icon: "success",
+    timer: 2000,
+    showConfirmButton: false,
+    toast: true,
+    position: "top-end"
+  });
+};

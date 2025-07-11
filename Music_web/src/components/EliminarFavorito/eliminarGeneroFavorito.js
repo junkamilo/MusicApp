@@ -27,7 +27,7 @@ export const eliminarTodosGenerosFavoritos = async (callback) => {
   const token = localStorage.getItem("accessToken");
 
   try {
-    const response = await fetch(`http://localhost:3000/generosMusicales/favoritos`, {
+    const response = await fetch(`http://localhost:3000/generosMusicales/favoritos/todos`, {
       method: "DELETE",
       headers: {
         Authorization: `Bearer ${token}`,

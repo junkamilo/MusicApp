@@ -1,14 +1,19 @@
 import { generosFavoritos } from "../Agregar Favoritos/Favoritos.js";
 import "./cardGenero.css";
 
-
-export const cardGenero = (data = [], contenedor) => {
-  if (!Array.isArray(data) || !contenedor) retur-n;
+/**
+ * Renderiza cards de géneros musicales.
+ * @param {Array} data - Lista de géneros con: nombre_genero, genero_id, favorito.
+ * @param {HTMLElement} contenedor - Contenedor donde se insertan las cards.
+ * @param {boolean} isFavoritePage - Indica si se está en la vista de favoritos.
+ * @param {Function} onDeleteCallback - Callback que se ejecuta al eliminar un género favorito.
+ */
+export const cardGenero = (data = [], contenedor, isFavoritePage = false, onDeleteCallback = null) => {
+  if (!Array.isArray(data) || !contenedor) return;
 
   data.forEach(({ nombre_genero, genero_id, favorito = false }) => {
     const card = document.createElement("div");
     card.classList.add("card_generoMusical");
-    card.classList.add("card_generoMusical_innovadora");
 
     const nameContainer = document.createElement("div");
     nameContainer.classList.add("genero_nombre_container");
@@ -20,9 +25,32 @@ export const cardGenero = (data = [], contenedor) => {
 
     card.appendChild(nameContainer);
 
-    // --- Botón de corazón funcional ---
-    const corazon = generosFavoritos(genero_id, nombre_genero, favorito);
-    card.appendChild(corazon);
+    // --- Acción: Corazón o Botón Eliminar ---
+    if (isFavoritePage && typeof onDeleteCallback === "function") {
+      const btnEliminar = document.createElement("button");
+      btnEliminar.classList.add("btn_accion_card_genero", "btn_eliminar_genero");
+      btnEliminar.setAttribute("title", "Eliminar este género favorito");
+
+      // Ícono trash (usando <i class="fa-solid fa-trash">)
+      const icono = document.createElement("i");
+      icono.classList.add("fa-solid", "fa-trash");
+
+      btnEliminar.appendChild(icono);
+
+      btnEliminar.addEventListener("click", async (e) => {
+        e.stopPropagation(); // Evita que dispare la redirección
+        await onDeleteCallback(genero_id, nombre_genero);
+      });
+
+      const btnWrapper = document.createElement("div");
+      btnWrapper.classList.add("wrapper_card_eliminar");
+      btnWrapper.appendChild(btnEliminar);
+      card.appendChild(btnWrapper);
+    } else {
+      const corazon = generosFavoritos(genero_id, nombre_genero, favorito);
+      corazon.classList.add("btn_accion_card_genero");
+      card.appendChild(corazon);
+    }
 
     // Redirección al hacer clic en la card
     card.addEventListener("click", () => {
@@ -34,13 +62,9 @@ export const cardGenero = (data = [], contenedor) => {
       }
     });
 
-    // Efecto hover
-    card.addEventListener("mouseenter", () => {
-      card.classList.add("card_generoMusical_hover");
-    });
-    card.addEventListener("mouseleave", () => {
-      card.classList.remove("card_generoMusical_hover");
-    });
+    // Hover visual
+    card.addEventListener("mouseenter", () => card.classList.add("card_generoMusical_hover"));
+    card.addEventListener("mouseleave", () => card.classList.remove("card_generoMusical_hover"));
 
     contenedor.appendChild(card);
   });
