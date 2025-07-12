@@ -26,6 +26,52 @@ class AudioController {
       });
     }
   };
+
+static subirMultiplesAudios = async (req, res) => {
+  const files = req.files;
+  let ids = req.body.ids;
+
+  // Forzar a que sea array siempre, incluso si llega como string separado por comas
+  if (typeof ids === "string") {
+    ids = ids.includes(",") ? ids.split(",") : [ids];
+  } else if (!Array.isArray(ids)) {
+    ids = [ids];
+  }
+
+  if (!files || !ids || files.length !== ids.length) {
+    return res.status(400).json({
+      message: "La cantidad de archivos y de IDs no coincide",
+      files: files?.length,
+      ids: ids?.length,
+      recibido: { ids, files },
+    });
+  }
+
+  const resultados = [];
+
+  for (let i = 0; i < files.length; i++) {
+    const file = files[i];
+    const id = ids[i];
+
+    try {
+      const response = await AudioService.guardarArchivoAudio(id, file);
+      resultados.push(response);
+    } catch (error) {
+      resultados.push({
+        error: true,
+        cancionId: id,
+        message: "Error con el archivo: " + error.message,
+      });
+    }
+  }
+
+  return res.status(200).json({
+    message: "Proceso completado",
+    resultados,
+  });
+};
+
+
 }
 
 export default AudioController;

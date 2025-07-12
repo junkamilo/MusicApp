@@ -1,11 +1,13 @@
 import express from "express";
 import AudioController from "../controllers/subirAudio.js";
-import upload from "../middlewares/upload.js";
+import { uploadSingle, uploadMultiple } from "../middlewares/upload.js";
 
 
 const router = express.Router();
 
 // Esta es la ruta correcta con el middleware
-router.patch("/upload/audio/:id", upload.single("file"), AudioController.subirAudio);
+router.patch("/upload/audio/:id", uploadSingle, AudioController.subirAudio);
+
+router.put("/upload/audios", uploadMultiple, AudioController.subirMultiplesAudios);
 
 export default router;

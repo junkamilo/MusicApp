@@ -1,11 +1,10 @@
-// src/middlewares/upload.js
 import multer from "multer";
 import path from "path";
 
 // Configuración del almacenamiento
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, "uploads/audio"); // Asegúrate de que esta carpeta exista
+    cb(null, "uploads/audio");
   },
   filename: (req, file, cb) => {
     const uniqueSuffix = Date.now() + "-" + file.originalname;
@@ -22,7 +21,13 @@ const fileFilter = (req, file, cb) => {
   }
 };
 
-// Crear el middleware
+// ✅ Middleware general (sin .single o .array todavía)
 const upload = multer({ storage, fileFilter });
 
+// Exporta ambos casos según lo necesites
+export const uploadSingle = upload.single("file");     // Para un solo archivo
+export const uploadMultiple = upload.array("files", 20); // Para múltiples archivos
+
 export default upload;
+
+
