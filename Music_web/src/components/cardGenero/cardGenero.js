@@ -13,7 +13,7 @@ export const cardGenero = (data = [], contenedor, isFavoritePage = false, onDele
 
   data.forEach(({ nombre_genero, genero_id, favorito = false }) => {
     const card = document.createElement("div");
-    card.classList.add("card_generoMusical");
+    card.classList.add("card_generoMusical", "card");
 
     const nameContainer = document.createElement("div");
     nameContainer.classList.add("genero_nombre_container");

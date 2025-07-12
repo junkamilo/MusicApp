@@ -6,6 +6,7 @@ import { AlbumesMusicalesController } from "../views/Albumes/AlbumesMusicalesCon
 import { artistasController } from "../views/Artistas/ArtistasController.js";
 import { artistasFavoritosController } from "../views/Artistas/artistasFavoritosController.js";
 import { perfilArtistasController } from "../views/Artistas/perfilArtistasController.js";
+import { cambiarContrasena } from "../views/cambiarContrasena/cambiarContrasena.js";
 import { CancionesController } from "../views/Canciones/CancionesController.js";
 import { cancionesFavoritosController } from "../views/Canciones/cancionesFavoritosController.js";
 import { editarPerfilUsuario } from "../views/editarPerfilUsuario/editarPerfilUsuario.js";
@@ -91,6 +92,11 @@ const routes = {
     "template": "editarPerfilUsuario/editarPerfilUsuario.html",
     controlador: editarPerfilUsuario,
     private: true
+  },
+  EditarContrasena:{
+    "template": "cambiarContrasena/cambiarContrasena.html",
+    controlador: cambiarContrasena,
+    private: true
   }
 };
 
@@ -101,6 +107,7 @@ export const router = async (app) => {
   const [ rutas, params ] = matchRoute(hash)
 
   if(!rutas){
+    app.className = "";
     await loadView(app, 'Inicio/inicio.html');
     inicioController();
     return
@@ -113,6 +120,7 @@ export const router = async (app) => {
     return
   }
   // return
+  app.className = "";
   
   // Llamando la vista
   await loadView(app, rutas.template);

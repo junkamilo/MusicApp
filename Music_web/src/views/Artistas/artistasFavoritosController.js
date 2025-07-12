@@ -3,6 +3,7 @@ import { contentCards } from "../../components/ContentCards/contentCards";
 import { eliminarTodosArtistasFavoritos } from "../../components/EliminarFavorito/eliminarArtistaFavorito";
 import { headerFavoritos } from "../../components/headerFavoritos/headerFavoritos";
 import { error } from "../../helpers/alerts";
+import { activarBuscadorGlobal } from "../../helpers/buscador";
 
 export const artistasFavoritosController = async () => {
   const token = localStorage.getItem("accessToken");
@@ -64,11 +65,13 @@ export const artistasFavoritosController = async () => {
     // CONTENEDOR DE CARDS
     const contenedor = document.createElement("div");
     contenedor.classList.add("contenedor_artistas_favoritos");
+    contenedor.id = "favoritos_artistas";
 
     // ✅ Uso correcto de contentCards
     contentCards(data.data, contenedor, cardsArtistaFavorito, data.data.length);
 
     app.appendChild(contenedor);
+    activarBuscadorGlobal(["favoritos_artistas"]);
   } catch (err) {
     console.error("Error al cargar artistas favoritos:", err);
     error({ message: "No se pudieron cargar tus artistas favoritos." });

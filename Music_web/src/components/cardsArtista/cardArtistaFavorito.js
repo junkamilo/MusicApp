@@ -8,7 +8,7 @@ export const cardsArtistaFavorito = (data = [], contenedor) => {
   data.forEach(({ artista_id, nombre_artista, imagen_artista }) => {
     // Ya     no necesitamos 'favorito' aquí
     const card = document.createElement("div");
-    card.classList.add("card_artista_favorito"); // Clase específica para estas cards
+    card.classList.add("card_artista_favorito", "card"); // Clase específica para estas cards
 
     // Imagen del artista (circular)
     const imgWrapper = document.createElement("div");

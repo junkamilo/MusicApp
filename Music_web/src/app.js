@@ -8,11 +8,15 @@ const app = document.querySelector("#app");
 
 // Cargar el router al cambiar hash o al iniciar
 window.addEventListener('hashchange', () => {
-  router(app);
+    router(app).then(() => {
+    sidebar(); 
+    header();
+  });
 });
 
 window.addEventListener("DOMContentLoaded", () => {
-  router(app);
-  sidebar();
-  header();
+  router(app).then(() => {
+    sidebar();
+    header();
+  });
 });

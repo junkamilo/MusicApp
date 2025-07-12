@@ -1,23 +1,26 @@
+/* artistProfile.css (AJUSTADO Y MEJORADO) */
+
 /* Variables CSS (asegúrate de que estén disponibles en tu ámbito o importadas) */
 :root {
     --primary-music-color: #2ED162; /* Verde vibrante */
     --secondary-music-color: #1DB954; /* Verde un poco más oscuro */
     --dark-bg: #121212; /* Fondo muy oscuro */
-    --card-bg-light: #1A1A1A; /* Fondo de la card un poco más claro que el global */
+    --light-bg: #1A1A1A; /* Fondo ligeramente más claro para secciones/cards */
+    --lighter-bg: #282828; /* Fondo aún más claro para elementos interactivos */
     --text-light: #E0E0E0; /* Texto claro */
     --text-dark: #A0A0A0; /* Texto secundario */
     --header-profile-bg-start: #4A0075; /* Morado oscuro para el degradado del perfil */
-    --header-profile-bg-end: #121212;   /* Fondo oscuro para terminar el degradado */
+    --header-profile-bg-end: #121212; /* Fondo oscuro para terminar el degradado */
     --white: #FFFFFF;
+    --section-bg: var(--light-bg); /* Variable para el fondo de las secciones de contenido */
 }
 
 /* Contenedor principal de todo el perfil del artista */
 .artist_profile_container {
     width: 100%;
-    /* No hay background aquí, el background lo tendrá la sección del header */
     display: flex;
     flex-direction: column;
-    gap: 2.5rem; /* Espacio entre las secciones (header, álbumes, canciones) */
+    gap: 2.5rem; /* Espacio entre las secciones (header, main content) */
     padding-bottom: 2.5rem; /* Padding al final de la página */
 }
 
@@ -41,6 +44,7 @@
     align-items: flex-end; /* Alinea foto e info a la parte inferior */
     gap: 2rem; /* Espacio entre la foto y la información */
     flex-wrap: wrap; /* Permite que los elementos salten de línea en pantallas pequeñas */
+    width: 100%; /* Asegura que ocupe el ancho disponible */
 }
 
 .artist_profile_photo {
@@ -113,11 +117,85 @@
     transform: scale(0.98);
 }
 
+/* --- Contenedor principal para el menú de navegación y el contenido dinámico --- */
+.artist_main_content {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 2.5rem; /* Espacio entre el menú de navegación y el contenido dinámico */
+}
+
+/* --- Menú de navegación (Álbumes / Canciones) --- */
+.artist_nav_menu {
+    width: 100%;
+    display: flex;
+    justify-content: center; /* Centra los botones */
+    gap: 1.5rem; /* Espacio entre los botones */
+    padding: 1.5rem 0; /* Padding vertical para separar del header */
+    border-bottom: 1px solid var(--border-color-subtle); /* Separador sutil */
+    background-color: var(--dark-bg); /* Fondo para el menú si lo quieres separado del #app */
+    border-radius: 16px; /* Bordes redondeados */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+}
+
+.nav_button {
+    background: none;
+    border: none;
+    color: var(--text-dark);
+    font-size: 1.1rem;
+    font-weight: 600;
+    padding: 0.8rem 1.5rem;
+    border-radius: 50px; /* Botones tipo píldora */
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative; /* Para el pseudo-elemento de subrayado */
+    overflow: hidden; /* Para el efecto de brillo */
+}
+
+.nav_button::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 3px;
+    background-color: var(--primary-music-color);
+    border-radius: 2px;
+    transition: width 0.3s ease;
+}
+
+.nav_button:hover {
+    color: var(--text-light);
+}
+
+.nav_button:hover::before {
+    width: 100%;
+}
+
+.nav_button.active {
+    color: var(--primary-music-color); /* Color verde cuando está activo */
+    font-weight: 700;
+}
+
+.nav_button.active::before {
+    width: 100%;
+    background-color: var(--primary-music-color); /* Asegura el color verde para el activo */
+}
+
+/* --- Contenedor para el contenido dinámico (álbumes/canciones) --- */
+.artist_dynamic_content {
+    width: 100%;
+    /* No hay background aquí, las secciones internas lo tendrán */
+    display: flex;
+    flex-direction: column;
+    gap: 2.5rem; /* Espacio entre secciones de álbumes y canciones */
+}
+
 /* --- Secciones de contenido (Álbumes, Canciones) --- */
-/* Reutilizamos .content de tu CSS general para estas secciones */
 .artist_content_section {
     width: 100%;
-    background-color: var(--section-bg); /* Fondo intermedio */
+    background-color: var(--light-bg); /* Fondo intermedio */
     border-radius: 16px;
     padding: 1.5rem 2.5rem; /* Padding consistente */
     display: flex;
@@ -126,18 +204,79 @@
     box-shadow: 0 8px 30px rgba(0, 0, 0, 0.6);
 }
 
+/* Títulos de secciones (Álbumes, Canciones Populares) */
+.content_titulos {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--border-color-subtle);
+}
+
+.content_titulos h3 {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--text-light);
+    margin: 0;
+}
+
+.content_titulos .ver-mas {
+    color: var(--text-dark);
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: color 0.2s ease, text-decoration 0.2s ease;
+}
+
+.content_titulos .ver-mas:hover {
+    color: var(--primary-music-color);
+    text-decoration: underline;
+}
+
+/* Contenedor de cards (reutiliza .content_cards de tu CSS general) */
+/* Asegúrate de que .content_cards tenga display: grid, etc. en tu style.css o en un archivo global */
+.content_cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 1.5rem;
+    justify-items: center;
+}
+
 /* Mensajes cuando no hay contenido */
 .no-content-message {
     color: var(--text-dark);
     font-size: 1rem;
     text-align: center;
     padding: 2rem 0;
+    width: 100%; /* Asegura que ocupe todo el ancho */
+}
+
+/* Clase para ocultar secciones */
+.hidden {
+    display: none !important;
 }
 
 /* Media Queries para responsividad */
 @media (max-width: 1024px) {
     .artist_name {
         font-size: 3.5rem;
+    }
+    .artist_header_section,
+    .artist_nav_menu,
+    .artist_content_section {
+        padding: 1.5rem 2rem;
+    }
+    .nav_button {
+        font-size: 1rem;
+        padding: 0.7rem 1.2rem;
+    }
+    .content_titulos h3 {
+        font-size: 1.5rem;
+    }
+    .content_cards {
+        grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+        gap: 1rem;
     }
 }
 
@@ -166,8 +305,23 @@
         padding: 0.6rem 1.5rem;
         font-size: 1rem;
     }
+    .artist_nav_menu {
+        padding: 1rem 0;
+        gap: 1rem;
+    }
+    .nav_button {
+        font-size: 0.9rem;
+        padding: 0.6rem 1rem;
+    }
     .artist_content_section {
         padding: 1rem;
+    }
+    .content_titulos h3 {
+        font-size: 1.3rem;
+    }
+    .content_cards {
+        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+        gap: 0.8rem;
     }
 }
 
@@ -177,8 +331,8 @@
         min-height: 150px;
     }
     .artist_profile_photo {
-        width: 120px;
-        height: 120px;
+        width: 100px;
+        height: 100px;
     }
     .artist_name {
         font-size: 2.2rem;
@@ -187,10 +341,31 @@
         font-size: 0.85rem;
     }
     .play_artist_button {
-        padding: 0.6rem 1.5rem;
-        font-size: 1rem;
+        padding: 0.5rem 1.2rem;
+        font-size: 0.9rem;
+    }
+    .artist_nav_menu {
+        flex-direction: column; /* Apila los botones de navegación */
+        gap: 0.5rem;
+        padding: 0.8rem 0;
+    }
+    .nav_button {
+        width: 90%; /* Ocupa casi todo el ancho */
+        margin: 0 auto; /* Centra los botones apilados */
+        font-size: 0.85rem;
+        padding: 0.5rem 0.8rem;
     }
     .artist_content_section {
-        padding: 1rem;
+        padding: 0.8rem;
+    }
+    .content_titulos h3 {
+        font-size: 1.1rem;
+    }
+    .content_titulos .ver-mas {
+        font-size: 0.8rem;
+    }
+    .content_cards {
+        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+        gap: 0.5rem;
     }
 }

@@ -4,6 +4,7 @@ import { cardCancion } from "../../components/cardCancion/cardCancion";
 import { cardGenero } from "../../components/cardGenero/cardGenero";
 import { cardsArtista } from "../../components/cardsArtista/cardsArtista";
 import { contentCards } from "../../components/ContentCards/contentCards";
+import { activarBuscadorGlobal } from "../../helpers/buscador";
 
 export const inicioController = async () => {
   //hacemos peticion  a los géneros musicales
@@ -148,4 +149,11 @@ export const inicioController = async () => {
   } catch (error) {
     console.error("Error al obtener las canciones:", error);
   }
+
+    activarBuscadorGlobal([
+    "content_generoMusicales",
+    "content_ArtistasMusicales",
+    "content_Albumes",
+    "content_canciones",
+  ]);
 };

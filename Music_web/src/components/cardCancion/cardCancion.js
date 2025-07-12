@@ -30,7 +30,7 @@ export const cardCancion = (
       favorito = false, // Mantener por si se usa en otras vistas
     }) => {
       const card = document.createElement("div");
-      card.classList.add("card_cancion", "card_cancion_innovadora");
+      card.classList.add("card_cancion", "card_cancion_innovadora", "card");
 
       // Envoltura para la imagen de la canción/álbum
       const imgWrapper = document.createElement("div");

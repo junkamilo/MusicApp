@@ -66,9 +66,9 @@ body {
     display: flex;
     flex-direction: column;
     gap: 2.5rem; /* Espacio entre las secciones de contenido */
-    min-height: 100%; /* Necesario para que el overflow-y funcione en flex/grid containers */
+    max-height: 100%; /* Necesario para que el overflow-y funcione en flex/grid containers */
+    min-height: 0; 
     position: relative; /* Para posibles elementos posicionados dentro */
-    height: 100%;
 }
 
 /* Estilos para el scrollbar de #app (Webkit) */

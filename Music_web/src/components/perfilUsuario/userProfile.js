@@ -100,7 +100,7 @@ export const userProfile = async (contenedorPrincipal) => {
         changePasswordButton.addEventListener("click", () => {
             console.log("Cambiar contraseña clickeado");
             // Lógica para navegar a la página de cambio de contraseña
-            window.location.hash = "#CambiarContrasena";
+            window.location.hash = "#EditarContrasena";
         });
 
         userActionsSection.appendChild(editProfileButton);

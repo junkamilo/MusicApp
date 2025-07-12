@@ -33,7 +33,7 @@ export const cardAlbum = (
       favorito = false,
     }) => {
       const card = document.createElement("div");
-      card.classList.add("card_album", "card_album_innovadora");
+      card.classList.add("card_album", "card_album_innovadora", "card");
 
       // Imagen
       const imgWrapper = document.createElement("div");
