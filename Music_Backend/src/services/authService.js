@@ -173,15 +173,71 @@ class AuthService {
       }
       return { error: false, code: 200, data: userInfo };
     } catch (error) {
-      return { error: true, code: 500, message: "Error al obtener la información del usuario" };
+      return {
+        error: true,
+        code: 500,
+        message: "Error al obtener la información del usuario",
+      };
     }
-  } 
+  }
 
   //Cerrar sesión
   static async logout(userId) {
     await Usuario.updateRefreshToken(userId, null);
     return { error: false, code: 200, message: "Sesión cerrada correctamente" };
   }
+  //Actualizar información del usuario
+  static async actualizarInfoUsuario(userId, nombre, email) {
+    try {
+      // Verificamos si el email ya existe
+      const emailExists = await Usuario.emailExists(email, userId);
+      if (emailExists) {
+        return { error: true, code: 400, message: "El correo ya está en uso" };
+      }
+      // Actualizamos la información del usuario
+      await Usuario.updateUserInfo(userId, nombre, email);
+      return {
+        error: false,
+        code: 200,
+        message: "Información actualizada correctamente",
+      };
+    } catch (error) {
+      return {
+        error: true,
+        code: 500,
+        message: "Error al actualizar la información del usuario",
+      };
+    }
+  }
+  // Cambiar contraseña del usuario
+  static async cambiarPassword(userId, currentPassword, newPassword) {
+    const user = await Usuario.findById(userId);
+    if (!user) {
+      return { error: true, code: 404, message: "Usuario no encontrado" };
+    }
+
+    const passwordCorrecta = await bcrypt.compare(
+      currentPassword,
+      user.contrasena
+    );
+    if (!passwordCorrecta) {
+      return {
+        error: true,
+        code: 401,
+        message: "La contraseña actual es incorrecta",
+      };
+    }
+
+    const hashedNewPassword = await bcrypt.hash(newPassword, 10);
+    await Usuario.updatePassword(userId, hashedNewPassword);
+
+    return {
+      error: false,
+      code: 200,
+      message: "Contraseña actualizada correctamente",
+    };
+  }
+
 }
 
 export default AuthService;

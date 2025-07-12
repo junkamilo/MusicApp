@@ -13,6 +13,7 @@ import GenerosRouters from './src/routes/GenerosRouters.js';
 import authRutas from './src/routes/authRutas.js';
 import protectedRoutes from './src/routes/protectedRoutes.js';
 import AudioRouter from './src/routes/Audio.js';
+import playlistRouters from './src/routes/playlistRouters.js';
 
 
 // Importamos dotenv para manejar las variables de entorno
@@ -42,6 +43,7 @@ app.use('/albumes', AlbumRouters);
 app.use('/canciones', CancionRouters);
 app.use('/generosMusicales', GenerosRouters);
 app.use('/auth',authRutas);
+app.use('/playlists', playlistRouters);
 app.use("/api", protectedRoutes);
 app.use('/api', AudioRouter);
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
