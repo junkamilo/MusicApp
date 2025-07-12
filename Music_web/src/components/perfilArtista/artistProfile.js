@@ -197,9 +197,50 @@ export const artistProfile = async (artistaId, contenedorPrincipal) => {
     playArtistButton.appendChild(document.createTextNode(" Reproducir"));
 
     playArtistButton.addEventListener("click", () => {
-      console.log(`Reproduciendo discografía de ${artista.nombre_artista}`);
-      // Lógica para iniciar la reproducción de la discografía del artista
-    });
+  if (!songsData || songsData.length === 0) {
+    console.warn("Este artista no tiene canciones para reproducir.");
+    return;
+  }
+
+  const cancion = songsData[0]; // Puedes cambiar el índice si quieres otra canción
+  const {
+    titulo_cancion,
+    artista_cancion,
+    url_portada_album,
+    url_archivo_audio,
+  } = cancion;
+
+  if (!url_archivo_audio) {
+    console.error("❌ No se encontró archivo de audio para reproducir.");
+    return;
+  }
+
+  const audio = document.getElementById("audioPlayer");
+  const footer = document.getElementById("footerPlayer");
+  const playerCover = document.getElementById("playerCover");
+  const playerTitle = document.getElementById("playerTitle");
+  const playerArtist = document.getElementById("playerArtist");
+
+  const host = window.location.hostname;
+  const audioURL = `http://${host}:3000/uploads${encodeURI(url_archivo_audio)}`;
+
+  if (footer) footer.classList.remove("hidden");
+  if (playerCover) playerCover.src = url_portada_album || "./assets/default_cover.png";
+  if (playerTitle) playerTitle.textContent = titulo_cancion;
+  if (playerArtist) playerArtist.textContent = artista_cancion;
+
+  if (audio) {
+    audio.src = audioURL;
+    audio.onerror = () => {
+      console.error("❌ Error al cargar el audio:", audio.src);
+    };
+    audio.play();
+  }
+
+  console.log(`▶️ Reproduciendo canción de perfil: ${titulo_cancion}`);
+});
+
+
 
     artistInfo.appendChild(artistType);
     artistInfo.appendChild(artistName);

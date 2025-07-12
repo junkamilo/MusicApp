@@ -121,10 +121,48 @@ export const albumProfile = async (albumId, contenedorPrincipal) => {
         playAlbumButton.appendChild(playIcon);
         playAlbumButton.appendChild(document.createTextNode(' Reproducir Álbum'));
 
-        playAlbumButton.addEventListener("click", () => {
-            console.log(`Reproduciendo álbum: ${album.titulo_album}`);
-            // Lógica para iniciar la reproducción de todas las canciones del álbum
+       playAlbumButton.addEventListener("click", () => {
+    if (!songsData || songsData.length === 0) return;
+
+    const primeraCancion = songsData[0];
+    const { titulo_cancion, artista_cancion, url_archivo_audio, url_portada_album } = primeraCancion;
+
+    if (!url_archivo_audio) {
+        console.error("❌ La primera canción no tiene archivo de audio.");
+        return;
+    }
+
+    // Mostrar el reproductor
+    const footer = document.getElementById("footerPlayer");
+    if (footer) footer.classList.remove("hidden");
+
+    // Establecer los datos en el reproductor
+    const playerCover = document.getElementById("playerCover");
+    const playerTitle = document.getElementById("playerTitle");
+    const playerArtist = document.getElementById("playerArtist");
+
+    if (playerCover) playerCover.src = url_portada_album || "./assets/default_album_cover.png";
+    if (playerTitle) playerTitle.textContent = titulo_cancion;
+    if (playerArtist) playerArtist.textContent = artista_cancion;
+
+    // Configurar y reproducir el audio
+    const audio = document.getElementById("audioPlayer");
+    const host = window.location.hostname;
+    const audioURL = `http://${host}:3000/uploads${encodeURI(url_archivo_audio)}`;
+
+    if (audio) {
+        audio.src = audioURL;
+        audio.onerror = () => {
+            console.error("❌ Error al cargar el audio:", audio.src);
+        };
+        audio.play().then(() => {
+            console.log(`▶️ Reproduciendo: ${titulo_cancion}`);
+        }).catch((err) => {
+            console.error("Error al intentar reproducir:", err);
         });
+    }
+});
+
 
         albumInfo.appendChild(albumType);
         albumInfo.appendChild(albumTitle);

@@ -1,17 +1,9 @@
-// cardCancion.js (MODIFICADO)
-
-import { AgregadoCancionFavoritos, error, success } from "../../helpers/alerts";
+import { AgregadoCancionFavoritos, error } from "../../helpers/alerts";
 import { agregarCancionFavorita } from "../../helpers/apiFavoritos";
-import "./cardCancion.css"; // CSS para la card de canción
+import { estaAutenticado } from "../../helpers/auth";
 
-/**
- * Crea un elemento de tarjeta para una canción.
- * Puede mostrar un botón de favorito o un botón de eliminar, dependiendo de los parámetros.
- * @param {Array} data - Un array que contiene un objeto de canción.
- * @param {HTMLElement} contenedor - El elemento DOM donde se añadirá la tarjeta.
- * @param {boolean} [isFavoritePage=false] - Indica si la card se renderiza en la página de favoritos.
- * @param {Function} [onDeleteCallback=null] - Función a llamar al eliminar (solo si isFavoritePage es true).
- */
+import "./cardCancion.css";
+
 export const cardCancion = (
   data = [],
   contenedor,
@@ -27,31 +19,32 @@ export const cardCancion = (
       artista_cancion,
       url_portada_album,
       url_archivo_audio,
-      favorito = false, // Mantener por si se usa en otras vistas
+      favorito = false,
     }) => {
       const card = document.createElement("div");
       card.classList.add("card_cancion", "card_cancion_innovadora", "card");
 
-      // Envoltura para la imagen de la canción/álbum
+      // --- Imagen + botón Play ---
       const imgWrapper = document.createElement("div");
       imgWrapper.classList.add("imagen_cancion_wrapper");
 
       const img = document.createElement("img");
       img.classList.add("imagen_cancion");
-      img.src =
-        url_portada_album ||
-        "https://placehold.co/140x140/8A2BE2/FFFFFF?text=Cancion"; // Placeholder
+      img.src = url_portada_album || "https://placehold.co/140x140/8A2BE2/FFFFFF?text=Cancion";
       img.alt = titulo_cancion;
-      imgWrapper.appendChild(img);
 
-      // Botón de Reproducción
       const playButton = document.createElement("button");
       playButton.classList.add("btn_play_cancion");
-      playButton.innerHTML = '<i class="fa-solid fa-play"></i>'; // Usar Font Awesome
-      playButton.addEventListener("click", (e) => {
-        e.stopPropagation(); // Evita redirección
+      playButton.innerHTML = '<i class="fa-solid fa-play"></i>';
 
-        // Mostrar el reproductor (asumiendo que estos elementos existen en tu HTML global)
+      playButton.addEventListener("click", (e) => {
+        e.stopPropagation();
+
+        if (!estaAutenticado()) {
+          window.location.hash = "#Login";
+          return;
+        }
+
         const footer = document.getElementById("footerPlayer");
         if (footer) footer.classList.remove("hidden");
 
@@ -63,81 +56,74 @@ export const cardCancion = (
         if (playerTitle) playerTitle.textContent = titulo_cancion;
         if (playerArtist) playerArtist.textContent = artista_cancion;
 
-        // Reproducir audio
         const audio = document.getElementById("audioPlayer");
         const host = window.location.hostname;
+
         if (!url_archivo_audio) {
-          console.error(
-            "❌ No se encontró la URL del audio para:",
-            titulo_cancion
-          );
-          // Usar una alerta personalizada en lugar de alert()
-          // alert(`No se puede reproducir "${titulo_cancion}" porque no tiene archivo de audio asignado.`);
+          console.error("❌ No se encontró la URL del audio para:", titulo_cancion);
           return;
         }
 
-        const audioURL = `http://${host}:3000/uploads${encodeURI(
-          url_archivo_audio
-        )}`;
-        console.log("🎧 URL audio:", audioURL);
-
+        const audioURL = `http://${host}:3000/uploads${encodeURI(url_archivo_audio)}`;
         if (audio) {
           audio.src = audioURL;
           audio.onerror = () => {
             console.error("❌ Error al cargar el audio:", audio.src);
-            // Usar una alerta personalizada
-            // alert("Error al cargar el archivo de audio. Verifica que exista en el servidor.");
           };
           audio.play();
         }
 
         console.log(`▶️ Reproduciendo: ${titulo_cancion}`);
       });
+
+      imgWrapper.appendChild(img);
       imgWrapper.appendChild(playButton);
       card.appendChild(imgWrapper);
 
-      // Info título y artista
+      // --- Título y artista ---
       const infoContainer = document.createElement("div");
       infoContainer.classList.add("info_cancion_container");
 
       const titulo = document.createElement("h3");
       titulo.classList.add("titulo_cancion");
       titulo.textContent = titulo_cancion;
-      infoContainer.appendChild(titulo);
 
       const artista = document.createElement("p");
       artista.classList.add("artista_cancion");
       artista.textContent = artista_cancion;
-      infoContainer.appendChild(artista);
 
+      infoContainer.appendChild(titulo);
+      infoContainer.appendChild(artista);
       card.appendChild(infoContainer);
 
-      // --- Lógica del botón (Corazón o Eliminar) ---
+      // --- Botón favorito o eliminar ---
       if (isFavoritePage && onDeleteCallback) {
-        // Si estamos en la página de favoritos, agregamos el botón de eliminar
         const btnEliminar = document.createElement("button");
-        btnEliminar.classList.add("btn_accion_card_cancion"); // Clase general para botones de acción
-        btnEliminar.classList.add("btn_eliminar_cancion"); // Clase específica para eliminar
-        btnEliminar.innerHTML = '<i class="fa-solid fa-trash"></i>'; // Icono de Font Awesome
+        btnEliminar.classList.add("btn_accion_card_cancion", "btn_eliminar_cancion");
+        btnEliminar.innerHTML = '<i class="fa-solid fa-trash"></i>';
         btnEliminar.setAttribute("title", "Eliminar esta canción favorita");
 
         btnEliminar.addEventListener("click", async (e) => {
-          e.stopPropagation(); // Evita que el clic en el botón active el evento de la card
-          await onDeleteCallback(cancion_id, titulo_cancion); // Llama al callback
+          e.stopPropagation();
+          await onDeleteCallback(cancion_id, titulo_cancion);
         });
+
         card.appendChild(btnEliminar);
       } else {
         const botonFavorito = document.createElement("button");
-        botonFavorito.classList.add(
-          "btn_accion_card_cancion",
-          "btn_favorito_cancion"
-        ); // Clase para el corazón
-        botonFavorito.innerHTML = favorito ? "❤️" : "🤍"; // Emojis por defecto
+        botonFavorito.classList.add("btn_accion_card_cancion", "btn_favorito_cancion");
+        botonFavorito.innerHTML = favorito ? "❤️" : "🤍";
+
         botonFavorito.addEventListener("click", async (e) => {
           e.stopPropagation();
+
+          if (!estaAutenticado()) {
+            window.location.hash = "#Login";
+            return;
+          }
+
           favorito = !favorito;
           botonFavorito.innerHTML = favorito ? "❤️" : "🤍";
-          console.log(`Favorito: ${titulo_cancion}`, favorito);
 
           if (favorito) {
             try {
@@ -145,25 +131,20 @@ export const cardCancion = (
               if (result && !result.error) {
                 AgregadoCancionFavoritos(titulo_cancion);
               } else {
-                error({
-                  message: result.message || "No se pudo agregar a favoritos",
-                });
+                error({ message: result.message || "No se pudo agregar a favoritos" });
               }
             } catch (err) {
               error({ message: "Error al agregar a favoritos" });
             }
           } else {
-            // Aquí puedes agregar lógica para eliminar de favoritos si es necesario
-            console.log(
-              `"${titulo_cancion}" fue removida (lógica aún no implementada)`
-            );
+            console.log(`"${titulo_cancion}" fue removida (lógica aún no implementada)`);
           }
         });
 
         card.appendChild(botonFavorito);
       }
 
-      // Hover efecto
+      // --- Hover visual ---
       card.addEventListener("mouseenter", () => {
         card.classList.add("card_cancion_hover");
       });
@@ -171,10 +152,15 @@ export const cardCancion = (
         card.classList.remove("card_cancion_hover");
       });
 
-      // Redirección
+      // --- Click redirección a detalle ---
       card.addEventListener("click", () => {
+        if (!estaAutenticado()) {
+          window.location.hash = "#Login";
+          return;
+        }
+
         if (cancion_id) {
-          window.location.href = `#/canciones/${cancion_id}`;
+          window.location.hash = `#/canciones/${cancion_id}`;
         }
       });
 
@@ -182,3 +168,4 @@ export const cardCancion = (
     }
   );
 };
+
