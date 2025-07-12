@@ -15,9 +15,22 @@ class Album {
   async getAlbumById(id) {
     try {
       const [rows] = await connection.query(
-        "SELECT * FROM album WHERE album_id = ?",
-        [id]
-      );
+      `
+      SELECT 
+        a.album_id,
+        a.titulo_album,
+        a.fecha_album,
+        a.descripcion,
+        a.url_portada_album,
+        a.popularidad,
+        a.artista_id,
+        ar.nombre_artista
+      FROM album a
+      JOIN artistas ar ON a.artista_id = ar.artista_id
+      WHERE a.album_id = ?
+      `,
+      [id]
+    );
       if (rows.length === 0) {
         throw new Error("Álbum no encontrado");
       }
@@ -140,7 +153,6 @@ class Album {
     }
   }
 
-  //metodo para obtener albumes favoritos de un usuario
   //metodo para obtener albumes favoritos de un usuario
 async getAlbumesFavoritosByUserId(userId) {
   try {
