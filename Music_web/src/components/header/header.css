@@ -1,4 +1,4 @@
-/* header.css (NUEVO DISEÑO ESPECTACULAR) */
+/* header.css (NUEVO DISEÑO ESPECTACULAR - SÚPER RESPONSIVO) */
 
 /* Variables CSS (asegúrate de que estén disponibles globalmente) */
 :root {
@@ -11,9 +11,10 @@
     --text-dark: #A0A0A0; /* Texto secundario */
     --input-bg: #282828; /* Fondo del input de búsqueda */
     --input-border-focus: var(--primary-music-color); /* Borde del input al enfocar */
+    --white: #FFFFFF; /* Añadida para el botón de logout */
 }
 
-/* Header principal */
+/* Header principal - Estilos para Laptops/Desktops grandes por defecto */
 header {
     grid-area: header;
     background: linear-gradient(90deg, var(--header-bg-start), var(--header-bg-end)); /* Degradado horizontal */
@@ -26,6 +27,7 @@ header {
     top: 0;
     z-index: 99; /* Asegura que esté por encima del contenido */
     box-sizing: border-box; /* Incluye padding en el ancho */
+    height: var(--header-height); /* Asegura que tome la altura definida en style.css */
 }
 
 /* Contenedor principal del header */
@@ -50,6 +52,7 @@ header {
     text-decoration: none;
     transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    flex-shrink: 0; /* Evita que se encoja */
 }
 
 .icon_link i {
@@ -59,7 +62,7 @@ header {
 }
 
 .icon_link:hover {
-    background-color: var(--hover-gradient-start); /* Fondo más claro al hover */
+    background-color: var(--lighter-bg); /* Fondo más claro al hover */
     transform: translateY(-3px); /* Ligeramente elevado */
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
 }
@@ -97,6 +100,7 @@ header {
     display: flex;
     justify-content: center;
     align-items: center;
+    flex-shrink: 0; /* Evita que se encoja */
 }
 
 .content_lupa i {
@@ -123,7 +127,7 @@ header {
     height: 100%;
     padding: 0 12px;
     font-size: 1rem;
-    font-family: 'Inter', sans-serif; /* Usar Inter para consistencia */
+    font-family: 'Poppins', sans-serif; /* Usar Poppins para consistencia */
     background-color: transparent;
     outline: none;
     color: var(--text-light); /* Color de texto claro */
@@ -138,6 +142,7 @@ header {
     display: flex;
     align-items: center;
     justify-content: flex-end;
+    flex-shrink: 0; /* Evita que se encoja */
 }
 
 /* Botón de Logout */
@@ -153,6 +158,7 @@ header {
     box-shadow: 0 4px 10px rgba(0,0,0,0.3);
     letter-spacing: 0.5px;
     font-size: 0.95rem;
+    white-space: nowrap; /* Evita que el texto salte de línea */
 }
 
 .btn-logout:hover {
@@ -165,24 +171,128 @@ header {
     transform: translateY(0);
 }
 
-/* Media Queries para responsividad */
-@media (max-width: 1024px) {
+/* --- Media Queries para Responsividad --- */
+
+/* ---------------------------------------------------------------------- */
+/* --- 1. Pantallas Extra Grandes (TVs, Monitores 4K) --- */
+/* Mayor a 1920px */
+@media (min-width: 1921px) {
+    header {
+        padding: 1.2rem 2.5rem; /* Más padding para pantallas grandes */
+    }
     .content_header {
-        gap: 1rem;
+        gap: 2rem;
+    }
+    .icon_link {
+        width: 56px;
+        height: 56px;
+    }
+    .icon_link i {
+        font-size: 1.6rem;
     }
     .content_buscador {
-        max-width: 400px;
+        max-width: 800px; /* Más ancho para el buscador */
+        height: 56px;
+    }
+    .content_lupa {
+        width: 60px;
+    }
+    .content_lupa i {
+        font-size: 1.3rem;
+    }
+    .text_buscador {
+        font-size: 1.15rem;
+    }
+    .btn-logout {
+        padding: 1rem 1.8rem;
+        font-size: 1.05rem;
     }
 }
 
-@media (max-width: 768px) {
+/* ---------------------------------------------------------------------- */
+/* --- 2. Laptops y Desktops Estándar --- */
+/* Hasta 1920px (y mayor a 1024px) */
+@media (max-width: 1920px) and (min-width: 1025px) {
+    header {
+        padding: 1rem 2rem;
+    }
+    .content_header {
+        gap: 1.5rem;
+    }
+    .icon_link {
+        width: 50px;
+        height: 50px;
+    }
+    .icon_link i {
+        font-size: 1.4rem;
+    }
+    .content_buscador {
+        max-width: 650px;
+        height: 50px;
+    }
+    .content_lupa {
+        width: 55px;
+    }
+    .content_lupa i {
+        font-size: 1.2rem;
+    }
+    .text_buscador {
+        font-size: 1.05rem;
+    }
+    .btn-logout {
+        padding: 0.9rem 1.6rem;
+        font-size: 1rem;
+    }
+}
+
+/* ---------------------------------------------------------------------- */
+/* --- 3. Tabletas (Landscape) y Laptops Pequeñas --- */
+/* Hasta 1024px (y mayor a 768px) */
+@media (max-width: 1024px) and (min-width: 769px) {
+    header {
+        padding: 0.8rem 1.5rem;
+    }
+    .content_header {
+        gap: 1.2rem;
+    }
+    .icon_link {
+        width: 44px;
+        height: 44px;
+    }
+    .icon_link i {
+        font-size: 1.2rem;
+    }
+    .content_buscador {
+        max-width: 500px;
+        height: 44px;
+    }
+    .content_lupa {
+        width: 45px;
+    }
+    .content_lupa i {
+        font-size: 1.05rem;
+    }
+    .text_buscador {
+        font-size: 0.95rem;
+    }
+    .btn-logout {
+        padding: 0.75rem 1.4rem;
+        font-size: 0.9rem;
+    }
+}
+
+/* ---------------------------------------------------------------------- */
+/* --- 4. Tabletas (Portrait) y Celulares Grandes (Landscape) --- */
+/* Hasta 768px (y mayor a 480px) */
+@media (max-width: 768px) and (min-width: 481px) {
     header {
         padding: 0.6rem 1rem;
         border-radius: 0; /* Sin bordes redondeados en móvil */
+        height: var(--header-height); /* Asegura que tome la altura definida en style.css */
     }
     .content_header {
         flex-wrap: wrap; /* Permite que los elementos salten de línea */
-        justify-content: center;
+        justify-content: center; /* Centra los elementos */
         gap: 0.8rem;
     }
     .icon_link {
@@ -196,6 +306,7 @@ header {
         width: 100%; /* Ocupa todo el ancho */
         max-width: none; /* Elimina la restricción de ancho máximo */
         height: 40px;
+        order: 3; /* Mueve el buscador al final si hay flex-wrap */
     }
     .content_lupa {
         width: 40px;
@@ -210,22 +321,39 @@ header {
         padding: 0.6rem 1.2rem;
         font-size: 0.85rem;
     }
+    /* Asegura que los enlaces de icono y el botón de logout estén en la primera fila */
+    .icon_link:first-child { order: 1; }
+    .icon_link:nth-child(2) { order: 2; }
+    .content_logout { order: 2; } /* Ajusta el orden para que el logout esté al lado de los iconos */
 }
 
+/* ---------------------------------------------------------------------- */
+/* --- 5. Celulares Pequeños (Portrait) --- */
+/* Hasta 480px */
 @media (max-width: 480px) {
+    header {
+        padding: 0.5rem 0.8rem;
+        border-radius: 0;
+        height: var(--header-height); /* Asegura que tome la altura definida en style.css */
+    }
     .content_header {
         flex-direction: column; /* Apila los elementos verticalmente */
         gap: 0.5rem;
+        align-items: stretch; /* Estira los elementos para ocupar el ancho */
     }
     .icon_link {
         width: 36px;
         height: 36px;
+        margin: 0 auto; /* Centra los iconos si están apilados */
     }
     .icon_link i {
         font-size: 1rem;
     }
     .content_buscador {
         height: 36px;
+        width: 100%; /* Asegura que ocupe todo el ancho disponible */
+        max-width: none;
+        order: 3; /* Siempre al final */
     }
     .content_lupa {
         width: 36px;
@@ -236,5 +364,64 @@ header {
     .btn-logout {
         width: 100%; /* Ocupa todo el ancho */
         text-align: center;
+        padding: 0.5rem 1rem;
+        font-size: 0.8rem;
+        order: 4; /* Asegura que el botón de logout esté al final */
     }
+    /* Agrupa los iconos de navegación en una fila si es posible */
+    .icon_links_group { /* Necesitarías envolver tus icon_link en un div con esta clase */
+        display: flex;
+        justify-content: space-around;
+        width: 100%;
+        gap: 0.5rem;
+        order: 1; /* Asegura que los iconos estén al principio */
+    }
+    /* Ajusta el orden de los elementos individuales dentro de .content_header */
+    .icon_link { order: 1; } /* Los iconos pueden estar en la misma fila si se agrupan */
+    .content_logout { order: 2; } /* El logout puede estar en la segunda fila si hay espacio */
+
+    /* Si no se usa .icon_links_group y los iconos están directos en .content_header */
+    .icon_link:first-child { margin-right: auto; } /* Empuja el primer icono a la izquierda */
+    .icon_link:nth-child(2) { margin-left: auto; } /* Empuja el segundo icono a la derecha */
+}
+
+/* ---------------------------------------------------------------------- */
+/* --- 6. Orientación Horizontal de Celulares (ej. iPhone SE en landscape) --- */
+/* Cuando la altura es menor que la anchura, y la anchura está entre 481px y 768px */
+@media (min-width: 481px) and (max-width: 768px) and (orientation: landscape) {
+    header {
+        padding: 0.6rem 1.2rem;
+    }
+    .content_header {
+        flex-wrap: nowrap; /* Intenta mantener en una sola línea si hay espacio */
+        justify-content: space-between; /* Espacio entre los elementos */
+        gap: 1rem;
+    }
+    .icon_link {
+        width: 44px;
+        height: 44px;
+    }
+    .icon_link i {
+        font-size: 1.2rem;
+    }
+    .content_buscador {
+        max-width: 300px; /* Ajustar el ancho del buscador */
+        height: 44px;
+        order: unset; /* Restablecer el orden */
+    }
+    .content_lupa {
+        width: 45px;
+    }
+    .text_buscador {
+        font-size: 0.95rem;
+    }
+    .btn-logout {
+        padding: 0.75rem 1.4rem;
+        font-size: 0.9rem;
+        width: auto; /* Restablecer ancho a auto */
+    }
+    /* Restablecer el orden si se había modificado en el breakpoint anterior */
+    .icon_link:first-child { order: unset; margin-right: unset; }
+    .icon_link:nth-child(2) { order: unset; margin-left: unset; }
+    .content_logout { order: unset; }
 }
