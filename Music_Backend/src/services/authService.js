@@ -69,6 +69,11 @@ class AuthService {
         data: {
           accessToken,
           refreshToken,
+          user: {
+            id: user.id_usuario,
+            nombre: user.nombre,
+            email: user.email,
+          },
         },
       };
     } catch (error) {
@@ -237,7 +242,6 @@ class AuthService {
       message: "Contraseña actualizada correctamente",
     };
   }
-
 }
 
 export default AuthService;
