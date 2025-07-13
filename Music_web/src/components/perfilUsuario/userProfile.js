@@ -124,6 +124,7 @@ export const userProfile = async (contenedorPrincipal) => {
             { label: "Artistas Favoritos", iconClass: "fa-solid fa-user-group", hash: "#ArtistasFavoritos" },
             { label: "Álbumes Favoritos", iconClass: "fa-solid fa-book-open", hash: "#AlbumesFavoritos" },
             { label: "Canciones Favoritas", iconClass: "fa-solid fa-heart", hash: "#CancionesFavoritos" },
+            { label: "Canciones Subidas", iconClass: "fa-solid fa-heart", hash: "#MostrarCanciones" },
         ];
 
         favoriteCategories.forEach(({ label, iconClass, hash }) => {

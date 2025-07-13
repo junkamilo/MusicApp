@@ -1,7 +1,14 @@
 export const setData = (data) => {
   console.log("Tokens recibidos:", data);
+
   localStorage.setItem("accessToken", data.accessToken);
   localStorage.setItem("refreshToken", data.refreshToken);
+
+  if (data.user) {
+    localStorage.setItem("user", JSON.stringify(data.user));
+  } else {
+    console.warn("No se recibió información del usuario para guardar.");
+  }
 };
 
 export const getData = () => {

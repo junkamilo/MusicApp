@@ -15,7 +15,9 @@ import { generosFavoritosController } from "../views/Generos/generosFavoritosCon
 import { generosMusicalesController } from "../views/Generos/generosMusicalesController.js";
 import { inicioController } from "../views/Inicio/InicioController.js";
 import { loginController } from "../views/login/loginController.js";
+import { mostrarCanciones } from "../views/mostrarCanciones/mostrarCanciones.js";
 import { perfilUsuario } from "../views/perfilUsuario/perfilUsuario.js";
+import { SubirCancion } from "../views/SubirCancion/SubirCancion.js";
 
 const routes = {
   "/":{
@@ -96,6 +98,16 @@ const routes = {
   EditarContrasena:{
     "template": "cambiarContrasena/cambiarContrasena.html",
     controlador: cambiarContrasena,
+    private: true
+  },
+  SubirCancion:{
+    "template": "SubirCancion/SubirCancion.html",
+    controlador: SubirCancion,
+    private: true
+  },
+  MostrarCanciones:{
+    "template": "mostrarCanciones/mostrarCanciones.html",
+    controlador: mostrarCanciones,
     private: true
   }
 };
