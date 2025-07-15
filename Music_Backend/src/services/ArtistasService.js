@@ -1,4 +1,6 @@
 import Artista from "../models/Artista.js";
+import path from "path";
+import fs from "fs";
 
 class ArtistasService {
     //métodos estáticos para interactuar con el modelo Artista
@@ -315,6 +317,70 @@ class ArtistasService {
             };
         }
     }
+
+//método para que el usuario se convierta en artista
+// Método para que un usuario se convierta en artista
+static async convertirUsuarioEnArtista(nombreArtista, biografia, urlFotoArtista, userId, generos) {
+    try {
+        // Creamos la instancia del modelo Artista
+        const OBJArtista = new Artista();
+        // Llamamos al método del modelo para crear el artista y vincularlo al usuario
+        const result = await OBJArtista.convertirUsuarioEnArtista(nombreArtista, biografia, urlFotoArtista, userId, generos);
+
+        return {
+            error: false,
+            code: 201,
+            message: "Usuario convertido en artista exitosamente",
+            data: result
+        };
+    } catch (error) {
+        return {
+            error: true,
+            code: 500,
+            message: "Error al convertir usuario en artista: " + error.message
+        };
+    }
+}
+
+  static async guardarFotoArtista(artistaId, file) {
+    try {
+      const ext = path.extname(file.originalname).toLowerCase();
+      const permitido = [".jpg", ".jpeg", ".png", ".webp"];
+
+      if (!permitido.includes(ext)) {
+        return {
+          error: true,
+          code: 400,
+          message: "La imagen debe ser formato JPG, PNG o WebP"
+        };
+      }
+
+      const nombreFinal = `${Date.now()}-${file.originalname}`;
+      const destino = path.join("uploads/imagenes", nombreFinal);
+      fs.renameSync(file.path, destino);
+
+      const rutaBD = `/imagenes/${nombreFinal}`;
+      await Artista.actualizarFotoArtista(artistaId, rutaBD);
+
+      return {
+        error: false,
+        code: 200,
+        message: "Imagen actualizada correctamente",
+        data: {
+          artistaId,
+          url_foto_artista: rutaBD
+        }
+      };
+    } catch (error) {
+      return {
+        error: true,
+        code: 500,
+        message: "Error al guardar la imagen: " + error.message
+      };
+    }
+  }
+
+
 }
 
 export default ArtistasService;

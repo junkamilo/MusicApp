@@ -1,33 +1,56 @@
 import multer from "multer";
 import path from "path";
+import fs from "fs";
 
-// Configuración del almacenamiento
+// Configuración dinámica del almacenamiento con verificación de carpeta
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, "uploads/audio");
+    const isImage = file.mimetype.startsWith("image");
+    const destino = isImage ? "uploads/imagenes" : "uploads/audio";
+
+    // Verificar y crear carpeta si no existe
+    if (!fs.existsSync(destino)) {
+      fs.mkdirSync(destino, { recursive: true });
+      console.log(`📁 Carpeta creada: ${destino}`);
+    }
+
+    cb(null, destino);
   },
   filename: (req, file, cb) => {
     const uniqueSuffix = Date.now() + "-" + file.originalname;
     cb(null, uniqueSuffix);
-  },
+  }
 });
 
-// Filtro para aceptar solo archivos .mp3
+// Filtro para aceptar solo imágenes y audios mp3
 const fileFilter = (req, file, cb) => {
-  if (file.mimetype === "audio/mpeg" || file.mimetype === "audio/mp3") {
+  const ext = path.extname(file.originalname).toLowerCase();
+  const isImage = [".jpg", ".jpeg", ".png", ".webp"].includes(ext);
+  const isAudio = [".mp3"].includes(ext);
+
+  if (
+    (file.mimetype.startsWith("image") && isImage) ||
+    (file.mimetype.startsWith("audio") && isAudio)
+  ) {
     cb(null, true);
   } else {
-    cb(new Error("Solo se permiten archivos MP3."), false);
+    cb(new Error("Solo se permiten archivos MP3, JPG, PNG o WEBP."), false);
   }
 };
 
-// ✅ Middleware general (sin .single o .array todavía)
-const upload = multer({ storage, fileFilter });
+// Configuración final de Multer
+const upload = multer({
+  storage,
+  fileFilter,
+  limits: { fileSize: 10 * 1024 * 1024 } // Máximo 10MB
+});
 
-// Exporta ambos casos según lo necesites
-export const uploadSingle = upload.single("file");     // Para un solo archivo
-export const uploadMultiple = upload.array("files", 20); // Para múltiples archivos
+// Exporta los middlewares según necesidad
+export const uploadSingle = upload.single("file");
+export const uploadMultiple = upload.array("files", 20);
 
 export default upload;
+
+
 
 

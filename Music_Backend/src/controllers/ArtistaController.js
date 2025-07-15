@@ -196,6 +196,55 @@ class ArtistaController {
         }
     }
 
+//metodo para que el usuario se convierta en artista
+static convertirUsuarioAArtista = async (req, res) => {
+    const userId = req.user.id; // obtenido desde el token JWT
+
+    // Obtenemos los datos del body de la petición
+    const { nombreArtista, biografia, urlFotoArtista, generos  } = req.body;
+
+    if (!Array.isArray(generos) || generos.length === 0) {
+        
+    return res.status(400).json({ message: "Debe proporcionar al menos un género musical." });
+  }
+
+    try {
+        // Llamamos al servicio pasando todos los datos
+        const response = await ArtistasService.convertirUsuarioEnArtista(nombreArtista, biografia, urlFotoArtista, userId, generos);
+
+        // Verificamos si hubo error
+        if (response.error) {
+            return res.status(response.code).json({ message: response.message });
+        }
+
+        // Retornamos la respuesta de éxito
+        return res.status(response.code).json({
+            message: response.message,
+            data: response.data // puedes retornar el artistaId u otros datos útiles
+        });
+
+    } catch (error) {
+        return res.status(500).json({ message: "Error al convertir el usuario en artista: " + error.message });
+    }
+}
+
+  static subirFotoArtista = async (req, res) => {
+    const { id } = req.params;
+    const file = req.file;
+
+    if (!file) {
+      return res.status(400).json({ message: "No se recibió archivo de imagen" });
+    }
+
+    const response = await ArtistasService.guardarFotoArtista(id, file);
+
+    if (response.error) {
+      return res.status(response.code).json({ message: response.message });
+    }
+
+    return res.status(response.code).json(response);
+  };
+
 }
 
 export default ArtistaController;

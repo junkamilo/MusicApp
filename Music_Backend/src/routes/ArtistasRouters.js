@@ -1,6 +1,7 @@
 import express from "express";
 import ArtistaController from "../controllers/ArtistaController.js";
 import { verifyToken } from "../middlewares/auth/tokenMiddleware.js";
+import { uploadSingle } from "../middlewares/upload.js";
 
 const router = express.Router();
 
@@ -24,6 +25,12 @@ router.delete("/favoritos/todos", verifyToken,ArtistaController.eliminarTodosArt
 
 // Eliminar un artista de favoritos
 router.delete("/favoritos/:id", verifyToken,ArtistaController.eliminarArtistaFavorito);
+
+// Convertir un usuario en artista
+router.post("/convertir", verifyToken, ArtistaController.convertirUsuarioAArtista);
+
+//actulizar foto artista
+router.patch("/upload/imagen-artista/:id", verifyToken,uploadSingle, ArtistaController.subirFotoArtista);
 
 // Obtener un artista por su ID (esta debe ir al final)
 router.get("/:id", ArtistaController.getArtistaById);
