@@ -4,7 +4,7 @@ import "./cardsArtista.css";
 export const cardsArtista = (data = [], contenedor) => {
   if (!Array.isArray(data) || !contenedor) return;
 
-  data.forEach(({ artista_id, nombre_artista, imagen_artista, favorito = false }) => {
+  data.forEach(({ artista_id, nombre_artista, url_foto_artista, favorito = false }) => {
     const card = document.createElement("div");
     card.classList.add("card_artista", "card_artista_innovadora", "card");
 
@@ -13,7 +13,9 @@ export const cardsArtista = (data = [], contenedor) => {
     imgWrapper.classList.add("imagen_artista_wrapper");
     const img = document.createElement("img");
     img.classList.add("imagen_artista");
-    img.src = imagen_artista || "./assets/default_artist.jpg";
+    img.src = url_foto_artista 
+  ? `http://localhost:3000/uploads${url_foto_artista}` 
+  : "https://via.placeholder.com/150";
     img.alt = nombre_artista;
     imgWrapper.appendChild(img);
 

@@ -74,21 +74,7 @@ export const header = async () => {
 
     // Contenedor para botones de acción (Subir Canción y Logout)
     const actionButtonsGroup = document.createElement("div");
-    actionButtonsGroup.classList.add("action_buttons_group"); // Nuevo contenedor para agrupar botones
-
-    // ---------- BOTÓN SUBIR CANCIÓN (solo si está autenticado) ----------
-    if (estaAutenticado()) {
-        const uploadSongBtn = document.createElement("button");
-        uploadSongBtn.id = "btn-upload-song";
-        uploadSongBtn.classList.add("action_button", "upload_song_button");
-        uploadSongBtn.innerHTML = '<i class="fa-solid fa-cloud-arrow-up"></i> Subir'; // Icono de subida
-        uploadSongBtn.title = "Subir nueva canción";
-        uploadSongBtn.addEventListener("click", (e) => {
-            e.preventDefault();
-            window.location.hash = "#SubirCancion"; // Ruta para el formulario de subida
-        });
-        actionButtonsGroup.appendChild(uploadSongBtn);
-    }
+    actionButtonsGroup.classList.add("action_buttons_group");
 
     // ---------- LOGOUT (dinámico) ----------
     if (estaAutenticado()) {

@@ -1,25 +1,40 @@
 // cardsArtistaFavorito.js (SIN EL BOTÓN DE CORAZÓN)
 import { eliminarArtistaFavorito } from "../EliminarFavorito/eliminarArtistaFavorito";
-import "./cardArtistaFavoritos.css"; // Nuevo archivo CSS para estos estilos específicos
+import "./cardArtistaFavoritos.css"; // Estilos específicos
 
+// cardsArtistaFavorito.js
 export const cardsArtistaFavorito = (data = [], contenedor) => {
-  if (!Array.isArray(data) || !contenedor) return;
+  // ✅ Normalizamos el input a un array
+  const artistas = Array.isArray(data) ? data : [data];
 
-  data.forEach(({ artista_id, nombre_artista, imagen_artista }) => {
-    // Ya     no necesitamos 'favorito' aquí
+  console.log("Data recibida en cardsArtistaFavorito:", artistas);
+
+  artistas.forEach(({ artista_id, nombre_artista, url_foto_artista }) => {
+    console.log("Datos del artista:", {
+  artista_id,
+  nombre_artista,
+  url_foto_artista
+});
+
     const card = document.createElement("div");
-    card.classList.add("card_artista_favorito", "card"); // Clase específica para estas cards
+    card.classList.add("card_artista_favorito", "card");
 
     // Imagen del artista (circular)
     const imgWrapper = document.createElement("div");
     imgWrapper.classList.add("imagen_artista_favorito_wrapper");
+
     const img = document.createElement("img");
     img.classList.add("imagen_artista_favorito");
-    img.src = imagen_artista || "./assets/default_artist.jpg";
+
+    const rutaImagen = url_foto_artista
+      ? `http://localhost:3000/uploads${url_foto_artista.replace(/^\/+/, "/")}`
+      : "https://via.placeholder.com/150";
+
+    img.src = rutaImagen;
     img.alt = nombre_artista;
     imgWrapper.appendChild(img);
 
-    // Contenedor para nombre y tipo
+    // Info
     const infoContainer = document.createElement("div");
     infoContainer.classList.add("info_artista_favorito_container");
 
@@ -34,38 +49,36 @@ export const cardsArtistaFavorito = (data = [], contenedor) => {
     infoContainer.appendChild(nombre);
     infoContainer.appendChild(tipo);
 
-    // Icono de "Play" (aparece al hacer hover)
+    // Play
     const playIcon = document.createElement("button");
     playIcon.classList.add("play_icon_favorito");
     playIcon.innerHTML = '<i class="fa-solid fa-play"></i>';
     playIcon.setAttribute("title", "Reproducir artista");
 
     playIcon.addEventListener("click", (e) => {
-      e.stopPropagation(); // Evita que el clic en el play active el evento de la card
+      e.stopPropagation();
       console.log(`Reproduciendo artista: ${nombre_artista}`);
-      // Lógica para reproducir el artista
     });
 
+    // Eliminar
     const eliminarBtn = document.createElement("button");
     eliminarBtn.classList.add("eliminar_icon_favorito");
     eliminarBtn.innerHTML = '<i class="fa-solid fa-trash"></i>';
     eliminarBtn.setAttribute("title", "Eliminar de favoritos");
 
     eliminarBtn.addEventListener("click", (e) => {
-      e.stopPropagation(); // Evita que se active el clic de la card
+      e.stopPropagation();
       eliminarArtistaFavorito(artista_id, nombre_artista, () => {
-        // Si se eliminó con éxito, quita la card del DOM
         card.remove();
       });
     });
 
-    // Ensamblar la card
+    // Ensamblado
     card.appendChild(imgWrapper);
     card.appendChild(infoContainer);
-    card.appendChild(playIcon); // Solo el botón de play
+    card.appendChild(playIcon);
     card.appendChild(eliminarBtn);
 
-    // Eventos de hover para la card (para mostrar/ocultar el playIcon)
     card.addEventListener("mouseenter", () => {
       card.classList.add("card_artista_favorito_hover");
     });
@@ -73,7 +86,6 @@ export const cardsArtistaFavorito = (data = [], contenedor) => {
       card.classList.remove("card_artista_favorito_hover");
     });
 
-    // Evento de clic en la card para navegar
     card.addEventListener("click", () => {
       if (artista_id) {
         window.location.href = `#/artistas/${artista_id}`;
@@ -83,3 +95,6 @@ export const cardsArtistaFavorito = (data = [], contenedor) => {
     contenedor.appendChild(card);
   });
 };
+
+
+

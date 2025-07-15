@@ -28,8 +28,6 @@ export const contentCards = (data = [], contenedor, cardGenerator, limit = 6) =>
   // Itera sobre los datos y genera cada tarjeta.
   dataToShow.forEach(item => {
     try {
-      // Llama a la función generadora de la tarjeta (ej. cardGenero, cardArtista).
-      // Se pasa el 'item' envuelto en un array y el 'contenedor'.
       cardGenerator([item], contenedor);
     } catch (error) {
       console.error(`Error al generar tarjeta con ${cardGenerator.name}:`, item, error);

@@ -41,18 +41,15 @@ body {
         "sidebar header"
         "sidebar app" /* CAMBIO: de "main" a "app" para coincidir con el HTML sugerido */
         "sidebar footer";
-    
-    height: 100vh; /* Ocupa el 100% de la altura de la ventana */
+
     font-family: 'Poppins', sans-serif; /* Usamos Poppins como fuente principal */
     color: var(--text-light); /* Color de texto por defecto */
     
     /* Fondo principal con un degradado sutil y oscuro para un ambiente inmersivo */
     background: linear-gradient(180deg, #0A0A0A 0%, #121212 50%, #0A0A0A 100%);
     background-attachment: fixed; /* Para que el degradado no se mueva con el scroll */
-    
     gap: 1.5rem; /* Espacio entre las áreas de la cuadrícula */
     padding: 1.5rem; /* Padding general alrededor de todo el layout */
-    overflow-y: auto; /* Evita el scroll del body, el scroll lo manejará el main/app */
 }
 
 /* Contenedor principal de la aplicación (donde se carga el contenido dinámico) */
@@ -66,7 +63,6 @@ body {
     display: flex;
     flex-direction: column;
     gap: 2.5rem; /* Espacio entre las secciones de contenido */
-    max-height: 100%; /* Necesario para que el overflow-y funcione en flex/grid containers */
     min-height: 0; 
     position: relative; /* Para posibles elementos posicionados dentro */
 }

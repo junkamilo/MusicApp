@@ -99,7 +99,6 @@ export const userProfile = async (contenedorPrincipal) => {
         changePasswordButton.innerHTML = '<i class="fa-solid fa-key"></i> Cambiar Contraseña';
         changePasswordButton.addEventListener("click", () => {
             console.log("Cambiar contraseña clickeado");
-            // Lógica para navegar a la página de cambio de contraseña
             window.location.hash = "#EditarContrasena";
         });
 
@@ -124,7 +123,7 @@ export const userProfile = async (contenedorPrincipal) => {
             { label: "Artistas Favoritos", iconClass: "fa-solid fa-user-group", hash: "#ArtistasFavoritos" },
             { label: "Álbumes Favoritos", iconClass: "fa-solid fa-book-open", hash: "#AlbumesFavoritos" },
             { label: "Canciones Favoritas", iconClass: "fa-solid fa-heart", hash: "#CancionesFavoritos" },
-            { label: "Canciones Subidas", iconClass: "fa-solid fa-heart", hash: "#MostrarCanciones" },
+            { label: "Ser Artista", iconClass: "fa-solid fa-compact-disc", hash: "#SerArtista" },
         ];
 
         favoriteCategories.forEach(({ label, iconClass, hash }) => {
