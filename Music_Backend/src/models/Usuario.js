@@ -38,10 +38,23 @@ export class Usuario {
 
   //informacion de usuario
   static async getUserInfo(id_usuario) {
-    const [rows] = await db.query(
-      "SELECT nombre, email, fecha_registro, url_foto_perfil FROM Usuarios WHERE id_usuario = ?",
-      [id_usuario]
-    );
+  const [rows] = await db.query(
+    `
+    SELECT 
+      u.nombre,
+      u.email,
+      u.fecha_registro,
+      u.url_foto_perfil,
+      CASE 
+        WHEN a.artista_id IS NOT NULL THEN 'artista'
+        ELSE 'usuario'
+      END AS rol
+    FROM Usuarios u
+    LEFT JOIN artistas a ON u.id_usuario = a.id_usuario
+    WHERE u.id_usuario = ?
+    `,
+    [id_usuario]
+  );
     return rows[0];
   }
 
