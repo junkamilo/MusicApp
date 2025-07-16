@@ -17,7 +17,7 @@ import { inicioController } from "../views/Inicio/InicioController.js";
 import { loginController } from "../views/login/loginController.js";
 import { perfilUsuario } from "../views/perfilUsuario/perfilUsuario.js";
 import { SerArtistaController } from "../views/SerArtista/SerArtistaController.js";
-import { SubirCancion } from "../views/SubirCancion/SubirCancion.js";
+import { subirAlbum } from "../views/SubirAlbum/subirAlbumController.js";
 
 const routes = {
   "/":{
@@ -33,6 +33,11 @@ const routes = {
   AlbumesFavoritos:{
     "template": "Albumes/albumesFavoritos.html",
     controlador: albumesFavoritosController,
+    private: true
+  },
+  subirAlbum:{
+    "template": "SubirAlbum/subirAlbum.html",
+    controlador: subirAlbum,
     private: true
   },
   "/albumes/:id":{

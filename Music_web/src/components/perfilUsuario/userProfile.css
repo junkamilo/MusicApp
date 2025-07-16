@@ -240,6 +240,41 @@
     margin-top: 2rem;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
 }
+.artista_tools_section {
+    margin-top: 2rem;
+    padding: 1rem;
+    background-color: #1b1b1b;
+    border-radius: 10px;
+}
+
+.artista_tools_title {
+    font-size: 1.4rem;
+    color: #2ed162;
+    margin-bottom: 1rem;
+}
+
+.tools_links_container {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.favorite_link_card {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.8rem 1.2rem;
+    background-color: #2a2a2a;
+    border-radius: 8px;
+    text-decoration: none;
+    color: white;
+    transition: background-color 0.3s ease;
+}
+
+.favorite_link_card:hover {
+    background-color: #2ed16233;
+}
+
 
 /* Media Queries para responsividad */
 @media (max-width: 1024px) {
