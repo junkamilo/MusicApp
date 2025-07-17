@@ -244,3 +244,24 @@ export const AgregadoCancionFavoritos = (nombreCancion) => {
     position: "top-end"
   });
 }
+
+export const confirmAction = async (options) => {
+    const result = await Swal.fire({
+        title: options.title || "¿Estás seguro?",
+        text: options.message,
+        icon: "question",
+        showCancelButton: true,
+        confirmButtonColor: "#2ED162",
+        cancelButtonColor: "#d33",
+        confirmButtonText: options.confirmText || "Sí",
+        cancelButtonText: options.cancelText || "Cancelar",
+        reverseButtons: true,
+        customClass: {
+            popup: 'swal2-confirmation-popup',
+            confirmButton: 'swal2-confirm-button',
+            cancelButton: 'swal2-cancel-button'
+        }
+    });
+
+    return result.isConfirmed;
+};

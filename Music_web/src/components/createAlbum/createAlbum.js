@@ -1,4 +1,4 @@
-import { error, success } from "../../helpers/alerts";
+import { error, success, confirmAction } from "../../helpers/alerts"; // Asegúrate de importar confirmAction
 import { estaAutenticado } from "../../helpers/auth";
 import "./createAlbum.css";
 
@@ -33,10 +33,56 @@ export const createAlbum = async (appContainer) => {
 
     let artistaId = null; // Para almacenar el artista_id del usuario logueado
 
+    // --- Función de Ayuda para crear un grupo de input HTML (MOVIDA AQUÍ) ---
+    // Esta función es interna al componente createAlbum
+    function createInputGroupHTML(type, id, placeholder, iconClass, required = false) {
+        return `
+            <div class="form_group">
+                <div class="input_wrapper">
+                    <i class="${iconClass}"></i>
+                    <input type="${type}" id="${id}" name="${id}" class="form_input" placeholder="${placeholder}" autocomplete="off" ${required ? 'required' : ''}>
+                </div>
+            </div>
+        `;
+    }
+
+    // --- Función de Ayuda para crear un grupo de input (para elementos DOM directos) ---
+    // Esta función es similar a la anterior pero crea elementos DOM directamente.
+    // La usaremos para los campos que se añaden directamente al DOM como el título del álbum.
+    function createInputGroup(type, id, placeholder, iconClass, required = false) {
+        const group = document.createElement("div");
+        group.classList.add("form_group");
+
+        const inputWrapper = document.createElement("div");
+        inputWrapper.classList.add("input_wrapper");
+
+        const icon = document.createElement("i");
+        icon.classList.add(...iconClass.split(' '));
+        inputWrapper.appendChild(icon);
+
+        const input = document.createElement("input");
+        input.type = type;
+        input.id = id;
+        input.name = id;
+        input.classList.add("form_input");
+        input.placeholder = placeholder;
+        input.autocomplete = "off";
+        input.required = required;
+
+        inputWrapper.appendChild(input);
+        group.appendChild(inputWrapper);
+        return group;
+    }
+
+
     // --- Función para obtener el artista_id del usuario logueado ---
     const fetchArtistId = async () => {
         try {
-            const response = await fetch(`http://localhost:3000/api/artistas/user/${userId}`, {
+            // NOTA: Tu endpoint original era `http://localhost:3000/artistas/id`.
+            // Si ese endpoint realmente devuelve el artista_id del usuario logueado, úsalo.
+            // Si necesitas pasar el userId, debería ser `http://localhost:3000/api/artistas/user/${userId}`
+            // Estoy usando el que me pasaste en la descripción: `http://localhost:3000/artistas/id`
+            const response = await fetch(`http://localhost:3000/artistas/id`, {
                 headers: { "Authorization": `Bearer ${token}` }
             });
 
@@ -232,7 +278,7 @@ export const createAlbum = async (appContainer) => {
         const songIndex = songsData.length;
         const songBlock = document.createElement("div");
         songBlock.classList.add("song_block");
-        songBlock.dataset.songIndex = songIndex; // Para identificar la canción
+        songBlock.dataset.songIndex = songIndex;
 
         songBlock.innerHTML = `
             <div class="song_header">
@@ -372,18 +418,6 @@ export const createAlbum = async (appContainer) => {
     form.appendChild(buttonsContainer);
     appContainer.appendChild(form);
 
-    // --- Función de Ayuda para crear un grupo de input HTML ---
-    function createInputGroupHTML(type, id, placeholder, iconClass, required = false) {
-        return `
-            <div class="form_group">
-                <div class="input_wrapper">
-                    <i class="${iconClass}"></i>
-                    <input type="${type}" id="${id}" name="${id}" class="form_input" placeholder="${placeholder}" autocomplete="off" ${required ? 'required' : ''}>
-                </div>
-            </div>
-        `;
-    }
-
     // --- Manejador de Envío del Formulario ---
     form.addEventListener("submit", async (e) => {
         e.preventDefault();
@@ -461,7 +495,7 @@ export const createAlbum = async (appContainer) => {
             albumFormData.append("artista_id", artistaId);
             albumFormData.append("portadaAlbum", selectedCoverFile); // 'portadaAlbum' debe coincidir con el backend
 
-            const albumResponse = await fetch("http://localhost:3000/api/albums", {
+            const albumResponse = await fetch("http://localhost:3000/albumes", {
                 method: "POST",
                 headers: {
                     "Authorization": `Bearer ${token}`,
@@ -480,7 +514,7 @@ export const createAlbum = async (appContainer) => {
             const newAlbumId = albumResult.album_id; // Asume que el backend devuelve el ID del nuevo álbum
             success({ message: `Álbum "${albumTitle}" creado exitosamente. Subiendo canciones...` });
 
-
+            // --- Paso 2: Subir las Canciones asociadas al Álbum ---
             const songsFormData = new FormData();
             songsFormData.append("album_id", newAlbumId);
             songsFormData.append("artista_id", artistaId);
