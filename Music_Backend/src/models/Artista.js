@@ -197,6 +197,20 @@ class Artista {
 
     return result;
   }
+
+
+  static async getArtistaIdByUsuarioId(userId) {
+    const [result] = await connection.query(`
+      SELECT artista_id FROM artistas WHERE id_usuario = ?
+    `, [userId]);
+
+    if (result.length === 0) {
+      throw new Error("No se encontró el artista como usuario");
+    }
+
+    return result[0]; 
+}
+
 }
 
 export default Artista;

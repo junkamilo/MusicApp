@@ -1,4 +1,6 @@
 import Album from "../models/Album.js";
+import path from "path";
+import fs from "fs";
 
 class AlbumService {
     // Método estático para obtener todos los álbumes
@@ -259,6 +261,75 @@ class AlbumService {
             };
         }
     }
+
+    // Método estático para crear un nuevo álbum
+static async crearAlbum({ titulo, fecha_lanzamiento,descripcion, url_portada, artista_id }) {
+    try {
+        const albumModel = new Album();
+        const result = await albumModel.crearAlbum({ titulo, fecha_lanzamiento,descripcion, url_portada, artista_id});
+
+        if (!result || !result.album_id) {
+            return {
+                error: true,
+                code: 400,
+                message: "No se pudo crear el álbum"
+            };
+        }
+
+        return {
+            error: false,
+            code: 201,
+            message: "Álbum creado exitosamente",
+            data: result
+        };
+    } catch (error) {
+        return {
+            error: true,
+            code: 500,
+            message: "Error al crear el álbum: " + error.message
+        };
+    }
+}
+
+  static async guardarPortadaAlbum(albumId, file) {
+    try {
+      const ext = path.extname(file.originalname).toLowerCase();
+      const permitido = [".jpg", ".jpeg", ".png", ".webp"];
+
+      if (!permitido.includes(ext)) {
+        return {
+          error: true,
+          code: 400,
+          message: "La portada debe ser formato JPG, PNG o WebP"
+        };
+      }
+
+      const nombreFinal = `${Date.now()}-${file.originalname}`;
+      const destino = path.join("uploads/imagenes", nombreFinal);
+      fs.renameSync(file.path, destino);
+
+      const rutaBD = `/imagenes/${nombreFinal}`;
+      await Album.actualizarPortadaAlbum(albumId, rutaBD);
+
+      return {
+        error: false,
+        code: 200,
+        message: "Portada del álbum actualizada correctamente",
+        data: {
+          albumId,
+          url_portada_album: rutaBD
+        }
+      };
+    } catch (error) {
+      return {
+        error: true,
+        code: 500,
+        message: "Error al guardar la imagen: " + error.message
+      };
+    }
+  }
+
+
 }
 
 export default AlbumService;

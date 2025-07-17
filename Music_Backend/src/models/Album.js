@@ -232,6 +232,44 @@ async getAlbumesFavoritosByUserId(userId) {
       );
     }
   }
+
+  //metodo para crear un album
+async crearAlbum({ titulo, fecha_lanzamiento,descripcion, url_portada, artista_id }) {
+  try {
+    const [result] = await connection.query(
+      `INSERT INTO album (titulo_album,fecha_album, descripcion, url_portada_album, artista_id)
+       VALUES (?, ?, ?, ?, ?)`,
+      [titulo, fecha_lanzamiento, descripcion, url_portada, artista_id]
+    );
+
+    if (result.affectedRows === 0) {
+      throw new Error("No se pudo crear el álbum");
+    }
+
+    return {
+      album_id: result.insertId,
+      message: "Álbum creado exitosamente"
+    };
+  } catch (error) {
+    throw new Error("Error al crear el álbum: " + error.message);
+  }
+}
+
+//actualizar foto album
+  static async actualizarPortadaAlbum(albumId, rutaImagen) {
+    const [result] = await connection.query(
+      "UPDATE album SET url_portada_album = ? WHERE album_id = ?",
+      [rutaImagen, albumId]
+    );
+
+    if (result.affectedRows === 0) {
+      throw new Error("No se encontró el álbum para actualizar");
+    }
+
+    return result;
+  }
+
+
 }
 
 export default Album;

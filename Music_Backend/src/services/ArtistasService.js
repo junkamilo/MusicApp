@@ -380,6 +380,34 @@ static async convertirUsuarioEnArtista(nombreArtista, biografia, urlFotoArtista,
     }
   }
 
+  static async GetArtistaIdByUsuario(userId) {
+  try {
+    const artista = await Artista.getArtistaIdByUsuarioId(userId);
+
+    if (!artista) {
+      return {
+        error: true,
+        code: 404,
+        message: "El usuario no está registrado como artista"
+      };
+    }
+
+    return {
+      error: false,
+      code: 200,
+      message: "Artista encontrado",
+      data: artista
+    };
+  } catch (error) {
+    return {
+      error: true,
+      code: 500,
+      message: "Error al buscar el artista: " + error.message
+    };
+  }
+}
+
+
 
 }
 

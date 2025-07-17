@@ -1,8 +1,12 @@
 import express from "express";
 import AlbumController from "../controllers/AlbumController.js";
 import { verifyToken } from "../middlewares/auth/tokenMiddleware.js";
+import { uploadSingle } from "../middlewares/upload.js";
 
 const router = express.Router();
+
+// Crear un nuevo álbum
+router.post("/", verifyToken, AlbumController.crearAlbum);
 
 // Obtener álbumes favoritos de un usuario autenticado
 router.get("/favoritos", verifyToken, AlbumController.getAlbumesFavoritosByUserId);
@@ -27,6 +31,9 @@ router.get("/genero/:generoId", AlbumController.getAlbumesPorGeneroId);
 
 // Obtener canciones de un álbum por su ID
 router.get("/:albumId/canciones", AlbumController.getCancionesByAlbumId);
+
+//actualizar foto album
+router.patch("/upload/portada-album/:id", verifyToken, uploadSingle, AlbumController.subirPortadaAlbum);
 
 // Obtener un álbum por su ID
 router.get("/:id", AlbumController.getAlbumById);

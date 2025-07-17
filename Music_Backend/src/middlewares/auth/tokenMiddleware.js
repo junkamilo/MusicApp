@@ -25,7 +25,8 @@ export function verifyToken(req, res, next) {
     );
   }
     try {
-    const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);    
+    const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
+    console.log("🧠 Usuario autenticado (decoded JWT):", decoded);    
     // Aquí tendrás todos los datos que firmaste en el token
     req.user = decoded;
     // Pasamos a la siguiente función

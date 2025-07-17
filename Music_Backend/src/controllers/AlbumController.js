@@ -159,6 +159,48 @@ class AlbumController {
             return res.status(500).json({ message: "Error al eliminar todos los álbumes favoritos del usuario: " + error.message });
         }
     }
+
+    // Método para crear un nuevo álbum
+static crearAlbum = async (req, res) => {
+    console.log("🧠 Usuario autenticado:", req.user);
+    const { titulo, descripcion, fecha_lanzamiento, url_portada } = req.body;
+    const artista_id = req.user.artista_id;
+
+    try {
+        const response = await AlbumService.crearAlbum({
+            titulo,
+            fecha_lanzamiento,
+            descripcion,
+            url_portada,
+            artista_id
+        });
+
+        if (response.error) {
+            return res.status(response.code).json({ message: response.message });
+        }
+
+        return res.status(response.code).json(response);
+    } catch (error) {
+        return res.status(500).json({
+            message: "Error al crear el álbum: " + error.message
+        });
+    }
+};
+
+  static subirPortadaAlbum = async (req, res) => {
+    const { id } = req.params;
+    const file = req.file;
+
+    if (!file) {
+      return res.status(400).json({ message: "No se recibió archivo de imagen" });
+    }
+
+    const response = await AlbumService.guardarPortadaAlbum(id, file);
+
+    return res.status(response.code).json(response);
+  };
+
+
 }
 
 export default AlbumController;

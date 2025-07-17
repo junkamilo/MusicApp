@@ -2,6 +2,7 @@ import jwt from "jsonwebtoken"; //para generar y verificar tokens
 import dotenv from "dotenv"; //para leer variables de entorno
 import bcrypt from "bcryptjs"; //para encriptar contraseñas
 import { Usuario } from "../models/Usuario.js";
+import Artista from "../models/Artista.js";
 
 dotenv.config(); //para leer variables de entorno
 
@@ -15,53 +16,71 @@ class AuthService {
   //Registrar un nuevo usuario
   static async register(nombre, email, contrasena) {
     try {
-      //verificamos si el usuario ya existe
+      console.log("[register] Iniciando registro...");
       const userExists = await Usuario.findByEmail(email);
-      // Validamos si el correo ya esta registrado en la base de datos
-      if (userExists)
+      if (userExists) {
+        console.log("[register] Usuario ya existe:", email);
         return {
           error: true,
           code: 401,
           message: "El correo ya se encuentra registrado en el sistema",
         };
-      // Hashear la contraseña || encriptar la contraseña
+      }
       const hashedPassword = await bcrypt.hash(contrasena, 10);
-      // Registramos el usuario en la base de datos
       const userId = await Usuario.create(nombre, email, hashedPassword);
-      // Retornamos la respuesta
+      console.log("[register] Usuario creado con ID:", userId);
       return { error: false, code: 201, message: "Usuario creado" };
     } catch (error) {
+      console.error("[register] Error:", error);
       return { error: true, code: 500, message: "Error al crear el usuario" };
     }
   }
 
-  //Iniciar sesión
+  // Iniciar sesión
   static async login(email, contrasena) {
     try {
-      // Consultamos el usuario por el email
+      console.log("[login] Iniciando sesión para:", email);
       const user = await Usuario.findByEmail(email);
-      if (!user)
+      console.log("[login] Resultado de findByEmail:", user);
+
+      if (!user) {
         return {
           error: true,
           code: 401,
           message: "El correo o la contraseña proporcionados no son correctos.",
         };
-      // Comparmamos la contraseña del usuarios registrado con la ingresada basado en la llave de encriptación
+      }
+
       const validPassword = await bcrypt.compare(contrasena, user.contrasena);
-      // Validamos si la contraseña es la misma
-      if (!validPassword)
+      if (!validPassword) {
         return {
           error: true,
           code: 401,
           message: "El correo o la contraseña proporcionados no son correctos.",
         };
-      // Generamos el token de seguridad
-      const accessToken = this.generateAccessToken(user);
-      // Generamos el refresh token
-      const refreshToken = this.generateRefreshToken(user);
-      // Actualizamos el refreshToken en la base de datos
+      }
+
+      let artista_id = null;
+      try {
+        const artista = await Artista.getArtistaIdByUsuarioId(user.id_usuario);
+        artista_id = artista?.artista_id ?? null;
+        console.log("[login] Artista encontrado:", artista_id);
+      } catch (e) {
+        console.log("⚠️ No es artista o no se encontró artista_id");
+      }
+
+      const userData = {
+        ...user,
+        artista_id,
+      };
+
+      const accessToken = this.generateAccessToken(userData);
+      const refreshToken = this.generateRefreshToken(userData);
+      console.log("[login] Tokens generados:", { accessToken, refreshToken });
+
       await Usuario.updateRefreshToken(user.id_usuario, refreshToken);
-      // Retornamos los datos de validación del usuario
+      console.log("[login] Refresh token actualizado para el usuario");
+
       return {
         error: false,
         code: 201,
@@ -73,111 +92,131 @@ class AuthService {
             id: user.id_usuario,
             nombre: user.nombre,
             email: user.email,
+            artista_id,
           },
         },
       };
     } catch (error) {
-      console.log(error);
+      console.error("[login] Error:", error);
       return { error: true, code: 500, message: "Error en el servidor" };
     }
   }
 
-  //generamos el accessToken
   static generateAccessToken(user) {
-    return jwt.sign(
-      {
-        id: user.id_usuario,
-        email: user.email,
-        // Podemos pasar más datos
-      },
-      secretKey,
-      { expiresIn: tokenExpiration }
-    );
-  }
+  console.log("🧱 Generando access token con:", user);
+  return jwt.sign(
+    {
+      id: user.id_usuario || user.id,
+      email: user.email,
+      nombre: user.nombre || null,
+      artista_id: user.artista_id || null,
+    },
+    secretKey,
+    { expiresIn: tokenExpiration }
+  );
+}
 
-  //generamos el refreshToken
+
   static generateRefreshToken(user) {
+    console.log("[generateRefreshToken] Generando refresh token...");
     return jwt.sign(
       {
         id: user.id_usuario,
         email: user.email,
-        // Podemos pasar más datos
       },
       refreshSecretKey,
       { expiresIn: refreshExpiration }
     );
   }
 
-  //Verificar refreshToken y generar uno nuevo
-  static async verifyAccessToken(refreshToken) {
-    try {
-      // Verificamos el token
-      const decoded = jwt.verify(refreshToken, refreshSecretKey);
-      console.log("Refresh token decodificado:", decoded);
+static async verifyAccessToken(refreshToken) {
+  try {
+    const decoded = jwt.verify(refreshToken, refreshSecretKey);
+    console.log("Refresh token decodificado:", decoded);
 
-      // Consultamos los datos del usuario en la base de datos
-      const user = await Usuario.findByEmail(decoded.email);
-      console.log("Usuario encontrado:", user);
-      if (!user || user.refreshToken !== refreshToken) {
-        console.log("Token guardado:", user?.refresh_token);
-        console.log("Token recibido:", refreshToken);
-        return { error: true, code: 403, message: "Token inválido" };
-      }
+    const user = await Usuario.findByEmail(decoded.email);
+    console.log("Usuario encontrado:", user);
 
-      // Generamos nuevo access token
-      const accessToken = this.generateAccessToken(user);
-      // Validamos si tenemos que renovar el token de refreso y asignamos el nuevo
-      const newRefreshToken = await this.renewAccessToken(refreshToken, user);
-      const refreshToSend = newRefreshToken || refreshToken;
-      // Retornamos los token
-      return {
-        error: false,
-        code: 201,
-        message: "Token actualizado correctamente",
-        data: {
-          accessToken,
-          refreshToken: refreshToSend,
-        },
-      };
-    } catch (error) {
-      if (error.name === "TokenExpiredError") {
-        return {
-          error: true,
-          code: 403,
-          message: "Token expirado, solicita un nuevo token",
-        };
-      }
+    if (!user || user.refreshToken !== refreshToken) {
+      console.log("Token guardado:", user?.refresh_token);
+      console.log("Token recibido:", refreshToken);
       return { error: true, code: 403, message: "Token inválido" };
     }
-  }
 
-  //Renovar refreshToken si queda poco tiempo
-  static async renewAccessToken(refreshToken, user) {
-    let newRefreshToken = "";
-    const decoded = jwt.decode(refreshToken, { complete: true });
-    // Segundos restantes
-    const tiempoRestante = decoded.exp - Math.floor(Date.now() / 1000);
-    if (tiempoRestante < 60 * 60 * 24) {
-      // Si quedan menos de 24 horas
-      newRefreshToken = jwt.sign({ id: decoded.id }, refreshSecretKey, {
-        expiresIn: refreshExpiration,
-      });
-      // Actualizamos el token de refresco en la base de datos
-      await Usuario.updateRefreshToken(user.id, newRefreshToken);
+    let artista_id = null;
+    try {
+      const artista = await Artista.getArtistaIdByUsuarioId(user.id_usuario);
+      artista_id = artista?.artista_id;
+    } catch (e) {
+      console.log("⚠️ No es artista o no se encontró artista_id");
     }
-    // Si aún es válido, no renueva el token
-    return newRefreshToken;
+
+    const userData = {
+      ...user,
+      artista_id,
+    };
+
+    console.log("✅ Usuario para nuevo token:", userData);
+
+    const accessToken = this.generateAccessToken(userData);
+    const newRefreshToken = await this.renewAccessToken(refreshToken, user);
+    const refreshToSend = newRefreshToken || refreshToken;
+
+    return {
+      error: false,
+      code: 201,
+      message: "Token actualizado correctamente",
+      data: {
+        accessToken,
+        refreshToken: refreshToSend,
+      },
+    };
+  } catch (error) {
+    if (error.name === "TokenExpiredError") {
+      return {
+        error: true,
+        code: 403,
+        message: "Token expirado, solicita un nuevo token",
+      };
+    }
+    return { error: true, code: 403, message: "Token inválido" };
+  }
+}
+
+
+  static async renewAccessToken(refreshToken, user) {
+    try {
+      console.log("[renewAccessToken] Renovando token si es necesario...");
+      let newRefreshToken = "";
+      const decoded = jwt.decode(refreshToken, { complete: true });
+      const tiempoRestante = decoded.exp - Math.floor(Date.now() / 1000);
+      console.log("Tiempo restante del refresh token:", tiempoRestante, "segundos");
+
+      if (tiempoRestante < 60 * 60 * 24) {
+        newRefreshToken = jwt.sign({ id: decoded.id }, refreshSecretKey, {
+          expiresIn: refreshExpiration,
+        });
+        await Usuario.updateRefreshToken(user.id_usuario, newRefreshToken);
+        console.log("[renewAccessToken] Nuevo refresh token generado y guardado");
+      }
+
+      return newRefreshToken;
+    } catch (error) {
+      console.error("[renewAccessToken] Error:", error);
+      return "";
+    }
   }
 
-  //Obtener información del usuario
   static async obtenerInfoUsuario(userId) {
     try {
+      console.log("[obtenerInfoUsuario] Consultando información del usuario:", userId);
       const userInfo = await Usuario.getUserInfo(userId);
       if (!userInfo) {
         return { error: true, code: 404, message: "Usuario no encontrado" };
       }
       return { error: false, code: 200, data: userInfo };
     } catch (error) {
+      console.error("[obtenerInfoUsuario] Error:", error);
       return {
         error: true,
         code: 500,
@@ -186,20 +225,19 @@ class AuthService {
     }
   }
 
-  //Cerrar sesión
   static async logout(userId) {
+    console.log("[logout] Cerrando sesión del usuario:", userId);
     await Usuario.updateRefreshToken(userId, null);
     return { error: false, code: 200, message: "Sesión cerrada correctamente" };
   }
-  //Actualizar información del usuario
+
   static async actualizarInfoUsuario(userId, nombre, email) {
     try {
-      // Verificamos si el email ya existe
+      console.log("[actualizarInfoUsuario] Actualizando usuario:", userId);
       const emailExists = await Usuario.emailExists(email, userId);
       if (emailExists) {
         return { error: true, code: 400, message: "El correo ya está en uso" };
       }
-      // Actualizamos la información del usuario
       await Usuario.updateUserInfo(userId, nombre, email);
       return {
         error: false,
@@ -207,6 +245,7 @@ class AuthService {
         message: "Información actualizada correctamente",
       };
     } catch (error) {
+      console.error("[actualizarInfoUsuario] Error:", error);
       return {
         error: true,
         code: 500,
@@ -214,34 +253,42 @@ class AuthService {
       };
     }
   }
-  // Cambiar contraseña del usuario
-  static async cambiarPassword(userId, currentPassword, newPassword) {
-    const user = await Usuario.findById(userId);
-    if (!user) {
-      return { error: true, code: 404, message: "Usuario no encontrado" };
-    }
 
-    const passwordCorrecta = await bcrypt.compare(
-      currentPassword,
-      user.contrasena
-    );
-    if (!passwordCorrecta) {
+  static async cambiarPassword(userId, currentPassword, newPassword) {
+    try {
+      console.log("[cambiarPassword] Cambiando contraseña para usuario:", userId);
+      const user = await Usuario.findById(userId);
+      if (!user) {
+        return { error: true, code: 404, message: "Usuario no encontrado" };
+      }
+
+      const passwordCorrecta = await bcrypt.compare(currentPassword, user.contrasena);
+      if (!passwordCorrecta) {
+        return {
+          error: true,
+          code: 401,
+          message: "La contraseña actual es incorrecta",
+        };
+      }
+
+      const hashedNewPassword = await bcrypt.hash(newPassword, 10);
+      await Usuario.updatePassword(userId, hashedNewPassword);
+
+      return {
+        error: false,
+        code: 200,
+        message: "Contraseña actualizada correctamente",
+      };
+    } catch (error) {
+      console.error("[cambiarPassword] Error:", error);
       return {
         error: true,
-        code: 401,
-        message: "La contraseña actual es incorrecta",
+        code: 500,
+        message: "Error al cambiar la contraseña",
       };
     }
-
-    const hashedNewPassword = await bcrypt.hash(newPassword, 10);
-    await Usuario.updatePassword(userId, hashedNewPassword);
-
-    return {
-      error: false,
-      code: 200,
-      message: "Contraseña actualizada correctamente",
-    };
   }
 }
 
 export default AuthService;
+

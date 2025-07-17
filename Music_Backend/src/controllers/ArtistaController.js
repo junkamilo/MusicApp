@@ -245,6 +245,25 @@ static convertirUsuarioAArtista = async (req, res) => {
     return res.status(response.code).json(response);
   };
 
+  // Obtener artista_id desde el id del usuario autenticado
+static async getArtistaIdByUsuario(req, res) {
+  try {
+    console.log("🎯 Usuario autenticado:", req.user);
+    const userId = req.user.id;
+
+    const response = await ArtistasService.GetArtistaIdByUsuario(userId);
+
+    if (response.error) {
+      return res.status(response.code).json({ message: response.message });
+    }
+
+    return res.status(200).json(response.data); // Ej: { artista_id: 3 }
+  } catch (error) {
+    return res.status(500).json({ message: "Error al obtener artista_id: " + error.message });
+  }
+};
+
+
 }
 
 export default ArtistaController;

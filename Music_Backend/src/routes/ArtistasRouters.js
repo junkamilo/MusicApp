@@ -32,6 +32,9 @@ router.post("/convertir", verifyToken, ArtistaController.convertirUsuarioAArtist
 //actulizar foto artista
 router.patch("/upload/imagen-artista/:id", verifyToken,uploadSingle, ArtistaController.subirFotoArtista);
 
+//Nueva ruta para obtener artista_id desde el usuario autenticado
+router.get("/id", verifyToken, ArtistaController.getArtistaIdByUsuario);
+
 // Obtener un artista por su ID (esta debe ir al final)
 router.get("/:id", ArtistaController.getArtistaById);
 
