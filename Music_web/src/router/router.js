@@ -138,10 +138,11 @@ export const router = async (app) => {
   await loadView(app, rutas.template);
   // Ejecutar el controldor
   rutas.controlador(params)
+  console.log("Controlador recibe params:", params);
 }
 
 const matchRoute = (hash) => {  
-  const arreglo = hash.split('/') ;  
+  const arreglo = hash.replace(/^#/, '').split('/');  
 
   for (const route in routes) {
     const b = route.split('/');   
@@ -162,6 +163,8 @@ const matchRoute = (hash) => {
       }
     }); 
 
+    console.log("Ruta coincidida:", route);
+console.log("Parámetros detectados:", params);
     if (matched) {      
       return [routes[route], params]
     }

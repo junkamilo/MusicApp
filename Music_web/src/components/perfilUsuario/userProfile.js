@@ -1,6 +1,6 @@
 // userProfile.js
 
-import "./userProfile.css"; // Asegúrate de que este CSS esté enlazado
+import "./userProfile.css";
 
 /**
  * Renderiza el perfil del usuario logueado.
@@ -8,17 +8,13 @@ import "./userProfile.css"; // Asegúrate de que este CSS esté enlazado
  */
 export const userProfile = async (contenedorPrincipal) => {
   if (!contenedorPrincipal) {
-    console.error(
-      "Error: Se requiere un contenedor principal para el perfil del usuario."
-    );
+    console.error("Error: Se requiere un contenedor principal para el perfil del usuario.");
     return;
   }
 
-  // Limpiar el contenedor principal antes de renderizar el nuevo perfil
   contenedorPrincipal.innerHTML = "";
-  contenedorPrincipal.classList.add("user_profile_container"); // Clase principal del contenedor
+  contenedorPrincipal.classList.add("user_profile_container");
 
-  // --- 1. Obtener datos del usuario ---
   try {
     const token = localStorage.getItem("accessToken");
     if (!token) {
@@ -27,7 +23,6 @@ export const userProfile = async (contenedorPrincipal) => {
       return;
     }
 
-    // Asumiendo un endpoint para obtener el perfil del usuario logueado
     const response = await fetch(`http://localhost:3000/auth/user-info`, {
       method: "GET",
       headers: {
@@ -39,21 +34,17 @@ export const userProfile = async (contenedorPrincipal) => {
     const result = await response.json();
 
     if (!response.ok || result.error) {
-      console.error(
-        "Error al obtener datos del usuario:",
-        result.message || response.statusText
-      );
+      console.error("Error al obtener datos del usuario:", result.message || response.statusText);
       const errorMessage = document.createElement("p");
       errorMessage.classList.add("error-message");
-      errorMessage.textContent =
-        "No se pudo cargar la información de tu perfil.";
+      errorMessage.textContent = "No se pudo cargar la información de tu perfil.";
       contenedorPrincipal.appendChild(errorMessage);
       return;
     }
 
-    const userData = result.data; // Asumiendo que los datos vienen en una propiedad 'data'
+    const userData = result.data;
 
-    // --- 2. Construir la sección de Héroe del perfil ---
+    // --- Hero de Perfil ---
     const userHeroSection = document.createElement("section");
     userHeroSection.classList.add("user_hero_section");
 
@@ -61,8 +52,7 @@ export const userProfile = async (contenedorPrincipal) => {
     profilePhotoWrapper.classList.add("profile_photo_wrapper");
     const profilePhoto = document.createElement("img");
     profilePhoto.classList.add("user_profile_photo");
-    profilePhoto.src =
-      userData.url_foto_perfil || "./assets/perfil_default.png"; // Placeholder
+    profilePhoto.src = userData.url_foto_perfil || "./assets/perfil_default.png";
     profilePhoto.alt = userData.nombre || "Usuario";
     profilePhotoWrapper.appendChild(profilePhoto);
 
@@ -96,27 +86,21 @@ export const userProfile = async (contenedorPrincipal) => {
     userHeroSection.appendChild(userInfoHero);
     contenedorPrincipal.appendChild(userHeroSection);
 
-    // --- 3. Sección de Botones de Acción ---
+    // --- Botones Acción ---
     const userActionsSection = document.createElement("section");
     userActionsSection.classList.add("user_actions_section");
 
     const editProfileButton = document.createElement("button");
     editProfileButton.classList.add("action_button", "edit_profile_button");
-    editProfileButton.innerHTML =
-      '<i class="fa-solid fa-user-pen"></i> Editar Perfil';
+    editProfileButton.innerHTML = '<i class="fa-solid fa-user-pen"></i> Editar Perfil';
     editProfileButton.addEventListener("click", () => {
       window.location.hash = "#EditarPerfil";
     });
 
     const changePasswordButton = document.createElement("button");
-    changePasswordButton.classList.add(
-      "action_button",
-      "change_password_button"
-    );
-    changePasswordButton.innerHTML =
-      '<i class="fa-solid fa-key"></i> Cambiar Contraseña';
+    changePasswordButton.classList.add("action_button", "change_password_button");
+    changePasswordButton.innerHTML = '<i class="fa-solid fa-key"></i> Cambiar Contraseña';
     changePasswordButton.addEventListener("click", () => {
-      console.log("Cambiar contraseña clickeado");
       window.location.hash = "#EditarContrasena";
     });
 
@@ -124,7 +108,7 @@ export const userProfile = async (contenedorPrincipal) => {
     userActionsSection.appendChild(changePasswordButton);
     contenedorPrincipal.appendChild(userActionsSection);
 
-    // --- 4. Sección de Enlaces a Favoritos ---
+    // --- Favoritos ---
     const userFavoritesSection = document.createElement("section");
     userFavoritesSection.classList.add("user_favorites_section");
 
@@ -153,10 +137,10 @@ export const userProfile = async (contenedorPrincipal) => {
         hash: "#AlbumesFavoritos",
       },
       {
-        label: "Canciones Favoritas",
+        label: "Canciones Favoritas", // ✅ corregido aquí
         iconClass: "fa-solid fa-heart",
-        hash: "#CancionesFavoritos",
-      }
+        hash: "#CancionesFavoritas", // ✅ corregido aquí
+      },
     ];
 
     if (userData.rol !== "artista") {
@@ -186,9 +170,8 @@ export const userProfile = async (contenedorPrincipal) => {
     userFavoritesSection.appendChild(favoritesLinksContainer);
     contenedorPrincipal.appendChild(userFavoritesSection);
 
-    // --- 5. Sección de Funciones solo para Artistas ---
+    // --- Herramientas de Artista ---
     if (userData.rol === "artista") {
-      console.log("Datos del usuario recibidos:", userData);
       const artistaToolsSection = document.createElement("section");
       artistaToolsSection.classList.add("artista_tools_section");
 
@@ -209,6 +192,11 @@ export const userProfile = async (contenedorPrincipal) => {
           label: "Mis Publicaciones",
           iconClass: "fa-solid fa-music",
           hash: "#MisPublicaciones",
+        },
+        {
+          label: "Mi Perfil Público",
+          iconClass: "fa-solid fa-user",
+          hash: `#/artistas/${userData.artista_id}`,
         },
       ];
 
@@ -240,3 +228,5 @@ export const userProfile = async (contenedorPrincipal) => {
     contenedorPrincipal.appendChild(errorMessage);
   }
 };
+
+

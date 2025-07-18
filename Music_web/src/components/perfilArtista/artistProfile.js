@@ -12,6 +12,7 @@ import { activarBuscadorGlobal } from "../../helpers/buscador.js";
  * @param {HTMLElement} contenedorPrincipal - El elemento DOM donde se renderizará todo el perfil.
  */
 export const artistProfile = async (artistaId, contenedorPrincipal) => {
+  
   if (!artistaId || !contenedorPrincipal) {
     console.error(
       "Error: Se requiere un ID de artista y un contenedor principal."
