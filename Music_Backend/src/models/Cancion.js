@@ -255,6 +255,35 @@ WHERE fc.id_usuario = ?;
       );
     }
   }
+
+   // Insertar múltiples canciones
+  async insertarVariasCanciones(canciones) {
+    try {
+      const values = canciones.map(c => [
+        c.titulo_cancion,
+        c.duracion,
+        c.numero_pista,
+        c.reproducciones || 0,
+        c.album_id,
+        c.artista_id,
+        c.descripcion
+      ]);
+
+      const [result] = await connection.query(
+        `INSERT INTO cancion 
+        (titulo_cancion, duracion, numero_pista, reproducciones, album_id, artista_id, descripcion) 
+        VALUES ?`,
+        [values]
+      );
+
+      return {
+        affectedRows: result.affectedRows,
+        message: "Canciones insertadas correctamente"
+      };
+    } catch (error) {
+      throw new Error("Error al insertar canciones: " + error.message);
+    }
+  }
 }
 
 export default Cancion;

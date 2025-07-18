@@ -164,6 +164,26 @@ class CancionController {
             return res.status(500).json({ message: "Error al eliminar todas las canciones favoritas: " + error.message });
         }
     }
+
+      // Controlador para insertar canciones
+  static insertarVariasCanciones = async (req, res) => {
+    try {
+      const { canciones } = req.body;
+
+      if (!Array.isArray(canciones) || canciones.length === 0) {
+        return res.status(400).json({ message: "Se requiere un arreglo de canciones." });
+      }
+
+      const response = await CancionService.insertarVariasCanciones(canciones);
+      if (response.error) {
+        return res.status(response.code).json({ message: response.message });
+      }
+
+      return res.status(response.code).json(response);
+    } catch (error) {
+      return res.status(500).json({ message: "Error al insertar canciones: " + error.message });
+    }
+  };
 }
 
 export default CancionController;

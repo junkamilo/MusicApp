@@ -4,6 +4,9 @@ import { verifyToken } from "../middlewares/auth/tokenMiddleware.js";
 
 const router = express.Router();
 
+// Endpoint para insertar múltiples canciones
+router.post("/", verifyToken, CancionController.insertarVariasCanciones);
+
 //Obtener canciones favoritas de un usuario autenticado
 router.get("/favoritos", verifyToken, CancionController.getCancionesFavoritosByUserId);
 

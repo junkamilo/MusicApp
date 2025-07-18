@@ -270,5 +270,24 @@ class CancionService {
       };
     }
   }
+
+  static async insertarVariasCanciones(canciones) {
+    try {
+      const cancionModel = new Cancion();
+      const resultado = await cancionModel.insertarVariasCanciones(canciones);
+      return {
+        error: false,
+        code: 201,
+        message: resultado.message,
+        data: resultado
+      };
+    } catch (error) {
+      return {
+        error: true,
+        code: 500,
+        message: "Error al insertar canciones: " + error.message
+      };
+    }
+  }
 }
 export default CancionService;

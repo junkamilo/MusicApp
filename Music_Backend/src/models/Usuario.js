@@ -45,6 +45,7 @@ export class Usuario {
       u.email,
       u.fecha_registro,
       u.url_foto_perfil,
+      a.artista_id,
       CASE 
         WHEN a.artista_id IS NOT NULL THEN 'artista'
         ELSE 'usuario'
