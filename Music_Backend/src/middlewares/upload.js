@@ -24,14 +24,12 @@ const storage = multer.diskStorage({
 
 // Filtro para aceptar solo imágenes y audios mp3
 const fileFilter = (req, file, cb) => {
+  console.log("🧪 Mimetype:", file.mimetype);
+  console.log("🧪 Extensión:", path.extname(file.originalname));
   const ext = path.extname(file.originalname).toLowerCase();
   const isImage = [".jpg", ".jpeg", ".png", ".webp"].includes(ext);
   const isAudio = [".mp3"].includes(ext);
-
-  if (
-    (file.mimetype.startsWith("image") && isImage) ||
-    (file.mimetype.startsWith("audio") && isAudio)
-  ) {
+  if (isImage || isAudio) {
     cb(null, true);
   } else {
     cb(new Error("Solo se permiten archivos MP3, JPG, PNG o WEBP."), false);

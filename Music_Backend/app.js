@@ -25,9 +25,11 @@ const app = express();
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-
 //habilitamos el cors
 app.use(cors());
+
+// ✅ Mover esta ruta ANTES de los body parsers para que Multer funcione
+app.use('/api', AudioRouter); // 📂 Usa multer para subir archivos
 
 // Configuramos body-parser para que el app acepte datos JSON
 app.use(bodyParser.json());
@@ -38,26 +40,27 @@ app.use(express.urlencoded({ extended: true }));
 // Permite manejar cookies en las respuestas.
 app.use(cookieParser());
 
+// Resto de rutas (pueden ir después)
 app.use('/artistas', ArtistasRouters);
 app.use('/albumes', AlbumRouters);
 app.use('/canciones', CancionRouters);
 app.use('/generosMusicales', GenerosRouters);
-app.use('/auth',authRutas);
+app.use('/auth', authRutas);
 app.use("/api", protectedRoutes);
-app.use('/api', AudioRouter);
 app.use("/api", UsuarioCancionRouters);
+
+// Servir archivos estáticos
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 console.log("📂 Servidor sirviendo archivos desde:", path.join(__dirname, "uploads"));
 
-
-
-
 //puerto en el que se ejecutara la aplicacion
 const PORT = process.env.PORT || 3000;
-// Iniciamos el servidor   
+
+// Iniciamos el servidor
 app.listen(PORT, () => {
   console.log(`Servidor corriendo en el puerto ${PORT}`);
 });
+
 
 
 

@@ -1,6 +1,7 @@
 import express from "express";
 import AudioController from "../controllers/subirAudio.js";
-import { uploadSingle, uploadMultiple } from "../middlewares/upload.js";
+import { uploadMultiple, uploadSingle } from "../middlewares/upload.js";
+
 
 
 const router = express.Router();
