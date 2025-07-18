@@ -254,7 +254,7 @@ export const artistProfile = async (artistaId, contenedorPrincipal) => {
 
     // --- 3. Renderizar álbumes y canciones usando contentCards ---
     if (albumsData.data && albumsData.data.length > 0) {
-      contentCards(albumsData.data, albumsCardsContainer, cardAlbum);
+      contentCards(albumsData.data, albumsCardsContainer, cardAlbum, Infinity);
     } else {
       const noAlbumsMessage = document.createElement("p");
       noAlbumsMessage.classList.add("no-content-message");
