@@ -15,6 +15,7 @@ import authRutas from './src/routes/authRutas.js';
 import protectedRoutes from './src/routes/protectedRoutes.js';
 import AudioRouter from './src/routes/Audio.js';
 import UsuarioCancionRouters from './src/routes/UsuarioCancionRouters.js';
+import MisPublicacionesRouter from './src/routes/MisPublicacionesRouter.js';
 
 // Cargar variables de entorno
 dotenv.config();
@@ -45,6 +46,7 @@ app.use('/generosMusicales', GenerosRouters);
 app.use('/auth', authRutas);
 app.use('/api', protectedRoutes);
 app.use('/api', UsuarioCancionRouters);
+app.use("/mis-publicaciones", MisPublicacionesRouter);
 
 // Servir archivos estáticos
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));

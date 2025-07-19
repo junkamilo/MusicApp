@@ -7,7 +7,7 @@ import { verifyToken } from "../middlewares/auth/tokenMiddleware.js";
 
 const router = express.Router();
 
-router.post("/cancion/audio", verifyToken, uploadSingle, AudioController.crearCancionConAudio);
+    router.post("/cancion/audio", verifyToken, uploadSingle, AudioController.crearCancionConAudio);
 
 // Esta es la ruta correcta con el middleware
 router.patch("/upload/audio/:id", verifyToken,uploadSingle, AudioController.subirAudio);
