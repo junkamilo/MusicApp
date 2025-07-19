@@ -96,14 +96,17 @@ export const eliminarAlbumAPI = async (albumId, albumNombre, onSuccess) => {
     });
 
     const data = await res.json();
+    console.log("Respuesta del backend al eliminar álbum:", data);
 
-    if (!res.ok) {
+if (!res.ok || data.error) {
   const msg = data.message;
 
   if (msg?.includes("foreign key constraint fails")) {
     error({
       message: "No se puede eliminar este álbum porque aún está marcado como favorito por algunos usuarios. Por favor, elimine primero esos registros de favoritos.",
     });
+  } else if (msg === "El álbum tiene canciones y no puede eliminarse.") {
+    error({ message: msg });
   } else {
     error({ message: msg || "Error al eliminar el álbum" });
   }
