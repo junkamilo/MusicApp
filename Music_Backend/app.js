@@ -6,6 +6,7 @@ import cookieParser from "cookie-parser";
 import { fileURLToPath } from 'url';
 import path, { dirname } from 'path';
 
+// Rutas
 import ArtistasRouters from './src/routes/ArtistasRouters.js';
 import AlbumRouters from './src/routes/AlbumRouters.js';
 import CancionRouters from './src/routes/CancionRouters.js';
@@ -15,51 +16,46 @@ import protectedRoutes from './src/routes/protectedRoutes.js';
 import AudioRouter from './src/routes/Audio.js';
 import UsuarioCancionRouters from './src/routes/UsuarioCancionRouters.js';
 
-
-// Importamos dotenv para manejar las variables de entorno
+// Cargar variables de entorno
 dotenv.config();
 
-//creamos la instancia de express
+// Crear instancia de Express
 const app = express();
-
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-//habilitamos el cors
+// Habilitar CORS
 app.use(cors());
 
-// ✅ Mover esta ruta ANTES de los body parsers para que Multer funcione
-app.use('/api', AudioRouter); // 📂 Usa multer para subir archivos
+// ✅ Ruta de subida de archivos (usa Multer) – DEBE IR ANTES del body-parser
+app.use('/upload-audio', AudioRouter);
 
-// Configuramos body-parser para que el app acepte datos JSON
+// 🔽 Middlewares que procesan el cuerpo de la petición (no deben ir antes de multer)
 app.use(bodyParser.json());
-
-// Permite el envio de datos de formularios de tipo utlencode
 app.use(express.urlencoded({ extended: true }));
 
-// Permite manejar cookies en las respuestas.
+// Middleware para cookies
 app.use(cookieParser());
 
-// Resto de rutas (pueden ir después)
+// Rutas del resto de módulos
 app.use('/artistas', ArtistasRouters);
 app.use('/albumes', AlbumRouters);
 app.use('/canciones', CancionRouters);
 app.use('/generosMusicales', GenerosRouters);
 app.use('/auth', authRutas);
-app.use("/api", protectedRoutes);
-app.use("/api", UsuarioCancionRouters);
+app.use('/api', protectedRoutes);
+app.use('/api', UsuarioCancionRouters);
 
 // Servir archivos estáticos
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 console.log("📂 Servidor sirviendo archivos desde:", path.join(__dirname, "uploads"));
 
-//puerto en el que se ejecutara la aplicacion
+// Puerto y arranque del servidor
 const PORT = process.env.PORT || 3000;
-
-// Iniciamos el servidor
 app.listen(PORT, () => {
-  console.log(`Servidor corriendo en el puerto ${PORT}`);
+  console.log(`🚀 Servidor corriendo en el puerto ${PORT}`);
 });
+
 
 
 

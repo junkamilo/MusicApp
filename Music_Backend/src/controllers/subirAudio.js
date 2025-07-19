@@ -71,6 +71,25 @@ static subirMultiplesAudios = async (req, res) => {
   });
 };
 
+  static async crearCancionConAudio(req, res) {
+    const datos = req.body;
+    const file = req.file;
+
+    try {
+      const response = await AudioService.crearCancionConAudio(datos, file);
+
+      if (response.error) {
+        return res.status(response.code).json({ message: response.message });
+      }
+
+      return res.status(response.code).json(response);
+    } catch (error) {
+      console.error("Error en crearCancionConAudio:", error);
+      return res.status(500).json({
+        message: "Error interno al crear canción: " + error.message
+      });
+    }
+  }
 
 }
 
