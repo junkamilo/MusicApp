@@ -80,12 +80,21 @@ class MisPublicacionesService {
   static async eliminarAlbum(album_id, artista_id) {
     try {
       const result = await MisPublicacionesModel.eliminarAlbumSiEstaVacio(album_id, artista_id);
-      return {
-        error: false,
-        code: 200,
-        message: "Álbum eliminado correctamente",
-        data: result
-      };
+
+if (result.error) {
+  return {
+    error: true,
+    code: 400, // o el código que prefieras para errores de negocio
+    message: result.message
+  };
+}
+
+return {
+  error: false,
+  code: 200,
+  message: "Álbum eliminado correctamente"
+};
+
     } catch (error) {
       return {
         error: true,

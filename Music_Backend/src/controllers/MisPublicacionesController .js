@@ -1,12 +1,13 @@
 import MisPublicacionesService from "../services/misPublicacionesServices.js";
 
-
 class MisPublicacionesController {
   // 1. Obtener todas las publicaciones del artista
   static async listar(req, res) {
     try {
       const artista_id = req.user.artista_id;
-      const response = await MisPublicacionesService.listarPublicaciones(artista_id);
+      const response = await MisPublicacionesService.listarPublicaciones(
+        artista_id
+      );
 
       if (response.error) {
         return res.status(response.code).json({ message: response.message });
@@ -15,7 +16,7 @@ class MisPublicacionesController {
       return res.status(response.code).json(response);
     } catch (error) {
       return res.status(500).json({
-        message: "Error al listar publicaciones: " + error.message
+        message: "Error al listar publicaciones: " + error.message,
       });
     }
   }
@@ -26,7 +27,10 @@ class MisPublicacionesController {
     const artista_id = req.user.artista_id;
 
     try {
-      const response = await MisPublicacionesService.eliminarCancion(id, artista_id);
+      const response = await MisPublicacionesService.eliminarCancion(
+        id,
+        artista_id
+      );
 
       if (response.error) {
         return res.status(response.code).json({ message: response.message });
@@ -35,7 +39,7 @@ class MisPublicacionesController {
       return res.status(response.code).json(response);
     } catch (error) {
       return res.status(500).json({
-        message: "Error al eliminar canción: " + error.message
+        message: "Error al eliminar canción: " + error.message,
       });
     }
   }
@@ -46,16 +50,22 @@ class MisPublicacionesController {
     const artista_id = req.user.artista_id;
 
     try {
-      const response = await MisPublicacionesService.eliminarAlbum(id, artista_id);
+      const response = await MisPublicacionesService.eliminarAlbum(
+        id,
+        artista_id
+      );
 
       if (response.error) {
-        return res.status(response.code).json({ message: response.message });
+        return res.status(response.code).json({
+          error: true,
+          message: response.message,
+        });
       }
 
       return res.status(response.code).json(response);
     } catch (error) {
       return res.status(500).json({
-        message: "Error al eliminar álbum: " + error.message
+        message: "Error al eliminar álbum: " + error.message,
       });
     }
   }
@@ -67,7 +77,11 @@ class MisPublicacionesController {
     const datos = req.body;
 
     try {
-      const response = await MisPublicacionesService.modificarAlbum(id, artista_id, datos);
+      const response = await MisPublicacionesService.modificarAlbum(
+        id,
+        artista_id,
+        datos
+      );
 
       if (response.error) {
         return res.status(response.code).json({ message: response.message });
@@ -76,7 +90,7 @@ class MisPublicacionesController {
       return res.status(response.code).json(response);
     } catch (error) {
       return res.status(500).json({
-        message: "Error al modificar álbum: " + error.message
+        message: "Error al modificar álbum: " + error.message,
       });
     }
   }
@@ -87,7 +101,10 @@ class MisPublicacionesController {
     const datos = req.body;
 
     try {
-      const response = await MisPublicacionesService.subirCancion(datos, artista_id);
+      const response = await MisPublicacionesService.subirCancion(
+        datos,
+        artista_id
+      );
 
       if (response.error) {
         return res.status(response.code).json({ message: response.message });
@@ -96,7 +113,7 @@ class MisPublicacionesController {
       return res.status(response.code).json(response);
     } catch (error) {
       return res.status(500).json({
-        message: "Error al subir canción: " + error.message
+        message: "Error al subir canción: " + error.message,
       });
     }
   }

@@ -15,13 +15,16 @@ class MisPublicacionesModel {
     return result;
   }
 
-  static async eliminarCancion(cancion_id, artista_id) {
-    const [result] = await connection.query(
-      `DELETE FROM cancion WHERE cancion_id = ? AND artista_id = ?`,
-      [cancion_id, artista_id]
-    );
-    return result;
-  }
+static async eliminarCancion(cancion_id, artista_id) {
+  const [result] = await connection.query(
+    `DELETE c
+     FROM cancion c
+     JOIN album a ON c.album_id = a.album_id
+     WHERE c.cancion_id = ? AND a.artista_id = ?`,
+    [cancion_id, artista_id]
+  );
+  return result;
+}
 
   static async eliminarAlbumSiEstaVacio(album_id, artista_id) {
     const [canciones] = await connection.query(
