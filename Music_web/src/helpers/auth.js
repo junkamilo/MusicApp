@@ -42,3 +42,11 @@ export const logout = () => {
 
   window.location.hash = "#Login";
 };
+
+export const getTokenData = () => {
+  const user = JSON.parse(localStorage.getItem("user"));
+  if (!user || !user.id) {
+    throw new Error("Usuario no autenticado o datos incompletos.");
+  }
+  return { userId: user.id };
+};

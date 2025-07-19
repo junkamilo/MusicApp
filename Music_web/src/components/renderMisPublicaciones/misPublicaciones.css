@@ -1,0 +1,538 @@
+/* components/misPublicaciones/misPublicaciones.css */
+
+/* Variables CSS (asegúrate de que estén disponibles globalmente) */
+:root {
+    --primary-music-color: #2ED162; /* Verde vibrante */
+    --secondary-music-color: #1DB954; /* Verde un poco más oscuro */
+    --dark-bg: #121212; /* Fondo muy oscuro principal */
+    --light-bg: #1A1A1A; /* Fondo ligeramente más claro para secciones/cards */
+    --lighter-bg: #282828; /* Fondo aún más claro para elementos interactivos */
+    --text-light: #E0E0E0; /* Texto claro principal */
+    --text-dark: #A0A0A0; /* Texto secundario/desactivado */
+    --border-color-subtle: rgba(255, 255, 255, 0.08); /* Borde muy sutil */
+    --shadow-color-dark: rgba(0, 0, 0, 0.7); /* Sombra oscura para profundidad */
+    --shadow-color-light: rgba(0, 0, 0, 0.4); /* Sombra más suave */
+}
+
+/* Contenedor principal de las publicaciones */
+.mis-publicaciones-container {
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2.5rem;
+    animation: fadeIn 0.5s ease-out; /* Animación de entrada */
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Mensaje de carga */
+.loading-message, .empty-state {
+    text-align: center;
+    color: var(--text-dark);
+    font-size: 1.2rem;
+    padding: 3rem;
+    background-color: var(--light-bg);
+    border-radius: 16px;
+    box-shadow: 0 4px 15px var(--shadow-color-light);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+}
+.loading-message i, .empty-state i {
+    font-size: 3rem;
+    color: var(--primary-music-color);
+}
+.empty-state p {
+    margin-bottom: 1rem;
+}
+
+/* Título de la sección */
+.section-title {
+    font-size: 2.8rem;
+    font-weight: 800;
+    color: var(--primary-music-color);
+    text-shadow: 0 4px 15px rgba(46, 209, 98, 0.4);
+    text-align: center;
+    margin-bottom: 2rem;
+    letter-spacing: 1.5px;
+}
+.section-title i {
+    margin-right: 1rem;
+    font-size: 2.5rem;
+}
+
+/* Grid para los álbumes */
+.albums-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); /* Columnas responsivas */
+    gap: 2rem; /* Espacio entre las tarjetas de álbum */
+}
+
+/* Tarjeta individual del álbum */
+.album-card {
+    background-color: var(--light-bg);
+    border-radius: 16px;
+    box-shadow: 0 8px 25px var(--shadow-color-dark);
+    overflow: hidden; /* Asegura que la portada redondeada se vea bien */
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border: 1px solid var(--border-color-subtle);
+}
+
+.album-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 35px var(--shadow-color-dark);
+}
+
+/* Encabezado del álbum (clicable para expandir/contraer) */
+.album-header-clickable {
+    display: flex;
+    align-items: center;
+    padding: 1.5rem;
+    cursor: pointer; /* Por defecto es clicable */
+    background-color: var(--lighter-bg);
+    border-bottom: 1px solid var(--border-color-subtle);
+    gap: 1.5rem;
+    transition: background-color 0.2s ease;
+}
+
+.album-card:hover .album-header-clickable {
+    background-color: #202020; /* Un poco más oscuro al pasar el ratón */
+}
+
+.album-header-clickable .portada {
+    width: 80px;
+    height: 80px;
+    border-radius: 12px; /* Bordes redondeados para la portada */
+    object-fit: cover;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+}
+
+.album-info {
+    flex-grow: 1;
+}
+
+.album-info h3 {
+    font-size: 1.4rem;
+    color: var(--text-light);
+    margin-bottom: 0.3rem;
+    font-weight: 600;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.album-info .album-description {
+    font-size: 0.9rem;
+    color: var(--text-dark);
+    margin-bottom: 0.5rem;
+    line-height: 1.3;
+    display: -webkit-box;
+    -webkit-line-clamp: 2; /* Limita a 2 líneas */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.album-info .album-date {
+    font-size: 0.85rem;
+    color: var(--text-dark);
+}
+.album-info .album-date strong {
+    color: var(--text-light);
+}
+
+/* Botón de expandir/contraer canciones */
+.toggle-songs-btn {
+    background: none;
+    border: none;
+    color: var(--primary-music-color);
+    font-size: 1.5rem;
+    cursor: pointer;
+    padding: 0.5rem;
+    transition: transform 0.3s ease;
+    display: none; /* OCULTAR POR DEFECTO EN PANTALLAS GRANDES */
+}
+
+.toggle-songs-btn.rotated .toggle-icon {
+    transform: rotate(180deg); /* Rota la flecha hacia arriba */
+}
+
+/* Contenedor de acciones del álbum (botones debajo del encabezado) */
+.album-actions-container {
+    display: flex;
+    justify-content: space-around;
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid var(--border-color-subtle);
+    background-color: var(--light-bg);
+    gap: 1rem;
+    flex-wrap: wrap; /* Permite que los botones se envuelvan en pantallas pequeñas */
+}
+
+.album-actions-container .action_button {
+    flex: 1 1 auto; /* Permite que los botones crezcan y se encojan */
+    min-width: 120px; /* Ancho mínimo para evitar que se aplasten demasiado */
+    padding: 0.6rem 1rem;
+    font-size: 0.9rem;
+    gap: 0.5rem;
+    border-radius: 8px; /* Menos redondeado para botones de acción */
+}
+
+.album-actions-container .delete-album-btn {
+    background-color: #e74c3c; /* Rojo para eliminar */
+    color: #fff;
+}
+.album-actions-container .delete-album-btn:hover {
+    background-color: #c0392b;
+    transform: translateY(-2px);
+}
+
+.album-actions-container .add-song-to-album-btn {
+    background-color: var(--primary-music-color); /* Verde para añadir */
+    color: var(--dark-bg);
+}
+.album-actions-container .add-song-to-album-btn:hover {
+    background-color: var(--secondary-music-color);
+    transform: translateY(-2px);
+}
+
+
+/* Contenedor expandible para las canciones */
+.songs-collapsible-content {
+    /* Por defecto en pantallas grandes, se muestra siempre */
+    max-height: none; /* Las canciones se muestran siempre */
+    overflow: visible; /* El contenido no se recorta */
+    transition: none; /* Sin transición de altura en pantallas grandes */
+    padding: 1.5rem; /* Padding siempre presente */
+    background-color: var(--dark-bg); /* Fondo más oscuro para las canciones */
+}
+
+.songs-collapsible-content.expanded {
+    /* Esta clase solo tendrá efecto en pantallas pequeñas */
+    max-height: 1000px; /* Suficientemente grande para contener todas las canciones */
+    padding-top: 1.5rem;
+    padding-bottom: 1.5rem;
+}
+
+/* Lista de canciones */
+.lista-canciones {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem; /* Espacio entre canciones */
+}
+
+.cancion-item {
+    display: flex;
+    flex-direction: column; /* Apilar detalles y controles en móvil */
+    gap: 0.8rem;
+    padding: 0.8rem 1rem;
+    background-color: var(--lighter-bg);
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.1);
+    position: relative; /* Para posicionar el botón de play/pause */
+}
+
+.cancion-item .song-details {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    flex-wrap: wrap; /* Permite que los detalles se envuelvan */
+}
+
+.cancion-item .song-track {
+    font-size: 0.9rem;
+    color: var(--primary-music-color);
+    font-weight: 700;
+    min-width: 30px; /* Asegura espacio para el número de pista */
+}
+
+.cancion-item .song-title {
+    font-size: 1rem;
+    color: var(--text-light);
+    font-weight: 500;
+    flex-grow: 1; /* Permite que el título ocupe el espacio restante */
+}
+
+.cancion-item .song-duration {
+    font-size: 0.85rem;
+    color: var(--text-dark);
+    white-space: nowrap;
+    margin-left: auto; /* Empuja la duración a la derecha */
+}
+
+/* Nuevo botón de Play/Pause */
+.play-pause-btn {
+    background-color: var(--primary-music-color);
+    color: var(--dark-bg);
+    border: none;
+    border-radius: 50%; /* Botón circular */
+    width: 35px; /* Tamaño del botón */
+    height: 35px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.1rem;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    transition: transform 0.2s ease, background-color 0.2s ease;
+    flex-shrink: 0; /* Evita que se encoja */
+    margin-left: 0.5rem; /* Espacio a la izquierda del título */
+}
+
+.play-pause-btn:hover {
+    background-color: var(--secondary-music-color);
+    transform: scale(1.05);
+}
+
+.play-pause-btn .play-icon,
+.play-pause-btn .pause-icon {
+    transition: opacity 0.2s ease;
+}
+
+.play-pause-btn .hidden {
+    display: none;
+}
+
+
+.cancion-item .song-controls {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end; /* Alinea el botón de eliminar a la derecha */
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-top: 0.5rem; /* Espacio entre detalles y controles */
+}
+
+/* Ocultar el reproductor de audio por defecto si no lo necesitas */
+.cancion-item audio {
+    display: none; /* Oculta el reproductor HTML5 por defecto */
+}
+
+
+.cancion-item .btn-eliminar-cancion {
+    background-color: #c0392b; /* Rojo más oscuro para eliminar canción */
+    color: #fff;
+    padding: 0.5rem 1rem;
+    font-size: 0.85rem;
+    border-radius: 6px;
+    transition: background-color 0.2s ease, transform 0.2s ease;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+}
+.cancion-item .btn-eliminar-cancion:hover {
+    background-color: #a93226;
+    transform: translateY(-1px);
+}
+.cancion-item .btn-eliminar-cancion i {
+    margin-right: 0.5rem;
+}
+
+.no-songs-message {
+    color: var(--text-dark);
+    font-style: italic;
+    text-align: center;
+    padding: 1rem;
+}
+
+
+/* Media Queries para Responsividad */
+
+/* Tablets y Laptops pequeñas */
+@media (max-width: 1024px) {
+    .mis-publicaciones-container {
+        padding: 1.5rem;
+        gap: 2rem;
+    }
+    .section-title {
+        font-size: 2.2rem;
+        margin-bottom: 1.5rem;
+    }
+    .section-title i {
+        font-size: 2rem;
+    }
+    .albums-grid {
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 1.5rem;
+    }
+    .album-header-clickable {
+        padding: 1.2rem;
+        gap: 1rem;
+    }
+    .album-header-clickable .portada {
+        width: 70px;
+        height: 70px;
+    }
+    .album-info h3 {
+        font-size: 1.2rem;
+    }
+    .album-info .album-description {
+        font-size: 0.85rem;
+    }
+    .album-info .album-date {
+        font-size: 0.8rem;
+    }
+    
+    /* Mostrar la flecha en pantallas más pequeñas */
+    .toggle-songs-btn {
+        display: block; /* Mostrar la flecha */
+        font-size: 1.3rem;
+    }
+
+    /* Ocultar contenido por defecto y aplicar transición en pantallas más pequeñas */
+    .songs-collapsible-content {
+        max-height: 0; /* Oculto por defecto en pantallas pequeñas */
+        overflow: hidden;
+        transition: max-height 0.4s ease-in-out; /* Transición suave */
+        padding-top: 0; /* Reiniciar padding para la transición */
+        padding-bottom: 0; /* Reiniciar padding para la transición */
+    }
+    .songs-collapsible-content.expanded {
+        max-height: 1000px; /* Suficientemente grande para contener todas las canciones */
+        padding-top: 1.5rem; /* Aplicar padding cuando expandido */
+        padding-bottom: 1.5rem; /* Aplicar padding cuando expandido */
+    }
+
+    .album-actions-container {
+        padding: 0.8rem 1.2rem;
+        gap: 0.8rem;
+    }
+    .album-actions-container .action_button {
+        padding: 0.5rem 0.8rem;
+        font-size: 0.8rem;
+        gap: 0.4rem;
+    }
+    .cancion-item {
+        padding: 0.7rem 0.8rem;
+        gap: 0.6rem;
+    }
+    .cancion-item .song-details {
+        gap: 0.6rem;
+    }
+    .cancion-item .song-track {
+        font-size: 0.85rem;
+    }
+    .cancion-item .song-title {
+        font-size: 0.9rem;
+    }
+    .cancion-item .song-duration {
+        font-size: 0.8rem;
+    }
+    .cancion-item .song-controls {
+        gap: 0.8rem;
+    }
+    .cancion-item .btn-eliminar-cancion {
+        padding: 0.4rem 0.8rem;
+        font-size: 0.8rem;
+    }
+    .play-pause-btn {
+        width: 30px;
+        height: 30px;
+        font-size: 1rem;
+    }
+}
+
+/* Móviles */
+@media (max-width: 768px) {
+    .mis-publicaciones-container {
+        padding: 1rem;
+        gap: 1.5rem;
+    }
+    .section-title {
+        font-size: 1.8rem;
+        margin-bottom: 1rem;
+    }
+    .section-title i {
+        font-size: 1.6rem;
+    }
+    .albums-grid {
+        grid-template-columns: 1fr; /* Una sola columna para móviles */
+        gap: 1rem;
+    }
+    .album-card {
+        border-radius: 8px;
+    }
+    .album-header-clickable {
+        padding: 1rem;
+        gap: 0.8rem;
+    }
+    .album-header-clickable .portada {
+        width: 60px;
+        height: 60px;
+        border-radius: 8px;
+    }
+    .album-info h3 {
+        font-size: 1.1rem;
+    }
+    .album-info .album-description {
+        font-size: 0.8rem;
+        -webkit-line-clamp: 3; /* Más líneas para descripción en móvil */
+    }
+    .album-info .album-date {
+        font-size: 0.75rem;
+    }
+    .toggle-songs-btn {
+        font-size: 1.2rem;
+        padding: 0.3rem;
+    }
+    .album-actions-container {
+        flex-direction: column; /* Apilar botones de acción */
+        padding: 0.8rem;
+        gap: 0.6rem;
+    }
+    .album-actions-container .action_button {
+        width: 100%;
+        font-size: 0.85rem;
+        padding: 0.6rem 1rem;
+        justify-content: center;
+    }
+    .songs-collapsible-content.expanded {
+        padding-top: 1rem;
+        padding-bottom: 1rem;
+    }
+    .cancion-item {
+        padding: 0.6rem 0.7rem;
+        gap: 0.5rem;
+    }
+    .cancion-item .song-details {
+        flex-direction: column; /* Apilar detalles de canción */
+        align-items: flex-start;
+        gap: 0.4rem;
+    }
+    .cancion-item .song-track {
+        font-size: 0.8rem;
+    }
+    .cancion-item .song-title {
+        font-size: 0.9rem;
+    }
+    .cancion-item .song-duration {
+        font-size: 0.75rem;
+    }
+    .cancion-item .song-controls {
+        flex-direction: column; /* Apilar controles de canción */
+        width: 100%;
+        gap: 0.6rem;
+    }
+    /* El audio ya está oculto por defecto, no necesita más reglas específicas aquí */
+    .cancion-item .btn-eliminar-cancion {
+        width: 100%;
+        font-size: 0.8rem;
+        padding: 0.5rem 0.8rem;
+    }
+    .play-pause-btn {
+        width: 28px;
+        height: 28px;
+        font-size: 0.9rem;
+        margin-left: 0; /* Remover margen para mejor alineación en móvil */
+        margin-right: 0.5rem; /* Añadir un poco de margen a la derecha */
+    }
+}

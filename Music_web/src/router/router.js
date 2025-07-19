@@ -1,3 +1,4 @@
+import { agregarCancionAAlbum } from "../components/misPublicacionesFormulario/agregarCancionAAlbum.js";
 import { estaAutenticado } from "../helpers/auth.js";
 import { loadView } from "../helpers/loadView.js";
 import { AlbumesController } from "../views/Albumes/AlbumesController.js";
@@ -15,6 +16,7 @@ import { generosFavoritosController } from "../views/Generos/generosFavoritosCon
 import { generosMusicalesController } from "../views/Generos/generosMusicalesController.js";
 import { inicioController } from "../views/Inicio/InicioController.js";
 import { loginController } from "../views/login/loginController.js";
+import { misPublicaciones } from "../views/misPublicaciones/misPublicacionesController.js";
 import { perfilUsuario } from "../views/perfilUsuario/perfilUsuario.js";
 import { SerArtistaController } from "../views/SerArtista/SerArtistaController.js";
 import { subirAlbum } from "../views/SubirAlbum/subirAlbumController.js";
@@ -109,7 +111,17 @@ const routes = {
     "template": "SerArtista/SerArtista.html",
     controlador: SerArtistaController,
     private: true
-  }
+  },
+  MisPublicaciones:{
+    "template": "misPublicaciones/misPublicaciones.html",
+    controlador: misPublicaciones,
+    private: true
+  },
+  "/agregarCancion/:albumId": {
+  template: null,
+  controlador: agregarCancionAAlbum,
+  private: true
+}
 };
 
 
