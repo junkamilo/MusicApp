@@ -73,7 +73,7 @@ export const cardCancion = (
         return;
       }
 
-      const audioURL = `http://${host}:3000/uploads${encodeURI(url_archivo_audio)}`;
+      const audioURL = `http://${host}:3000/uploads/${encodeURI(url_archivo_audio)}`;
       if (audio) {
         audio.src = audioURL;
         audio.onerror = () => {

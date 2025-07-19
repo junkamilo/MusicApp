@@ -23,23 +23,9 @@ export const createAlbum = (appContainer) => {
   const form = document.createElement("form");
   form.classList.add("crear_album_form");
 
-  const titleGroup = createInputGroupHTML(
-    "text",
-    "albumTitle",
-    "Título del Álbum",
-    true
-  );
-  const dateGroup = createInputGroupHTML(
-    "date",
-    "albumDate",
-    "Fecha de Lanzamiento",
-    true
-  );
-  const descriptionGroup = createInputGroupHTML(
-    "textarea",
-    "albumDescription",
-    "Descripción"
-  );
+  const titleGroup = createInputGroupHTML("text", "albumTitle", "Título del Álbum", true);
+  const dateGroup = createInputGroupHTML("date", "albumDate", "Fecha de Lanzamiento", true);
+  const descriptionGroup = createInputGroupHTML("textarea", "albumDescription", "Descripción");
 
   const portadaLabel = document.createElement("label");
   portadaLabel.textContent = "Portada del Álbum";
@@ -65,9 +51,7 @@ export const createAlbum = (appContainer) => {
 
     const titulo = document.getElementById("albumTitle").value.trim();
     const fecha = document.getElementById("albumDate").value;
-    const descripcion = document
-      .getElementById("albumDescription")
-      .value.trim();
+    const descripcion = document.getElementById("albumDescription").value.trim();
     const portadaFile = portadaInput.files[0];
 
     if (!titulo || !fecha || !portadaFile) {
@@ -117,7 +101,7 @@ export const createAlbum = (appContainer) => {
 
       success({ message: "Portada del álbum subida exitosamente." });
 
-      // 🎵 Sección para añadir canciones
+      // 🎵 Añadir canciones
       const sectionTitle = document.createElement("h2");
       sectionTitle.textContent = "Añadir canciones al álbum";
       sectionTitle.classList.add("section-title");
@@ -150,6 +134,7 @@ export const createAlbum = (appContainer) => {
       finalizarBtn.type = "button";
       finalizarBtn.classList.add("upload-songs-btn");
 
+      // ✅ INTEGRACIÓN DE LA NUEVA LÓGICA DE SUBIDA DE CANCIONES
       finalizarBtn.addEventListener("click", async () => {
         const songGroups = cancionesContainer.querySelectorAll(".song_group");
         if (songGroups.length === 0) {
@@ -157,60 +142,42 @@ export const createAlbum = (appContainer) => {
           return;
         }
 
-        const canciones = [];
-        const audios = [];
-
-        songGroups.forEach((group) => {
-          const titulo = group.querySelector('input[name="titulo_cancion"]').value;
-          const duracion = group.querySelector('input[name="duracion"]').value;
-          const numero = group.querySelector('input[name="numero_pista"]').value;
-          const descripcion = group.querySelector('textarea[name="descripcion"]').value;
-          const audio = group.querySelector('input[name="audio"]').files[0];
-
-          if (!titulo || !duracion || !numero || !audio) return;
-
-          canciones.push({
-            titulo_cancion: titulo,
-            duracion,
-            numero_pista: parseInt(numero),
-            reproducciones: 0,
-            album_id: albumId,
-            artista_id: artistaId,
-            descripcion,
-          });
-
-          audios.push(audio);
-        });
-
         try {
-          const res = await fetch("http://localhost:3000/canciones", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`,
-            },
-            body: JSON.stringify({ canciones }),
-          });
+          for (const group of songGroups) {
+            const titulo = group.querySelector('input[name="titulo_cancion"]').value.trim();
+            const duracion = group.querySelector('input[name="duracion"]').value.trim();
+            const numero = group.querySelector('input[name="numero_pista"]').value.trim();
+            const descripcion = group.querySelector('textarea[name="descripcion"]').value.trim();
+            const audio = group.querySelector('input[name="audio"]').files[0];
 
-          const resData = await res.json();
-          if (!res.ok || resData.error) {
-            throw new Error(resData.message || "Error al guardar canciones.");
-          }
+            if (!titulo || !duracion || !numero || !audio) {
+              throw new Error("Todos los campos de cada canción son obligatorios.");
+            }
 
-          const cancionesInsertadas = resData.data;
+            const formData = new FormData();
+            formData.append("file", audio);
+            formData.append("titulo", titulo);
+            formData.append("duracion", duracion);
+            formData.append("numero_pista", numero);
+            formData.append("descripcion", descripcion);
+            formData.append("album_id", albumId);
+            formData.append("artista_id", artistaId);
 
-          for (let i = 0; i < cancionesInsertadas.length; i++) {
-            const audioForm = new FormData();
-            audioForm.append("file", audios[i]);
+            const res = await fetch("http://localhost:3000/upload-audio/cancion/audio", {
+              method: "POST",
+              headers: {
+                Authorization: `Bearer ${token}`
+              },
+              body: formData
+            });
 
-            await fetch(
-              `http://localhost:3000/canciones/upload/audio/${cancionesInsertadas[i].cancion_id}`,
-              {
-                method: "PATCH",
-                headers: { Authorization: `Bearer ${token}` },
-                body: audioForm,
-              }
-            );
+            const data = await res.json();
+
+            if (!res.ok || data.error) {
+              throw new Error(
+                `Error al subir la canción "${titulo}": ${data.message || "Error desconocido"}`
+              );
+            }
           }
 
           success({ message: "Canciones y audios subidos correctamente." });
@@ -229,7 +196,6 @@ export const createAlbum = (appContainer) => {
         window.location.hash = "#/perfil";
       });
 
-      // Mostrar interfaz para canciones
       app.appendChild(document.createElement("hr"));
       app.appendChild(sectionTitle);
       app.appendChild(cancionesContainer);
@@ -267,5 +233,7 @@ function createInputGroupHTML(type, id, labelText, required = false) {
 
   return wrapper;
 }
+
+
 
 
